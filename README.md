@@ -484,7 +484,7 @@ directories:
 |-------|----------|-------------|
 | gemini-2.5-pro | Primary translation | Highest quality |
 | gemini-2.5-flash | Fallback | Fast, reliable |
-| gemini-2.0-flash-exp | Legacy fallback | Stable |
+| gemini-2.0-flash-exp | Legacy fallback | Experimental |
 
 ---
 
