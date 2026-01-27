@@ -1,0 +1,93 @@
+{
+  "publisher": "Hifumi Shobo",
+  "publisher_ja": "株式会社一二三書房",
+  "imprint": "Brave Bunko (ブレイブ文庫)",
+  "country": "JP",
+  "notes": "Part of Brave Bunko imprint. Uses p### page numbering format with spreads.",
+
+  "image_patterns": {
+    "cover": {
+      "patterns": [
+        "cover\\.jpe?g"
+      ],
+      "examples": [
+        "cover.jpg"
+      ],
+      "notes": "Standard cover naming"
+    },
+    "kuchie": {
+      "patterns": [
+        "p00[1-9]\\.jpe?g",
+        "p00[1-9][-_]00\\d\\.jpe?g"
+      ],
+      "examples": [
+        "p001.jpg",
+        "p002.jpg",
+        "p003.jpg",
+        "p002-003.jpg"
+      ],
+      "notes": "Pages 1-9 reserved for kuchie, uses spreads (p002-003.jpg)"
+    },
+    "illustrations": {
+      "patterns": [
+        "p0[1-9]\\d+\\.jpe?g",
+        "p[1-9]\\d+\\.jpe?g"
+      ],
+      "examples": [
+        "p004.jpg",
+        "p005.jpg"
+      ],
+      "notes": "Page numbering continues for illustrations (p010+)"
+    }
+  },
+
+  "toc_structure": {
+    "format": "EPUB3",
+    "has_nav_xhtml": true,
+    "has_toc_ncx": false,
+    "has_visual_toc": false,
+    "nav_structure": "li > a",
+    "notes": "Standard EPUB3 structure"
+  },
+
+  "content_structure": {
+    "filename_pattern": "chapter\\d+\\.xhtml",
+    "chapter_merging": false,
+    "illustration_pages": true,
+    "notes": "Clean chapter organization"
+  },
+
+  "chapter_splitting": {
+    "enabled": true,
+    "reason": "Minimal TOC causes entire volume to merge into one chapter, exceeding API TPM limits",
+    "max_tokens_per_chapter": 2000,
+    "scene_break_patterns": [
+      "^\\s*[\\*◇◆]{3,}\\s*$",
+      "^\\s*＊{3,}\\s*$",
+      "^―{5,}$",
+      "^\\s*\\*\\s*\\*\\s*\\*\\s*$"
+    ],
+    "min_part_tokens": 800,
+    "preserve_illustrations": true,
+    "fallback_split_method": "paragraph_cluster",
+    "notes": "Split large merged chapters to prevent TPM overload during translation"
+  },
+
+  "metadata": {
+    "spine_progression": "rtl",
+    "typical_chapter_count": "10-12",
+    "typical_file_count": "15-20",
+    "average_images": 14.0
+  },
+
+  "test_cases": [
+    {
+      "title": "学年一の金髪碧眼美少女に勉強を教えることになりました（ブレイブ文庫）１",
+      "verified": true
+    },
+    {
+      "title": "学年一の金髪碧眼美少女に勉強を教えることになりました２",
+      "verified": false
+    }
+  ]
+}

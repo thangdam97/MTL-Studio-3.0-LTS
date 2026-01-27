@@ -1,0 +1,77 @@
+{
+  "publisher": "SB Creative",
+  "publisher_ja": "SBクリエイティブ株式会社",
+  "country": "JP",
+  "notes": "Unique uppercase P prefix with letter suffixes for multiple images at same position.",
+
+  "image_patterns": {
+    "cover": {
+      "patterns": [
+        "cover\\.jpe?g",
+        "P000a\\.jpe?g"
+      ],
+      "examples": [
+        "cover.jpg",
+        "P000a.jpg"
+      ],
+      "notes": "Primary cover is cover.jpg or P000a.jpg"
+    },
+    "kuchie": {
+      "patterns": [
+        "^P000[b-z]\\.jpe?g$",
+        "^P00[1-9]\\.jpe?g$"
+      ],
+      "examples": [
+        "P000b.jpg",
+        "P000c.jpg",
+        "P003.jpg"
+      ],
+      "notes": "Color inserts (P000b onwards) and pages 1-9 for kuchie only (P001-P009), uppercase P prefix"
+    },
+    "illustrations": {
+      "patterns": [
+        "P0[1-9]\\d+[a-z]?\\.jpe?g",
+        "P[1-9]\\d+[a-z]?\\.jpe?g"
+      ],
+      "examples": [
+        "P013.jpg",
+        "P020.jpg"
+      ],
+      "notes": "Uppercase P prefix, page numbering format, optional letter suffix"
+    }
+  },
+
+  "toc_structure": {
+    "format": "EPUB3",
+    "has_nav_xhtml": true,
+    "has_toc_ncx": false,
+    "has_visual_toc": false,
+    "nav_structure": "li > a",
+    "notes": "Standard EPUB3"
+  },
+
+  "content_structure": {
+    "filename_pattern": "chapter\\d+\\.xhtml",
+    "chapter_merging": false,
+    "illustration_pages": true,
+    "notes": "Standard chapter organization"
+  },
+
+  "metadata": {
+    "spine_progression": "rtl",
+    "typical_chapter_count": "10-12",
+    "typical_file_count": "15-20",
+    "average_images": 21.5
+  },
+
+  "test_cases": [
+    {
+      "title": "自分を負けヒロインだと思い込んでいるすでに勝利済みの幼馴染",
+      "verified": false
+    },
+    {
+      "title": "学園一かわいい後輩の命の恩人になったら、通い妻になって関係を迫ってくる。",
+      "verified": false
+    }
+  ]
+}

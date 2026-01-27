@@ -1,0 +1,154 @@
+# ============================================
+# MTL Studio - Git Ignore Configuration
+# LTS Stable Version
+# ============================================
+
+# ============================================
+# SENSITIVE DATA - MUST IGNORE
+# ============================================
+# API Keys and Environment Variables
+.env
+.env.local
+.env.*.local
+*.env
+**/.env
+
+# ============================================
+# WORKING DIRECTORIES - LARGE/TRANSIENT DATA
+# ============================================
+# Pipeline working folders (contains EPUB extracts, translations in progress)
+pipeline/WORK/
+pipeline/INPUT/
+pipeline/OUTPUT/
+
+# Context files (legacy continuity system)
+**/.context/
+
+# ============================================
+# DOCUMENTATION - INTERNAL/DEVELOPMENT NOTES
+# ============================================
+# Pipeline documents (audit reports, investigation notes)
+pipeline/documents/
+pipeline/docs/
+
+# Root level docs (setup guides, verification reports)
+docs/
+
+# Design documents
+UNIVERSAL_CONTINUITY_PACK_DESIGN.md
+VERIFICATION_REPORT.md
+
+# ============================================
+# TEST SCRIPTS AND DEVELOPMENT AIDS
+# ============================================
+test_script/
+pipeline/scripts/test_*.py
+pipeline/scripts/*_test.py
+
+# ============================================
+# PYTHON ARTIFACTS
+# ============================================
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+
+# Virtual Environment (use python_env locally)
+python_env/
+venv/
+env/
+ENV/
+.venv/
+
+# Pytest
+.pytest_cache/
+**/.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# ============================================
+# IDE AND EDITOR
+# ============================================
+.vscode/
+**/.vscode/
+.idea/
+**/.idea/
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace
+
+# Claude/AI Agent directories
+.claude/
+**/.claude/
+.agent/
+**/.agent/
+
+# ============================================
+# OS GENERATED FILES
+# ============================================
+.DS_Store
+**/.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+*~
+
+# ============================================
+# LOGS AND TEMPORARY FILES
+# ============================================
+*.log
+**/*.log
+pipeline.log
+*.tmp
+*.bak
+*.temp
+
+# ============================================
+# BUNDLED APPLICATIONS (LARGE BINARIES)
+# ============================================
+# VSCodium bundled app
+bin/VSCodium.app/
+
+# User data (preferences, cache, extensions)
+data/user-data/
+data/extensions/
+
+# ============================================
+# WORKSPACE CONFIGURATIONS (USER-SPECIFIC)
+# ============================================
+workspace/
+*.code-workspace
+
+# ============================================
+# REFERENCE MATERIALS (COPYRIGHTED/LARGE)
+# ============================================
+VN/Reference/
+pipeline/VN/
+
+# ============================================
+# PROMPTS (PROPRIETARY)
+# ============================================
+# Uncomment if you want to keep prompts private
+# pipeline/prompts/
+
+# ============================================
+# STYLE GUIDES (PROPRIETARY)
+# ============================================
+# Uncomment if you want to keep style guides private
+# pipeline/style_guides/
+
+# ============================================
+# MACOS APP BUNDLE (GENERATED)
+# ============================================
+MTL Studio.app/

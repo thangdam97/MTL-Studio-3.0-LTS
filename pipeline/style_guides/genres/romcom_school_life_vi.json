@@ -1,0 +1,294 @@
+{
+  "language": "vi",
+  "genre": "romantic_comedy_school_life",
+  "version": "1.0",
+  "description": "Light novel học đường - tình cảm hài hước (romcom) - Phong cách Việt hóa",
+  
+  "target_audience": {
+    "age_group": "15-25",
+    "reading_level": "dễ tiếp cận, không quá văn chương",
+    "familiarity_with_japanese_culture": "moderate (giải thích khi cần)"
+  },
+  
+  "tone_guidelines": {
+    "narration_style": "góc nhìn nhân vật thứ nhất, tự nhiên, gần gũi",
+    "humor_type": "tình huống ngượng ngùng, hiểu lầm dễ thương",
+    "emotional_range": "nhẹ nhàng đến cảm động, KHÔNG bi kịch sâu sắc",
+    "pacing": "nhịp độ vừa phải, xen kẽ hài - ngọt - căng thẳng nhẹ"
+  },
+  
+  "pronoun_system": {
+    "framework": "vietnamese_sibling_system",
+    "note": "Xưng hô là YẾU TỐ QUAN TRỌNG NHẤT - quyết định cảm xúc và khoảng cách giữa nhân vật",
+    
+    "protagonist_male_16yo": {
+      "self_reference": {
+        "narration": "tôi / mình (tự nhiên)",
+        "to_peers": "tôi / mình",
+        "to_younger": "anh",
+        "to_elders": "con / cháu (tùy quan hệ)"
+      },
+      "to_female_heroine_same_age": {
+        "phase_1_distant": {
+          "chapters": "1-2",
+          "pronouns": "cậu / [tên nhân vật]",
+          "note": "Xa cách, chưa quen, tránh 'em' vì chưa thân"
+        },
+        "phase_2_warming": {
+          "chapters": "3-5",
+          "pronouns": "em / [tên]",
+          "note": "Bắt đầu gần gũi, chấp nhận quan hệ anh em"
+        },
+        "phase_3_close": {
+          "chapters": "6+",
+          "pronouns": "em (thân thiết)",
+          "note": "Đã rất gần gũi, 'em' mang tính tình cảm"
+        }
+      },
+      "to_male_friend": "mày / cậu (bạn thân dùng 'mày', bạn thường dùng 'cậu')",
+      "to_senior_girl": "chị / [tên]-senpai",
+      "to_teacher": "thầy / cô",
+      "to_stepmother": "cô (NOT 'bà cô', 'mẹ kế')",
+      "avoid": [
+        "'bà' cho phụ nữ trung niên (quá già)",
+        "'chú/bác' cho người chưa già (kỳ quặc)",
+        "'anh/chị ấy' trong nội tâm khi đã thân (xa cách)"
+      ]
+    },
+    
+    "heroine_female_16yo": {
+      "self_reference": {
+        "narration": "tôi / mình",
+        "to_peers": "tôi / mình",
+        "to_family": "con"
+      },
+      "to_male_protagonist": {
+        "phase_1_tsundere": {
+          "chapters": "1-2",
+          "pronouns": "cậu / anh ấy (xa cách)",
+          "note": "Tsundere nên tránh 'anh' quá thân mật sớm"
+        },
+        "phase_2_warming": {
+          "chapters": "3-5",
+          "pronouns": "anh",
+          "note": "Chấp nhận gọi 'anh' khi dần thân thiết"
+        },
+        "phase_3_dere": {
+          "chapters": "6+",
+          "pronouns": "anh (với cảm xúc)",
+          "note": "'Anh' giờ mang tính tình cảm, không còn khách sáo"
+        }
+      },
+      "to_mother": "mẹ (KHÔNG 'thân mẫu', 'mẹ cô')",
+      "to_stepfather": "bác / bác [tên] (lịch sự nhưng chưa gần gũi)",
+      "to_female_friend": "cậu / bạn"
+    },
+    
+    "supporting_characters": {
+      "cheerful_male_friend": {
+        "pronouns": "tao/mày (bạn thân), cậu (người khác)",
+        "style": "năng động, nhiều từ lóng nhẹ"
+      },
+      "observant_senior_girl": {
+        "pronouns": "chị/em lịch sự, 'cậu' thân mật",
+        "style": "nhẹ nhàng, quan sát tinh tế"
+      },
+      "warm_stepmother": {
+        "pronouns": "con (to kids), cô (self-ref)",
+        "style": "ấm áp, gần gũi, KHÔNG xa cách",
+        "avoid": "'bà' (quá già), 'tôi' (quá xa cách với con)"
+      }
+    },
+    
+    "critical_fixes": {
+      "bà_cô_issue": {
+        "wrong": "bà cô",
+        "correct": "cô",
+        "explanation": "'Bà' là cho người già (60+), 'cô' phù hợp cho phụ nữ 30-40 tuổi. Mẹ kế 30s gọi 'cô' là tự nhiên nhất."
+      },
+      "em_timing": {
+        "wrong": "Gọi 'em' ngay từ đầu khi chưa thân",
+        "correct": "Cậu/tên → em (theo sự phát triển quan hệ)",
+        "explanation": "'Em' mang tính thân mật, dùng quá sớm sẽ không hợp lý với tính cách tsundere."
+      }
+    }
+  },
+  
+  "dialogue_style": {
+    "teen_speech_patterns": {
+      "contractions": "Dùng thoải mái: 'không' → 'ko', 'vậy' → 'v', 'thế' → 'z'",
+      "filler_words": "ừ, à, hả, ơ, ờ (tự nhiên, không quá nhiều)",
+      "exclamations": {
+        "surprise": ["Ơ!?", "Hả!?", "Cái gì!?", "Nghiêm túc à!?"],
+        "embarrassment": ["Ư...", "Đ-Đừng nói thế!", "Không phải đâu!"],
+        "frustration": ["Chết tiệt...", "Thật khó chịu...", "Đúng là..."],
+        "happiness": ["Tuyệt!", "Hay quá!", "Được rồi!"]
+      },
+      "avoid": [
+        "Từ người lớn: 'thưa', 'dạ vâng', 'kính thưa'",
+        "Quá văn chương: 'thật là', 'quả thật', 'thật vậy'",
+        "Quá formal: 'tôi xin', 'cho phép tôi'"
+      ]
+    },
+    
+    "narration_vs_dialogue": {
+      "narration": "Tự nhiên nhưng văn phong hơn lời nói một chút",
+      "dialogue": "Giống nói chuyện thật, có thể lủng củng, ngắt quãng",
+      "internal_monologue": "Tự sự, có thể phân mảnh, suy nghĩ lung tung"
+    }
+  },
+  
+  "cultural_terms": {
+    "school_system": {
+      "高校": "trường trung học phổ thông / cấp 3",
+      "先輩": "anh/chị khóa trên (hoặc giữ '-senpai')",
+      "後輩": "em khóa dưới / đàn em",
+      "部活": "câu lạc bộ / CLB (tùy ngữ cảnh)",
+      "教室": "lớp học",
+      "食堂": "căng tin / nhà ăn"
+    },
+    
+    "food_terms": {
+      "strategy": "Dịch + giữ tên Nhật nếu cần",
+      "弁当": "hộp cơm (first use: hộp cơm kiểu Nhật / bento)",
+      "おにぎり": "cơm nắm / onigiri",
+      "焼きそば": "mì xào (Nhật) / yakisoba",
+      "ラーメン": "mì ramen",
+      "お茶": "trà (không cần 'trà Nhật')"
+    },
+    
+    "relationship_terms": {
+      "義妹": "em gái kế (KHÔNG 'nghĩa muội')",
+      "義母": "mẹ kế (KHÔNG 'nghĩa mẫu')",
+      "クラスメート": "bạn cùng lớp",
+      "幼なじみ": "bạn thời thơ ấu / bạn từ bé"
+    },
+    
+    "romantic_terms": {
+      "好き": "thích / yêu (tùy mức độ)",
+      "告白": "tỏ tình",
+      "付き合う": "hẹn hò / yêu nhau",
+      "デート": "date / hẹn hò",
+      "彼女/彼氏": "bạn gái / bạn trai"
+    }
+  },
+  
+  "vocabulary_preferences": {
+    "beauty_descriptions": {
+      "beautiful": "đẹp / xinh đẹp / xinh (KHÔNG 'mỹ lệ', 'kiều diễm')",
+      "cute": "dễ thương / đáng yêu",
+      "cool": "ngầu / điển trai (boy), lạnh lùng (personality)",
+      "elegant": "thanh lịch / sang trọng (KHÔNG 'ưa nhã')"
+    },
+    
+    "emotion_words": {
+      "love": "yêu / thích (KHÔNG 'ái mộ')",
+      "embarrassed": "xấu hổ / ngượng / đỏ mặt",
+      "angry": "tức / giận / bực",
+      "happy": "vui / hạnh phúc / vui vẻ",
+      "sad": "buồn / buồn bã (KHÔNG 'u sầu', 'thê lương')"
+    },
+    
+    "action_verbs": {
+      "look": "nhìn (KHÔNG 'ngắm nhìn', 'nhìn ngắm')",
+      "walk": "đi (KHÔNG 'bước đi', 'sải bước')",
+      "say": "nói (KHÔNG 'phán', 'bảo rằng')",
+      "think": "nghĩ (KHÔNG 'suy tư', 'trầm ngâm')"
+    }
+  },
+  
+  "romantic_tension": {
+    "physical_descriptions": {
+      "level": "tasteful_restrained",
+      "examples": "Mô tả ngoại hình tự nhiên, KHÔNG phô trương",
+      "avoid": "Chi tiết cơ thể quá mức, gợi dục lộ liễu"
+    },
+    
+    "awkward_moments": {
+      "style": "Nhấn mạnh sự ngượng ngùng, đỏ mặt, lúng túng",
+      "internal_monologue": "Tâm lý quẩn quanh, nhiều suy nghĩ lung tung"
+    },
+    
+    "confession_scenes": {
+      "emotional_weight": "high",
+      "style": "Chân thành, xúc động, KHÔNG sến súa",
+      "pacing": "Chậm lại, tập trung vào cảm xúc"
+    }
+  },
+  
+  "common_pitfalls": {
+    "contextual_sino_overuse": {
+      "issue": "Dùng Hán Việt không phù hợp ngữ cảnh - vấn đề nghiêm trọng nhất",
+      "manifestations": [
+        "Quý bà (woman 30s in casual context) → cô / chị",
+        "Mỹ lệ (beautiful in teen dialogue) → đẹp / xinh",
+        "Thiếu nữ (girl in modern setting) → cô gái / em",
+        "Ái mộ (like in romance) → thích / yêu"
+      ],
+      "root_cause": "AI defaults to formal Sino-Vietnamese without considering modern casual context",
+      "fix": "ALWAYS evaluate: Is this modern? Casual? Teen dialogue? → Use Pure Vietnamese",
+      "examples": {
+        "scenario_modern_school": {
+          "japanese": "美しい女性が入ってきた",
+          "WRONG": "Một quý bà mỹ lệ bước vào (sounds like historical novel)",
+          "CORRECT": "Một người phụ nữ xinh đẹp bước vào",
+          "reason": "Modern school setting needs contemporary vocabulary"
+        },
+        "scenario_teen_dialogue": {
+          "japanese": "彼女は綺麗だね",
+          "WRONG": "Cô ấy mỹ lệ nhỉ (no teen talks like this)",
+          "CORRECT": "Cô ấy đẹp nhỉ / xinh thật",
+          "reason": "Teens use simple, direct vocabulary"
+        },
+        "scenario_adult_character": {
+          "japanese": "義母のジェシカ",
+          "WRONG": "Mẹ kế quý bà Jessica (too formal for family)",
+          "CORRECT": "Mẹ kế Jessica / Cô Jessica",
+          "reason": "Family context is personal, not formal"
+        }
+      }
+    },
+    
+    "archaic_formality": {
+      "issue": "Dùng từ ngữ cổ điển/văn chương trong đối thoại hiện đại",
+      "wrong_patterns": [
+        "Nàng ta / hắn ta (literary pronouns)",
+        "Sải bước / phi nhanh (poetic verbs)",
+        "Thốt lên / phán rằng (archaic speech verbs)",
+        "Dáng dấp / phong thái (literary descriptions)"
+      ],
+      "fix": "Use modern equivalents: cô ấy/anh ấy, đi, nói, dáng vẻ",
+      "example": {
+        "bad": "Nàng ta sải bước nhẹ nhàng, dáng dấp ưa nhã khiến hắn ta ái mộ",
+        "good": "Cô ấy đi rất nhẹ nhàng và thanh lịch, khiến anh thích thú"
+      }
+    },
+    
+    "pronoun_errors": {
+      "issue": "Xưng hô sai làm hỏng quan hệ nhân vật",
+      "fix": "Theo map xưng hô theo từng giai đoạn",
+      "example": {
+        "bad": "Bà cô Jessica (quá già)",
+        "good": "Cô Jessica"
+      }
+    },
+    
+    "unnatural_translation": {
+      "issue": "Dịch sát nguyên văn mất tự nhiên",
+      "fix": "Dịch ý, không dịch từ",
+      "example": {
+        "bad": "Cô ấy bước đi một cách thanh lịch",
+        "good": "Cô ấy đi rất thanh lịch"
+      }
+    }
+  },
+  
+  "quality_checklist": {
+    "pronouns": "Xưng hô đúng giai đoạn quan hệ",
+    "vocabulary": "Từ ngữ tự nhiên, không Hán Việt quá mức",
+    "dialogue": "Giống người thật nói chuyện",
+    "narration": "Trôi chảy, không cứng nhắc",
+    "consistency": "Thuật ngữ thống nhất xuyên suốt",
+    "age_appropriate": "Ngôn ngữ phù hợp tuổi teen"
+  }
+}

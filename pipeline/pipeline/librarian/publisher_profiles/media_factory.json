@@ -1,0 +1,80 @@
+{
+  "publisher": "Media Factory",
+  "publisher_ja": "株式会社メディアファクトリー",
+  "country": "JP",
+  "notes": "Uses 'o_' prefix for all images and Japanese naming conventions",
+
+  "image_patterns": {
+    "cover": {
+      "patterns": [
+        "o_hyoushi\\.jpe?g",
+        "cover\\.jpe?g"
+      ],
+      "examples": [
+        "o_hyoushi.jpg"
+      ],
+      "notes": "hyoushi = 表紙 (cover in Japanese)"
+    },
+    "kuchie": {
+      "patterns": [
+        "o_kuchie_\\d+\\.jpe?g",
+        "kuchie[-_]\\d+\\.jpe?g"
+      ],
+      "examples": [
+        "o_kuchie_01.jpg",
+        "o_kuchie_02.jpg",
+        "o_kuchie_03.jpg"
+      ],
+      "notes": "Color plate illustrations, typically 1-4 per volume"
+    },
+    "illustrations": {
+      "patterns": [
+        "o_p\\d{3,}\\.jpe?g"
+      ],
+      "examples": [
+        "o_p025.jpg",
+        "o_p039.jpg",
+        "o_p073.jpg",
+        "o_p087.jpg"
+      ],
+      "notes": "Chapter illustrations with page numbers"
+    }
+  },
+
+  "toc_structure": {
+    "format": "EPUB3",
+    "has_nav_xhtml": true,
+    "has_toc_ncx": true,
+    "has_visual_toc": true,
+    "visual_toc_patterns": [
+      "a_1_7\\.xhtml"
+    ],
+    "nav_structure": "li > span > a",
+    "notes": "Hybrid EPUB2/3, anchors wrapped in span elements"
+  },
+
+  "content_structure": {
+    "filename_pattern": "a_\\d+_\\d+\\.xhtml",
+    "chapter_merging": true,
+    "illustration_pages": true,
+    "notes": "Chapters split across multiple files, merged during conversion"
+  },
+
+  "metadata": {
+    "spine_progression": "rtl",
+    "typical_chapter_count": "5-10",
+    "typical_file_count": "30-40"
+  },
+
+  "test_cases": [
+    {
+      "title": "この中に1人、妹がいる！",
+      "title_en": "Nakaimo: My Sister Is Among Them!",
+      "author": "田口 一",
+      "year": 2012,
+      "chapters": 7,
+      "images": 14,
+      "verified": true
+    }
+  ]
+}

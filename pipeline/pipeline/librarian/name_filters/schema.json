@@ -1,0 +1,222 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "name_filters.schema.json",
+  "title": "Name Filter Schema",
+  "description": "Schema for Japanese name extraction filter patterns",
+  "type": "object",
+  "properties": {
+    "meta": {
+      "type": "object",
+      "description": "Metadata about this filter set",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Human-readable name for this filter set"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+$",
+          "description": "Version in MAJOR.MINOR format"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of what this filter set is for"
+        },
+        "extends": {
+          "type": "string",
+          "description": "Base filter set to extend (e.g., 'base' or 'isekai')"
+        }
+      },
+      "required": ["name", "version"]
+    },
+    "katakana_common_words": {
+      "type": "object",
+      "description": "Common katakana words that are NOT names",
+      "properties": {
+        "gaming_fantasy": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "RPG/isekai terms (スキル, レベル, etc.)"
+        },
+        "school_daily_life": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "School/daily terms (クラス, テスト, etc.)"
+        },
+        "technology": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Tech terms (スマホ, パソコン, etc.)"
+        },
+        "food_drink": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Food/drink terms (コーヒー, パン, etc.)"
+        },
+        "fashion_appearance": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Fashion terms (スカート, シャツ, etc.)"
+        },
+        "media_entertainment": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Media terms (アニメ, ゲーム, etc.)"
+        },
+        "general": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Other common katakana words"
+        }
+      },
+      "additionalProperties": {
+        "type": "array",
+        "items": { "type": "string" }
+      }
+    },
+    "kanji_stylistic_ruby": {
+      "type": "object",
+      "description": "Kanji words that commonly get stylistic katakana ruby (NOT kira-kira names)",
+      "properties": {
+        "food_cooking": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Food terms with stylistic ruby (出汁→ダシ)"
+        },
+        "sensory": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Sensory words (臭い→スメル)"
+        },
+        "weapons_tools": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Weapons/tools with English ruby (刃→ブレード)"
+        },
+        "body_emotion": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Body/emotion terms (心→ハート)"
+        },
+        "abstract_concepts": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Abstract concepts (運命→デスティニー)"
+        },
+        "general": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Other kanji with stylistic ruby"
+        }
+      },
+      "additionalProperties": {
+        "type": "array",
+        "items": { "type": "string" }
+      }
+    },
+    "common_terms": {
+      "type": "object",
+      "description": "Common Japanese terms that are NOT names",
+      "properties": {
+        "pronouns": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Personal pronouns (貴方, 彼女, etc.)"
+        },
+        "family_terms": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Family relationship terms (祖母, 叔父, etc.)"
+        },
+        "titles_roles": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Titles and roles (先生, 社長, etc.)"
+        },
+        "temporal": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Time-related terms (今日, 明日, etc.)"
+        },
+        "locations": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Location terms (学校, 教室, etc.)"
+        },
+        "emotions_states": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Emotion/state words (態度, 表情, etc.)"
+        },
+        "body_parts": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Body parts (頭, 顔, etc.)"
+        },
+        "compound_words": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Compound words with unusual readings (惚気, 咄嗟, etc.)"
+        },
+        "action_state": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Action/state verbs (躊躇, 逡巡, etc.)"
+        },
+        "general": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Other non-name terms"
+        }
+      },
+      "additionalProperties": {
+        "type": "array",
+        "items": { "type": "string" }
+      }
+    },
+    "name_indicators": {
+      "type": "object",
+      "description": "Patterns that indicate a term IS a name",
+      "properties": {
+        "suffixes": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Name suffixes (さん, 君, ちゃん, etc.)"
+        },
+        "intro_patterns": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Self-introduction patterns (と申します, etc.)"
+        },
+        "first_person_pronouns": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "First-person pronouns for intro detection (俺, 私, etc.)"
+        }
+      }
+    },
+    "confidence_modifiers": {
+      "type": "object",
+      "description": "Confidence score adjustments",
+      "properties": {
+        "boosts": {
+          "type": "object",
+          "additionalProperties": { "type": "number" },
+          "description": "Positive confidence adjustments"
+        },
+        "penalties": {
+          "type": "object",
+          "additionalProperties": { "type": "number" },
+          "description": "Negative confidence adjustments"
+        },
+        "threshold": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Minimum confidence to classify as name"
+        }
+      }
+    }
+  },
+  "required": ["meta"]
+}

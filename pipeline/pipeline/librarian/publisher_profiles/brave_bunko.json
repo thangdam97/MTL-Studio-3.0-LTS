@@ -1,0 +1,74 @@
+{
+  "publisher": "Brave Bunko",
+  "publisher_ja": "ブレイブ文庫",
+  "country": "JP",
+  "notes": "Standard EPUB3 structure with minimal customization",
+
+  "image_patterns": {
+    "cover": {
+      "patterns": [
+        "cover\\.jpe?g",
+        "i-cover\\.jpe?g"
+      ],
+      "examples": [
+        "cover.jpg",
+        "i-cover.jpg"
+      ],
+      "notes": "Standard cover naming"
+    },
+    "kuchie": {
+      "patterns": [
+        "kuchie-\\d+\\.jpe?g",
+        "k\\d+\\.jpe?g",
+        "p00[1-9]\\.jpe?g"
+      ],
+      "examples": [
+        "kuchie-01.jpg",
+        "k01.jpg"
+      ],
+      "notes": "Color plates, pages 1-9 reserved for kuchie"
+    },
+    "illustrations": {
+      "patterns": [
+        "i-\\d+\\.jpe?g",
+        "p0[1-9]\\d+\\.jpe?g",
+        "p[1-9]\\d+\\.jpe?g"
+      ],
+      "examples": [
+        "i-001.jpg",
+        "i-023.jpg",
+        "p010.jpg"
+      ],
+      "notes": "Standard illustration naming, p010+ for chapter illustrations"
+    }
+  },
+
+  "toc_structure": {
+    "format": "EPUB3",
+    "has_nav_xhtml": true,
+    "has_toc_ncx": false,
+    "has_visual_toc": false,
+    "nav_structure": "li > a",
+    "notes": "Clean EPUB3 structure, direct anchor children"
+  },
+
+  "content_structure": {
+    "filename_pattern": "chapter\\d+\\.xhtml",
+    "chapter_merging": false,
+    "illustration_pages": true,
+    "notes": "One file per chapter, clean structure"
+  },
+
+  "metadata": {
+    "spine_progression": "ltr",
+    "typical_chapter_count": "10-15",
+    "typical_file_count": "15-25"
+  },
+
+  "test_cases": [
+    {
+      "title": "学年一の金髪碧眼美少女に勉強を教えることになりました",
+      "verified": true
+    }
+  ]
+}

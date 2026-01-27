@@ -1,0 +1,85 @@
+#!/bin/bash
+# ============================================
+# MT Publishing Pipeline - macOS/Linux Launcher
+# ============================================
+# Launch the interactive TUI for translation pipeline
+#
+# Usage:
+#   ./mtl                    # Launch TUI (default)
+#   ./mtl --tui              # Explicitly launch TUI
+#   ./mtl run <epub>         # Legacy CLI mode
+#   ./mtl --help             # Show help
+# ============================================
+
+# Get script directory (resolve symlinks)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR" || exit 1
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+CYAN='\033[0;36m'
+NC='\033[0m' # No Color
+
+# Check for Python
+find_python() {
+    # Try python3 first, then python
+    if command -v python3 &> /dev/null; then
+        echo "python3"
+    elif command -v python &> /dev/null; then
+        # Verify it's Python 3
+        if python --version 2>&1 | grep -q "Python 3"; then
+            echo "python"
+        else
+            echo ""
+        fi
+    else
+        echo ""
+    fi
+}
+
+PYTHON_CMD=$(find_python)
+
+if [ -z "$PYTHON_CMD" ]; then
+    echo -e "${RED}Error: Python 3.10+ is required but not found.${NC}"
+    echo ""
+    echo "Please install Python from:"
+    echo "  - https://www.python.org/downloads/"
+    echo "  - brew install python"
+    exit 1
+fi
+
+# Check for virtual environment
+VENV_PYTHON="$SCRIPT_DIR/venv/bin/python"
+
+if [ -f "$VENV_PYTHON" ]; then
+    PYTHON_CMD="$VENV_PYTHON"
+fi
+
+# Check dependencies
+check_deps() {
+    $PYTHON_CMD -c "import questionary; import rich" 2>/dev/null
+    return $?
+}
+
+if ! check_deps; then
+    echo -e "${YELLOW}Installing required dependencies...${NC}"
+    $PYTHON_CMD -m pip install questionary rich -q
+
+    if ! check_deps; then
+        echo -e "${RED}Failed to install dependencies.${NC}"
+        echo "Please run: pip install questionary rich"
+        exit 1
+    fi
+    echo -e "${GREEN}Dependencies installed.${NC}"
+fi
+
+# Run the pipeline
+if [ $# -eq 0 ]; then
+    # No arguments - launch TUI
+    exec $PYTHON_CMD "$SCRIPT_DIR/scripts/mtl.py"
+else
+    # Pass all arguments to mtl.py
+    exec $PYTHON_CMD "$SCRIPT_DIR/scripts/mtl.py" "$@"
+fi

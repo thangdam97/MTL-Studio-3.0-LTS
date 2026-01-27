@@ -1,0 +1,93 @@
+{
+  "publisher": "Shueisha",
+  "publisher_ja": "株式会社 集英社",
+  "country": "JP",
+  "notes": "Major Japanese publisher. Uses embed#### naming with _HD suffix for high-quality images. Kuchie extracted from spine (p-cover, p-fmatter).",
+
+  "image_patterns": {
+    "cover": {
+      "patterns": [
+        "cover\\.jpe?g",
+        "embed0016_HD\\.jpe?g"
+      ],
+      "examples": [
+        "cover.jpg",
+        "embed0016_HD.jpg"
+      ],
+      "notes": "Cover typically embed0016_HD.jpg, extracted from p-cover.xhtml"
+    },
+    "kuchie": {
+      "patterns": [
+        "kuchie-\\d{3}\\.jpe?g",
+        "embed000[0-4]_HD\\.jpe?g"
+      ],
+      "examples": [
+        "kuchie-001.jpg",
+        "kuchie-002.jpg",
+        "embed0000_HD.jpg",
+        "embed0001_HD.jpg"
+      ],
+      "notes": "Kuchie (color plates) typically embed0000-0004_HD.jpg, found in p-fmatter-*.xhtml spine entries. System extracts and renames to kuchie-###.jpg"
+    },
+    "illustrations": {
+      "patterns": [
+        "embed\\d{4}_HD\\.jpe?g",
+        "embed\\d{4}\\.jpe?g"
+      ],
+      "examples": [
+        "embed0006_HD.jpg",
+        "embed0007_HD.jpg",
+        "embed0009.jpg",
+        "embed0014.jpg"
+      ],
+      "notes": "HD variants (_HD suffix) for high quality, standard (no suffix) for lower resolution. Embedded in chapter content."
+    },
+    "special": {
+      "patterns": [],
+      "examples": [],
+      "notes": "No special character images observed"
+    }
+  },
+
+  "toc_structure": {
+    "format": "EPUB3",
+    "has_nav_xhtml": true,
+    "has_toc_ncx": false,
+    "has_visual_toc": false,
+    "nav_structure": "li > a",
+    "notes": "Clean EPUB3 structure with nav.xhtml"
+  },
+
+  "content_structure": {
+    "filename_pattern": "p-\\d+\\.xhtml",
+    "chapter_merging": false,
+    "illustration_pages": true,
+    "kuchie_extraction": "spine",
+    "notes": "Uses p-### naming. Kuchie in dedicated p-cover.xhtml and p-fmatter-###.xhtml spine entries (NOT in Images/ folder directly)"
+  },
+
+  "metadata": {
+    "spine_progression": "rtl",
+    "typical_chapter_count": "5-10",
+    "typical_file_count": "10-20",
+    "average_images": 15.0,
+    "kuchie_spine_patterns": [
+      "p-cover.xhtml",
+      "p-fmatter-\\d{3}\\.xhtml"
+    ]
+  },
+
+  "test_cases": [
+    {
+      "title": "迷子になっていた幼女を助けたら、お隣に住む美少女留学生が家に遊びに来るようになった件について (1)",
+      "volume_id": "1c5f",
+      "images": {
+        "kuchie": 6,
+        "illustrations": 11,
+        "cover": 1
+      },
+      "verified": true,
+      "notes": "embed0000-0004_HD.jpg + embed0016_HD.jpg as kuchie. embed0006-0015 as illustrations. Kuchie in spine entries, not Image/ folder pattern matching."
+    }
+  ]
+}

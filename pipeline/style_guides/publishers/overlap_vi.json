@@ -1,0 +1,47 @@
+{
+  "publisher": "overlap",
+  "language": "vi",
+  "version": "1.0",
+  "description": "Overlap-specific Vietnamese style preferences",
+  
+  "typical_genres": [
+    "romantic_comedy",
+    "school_life",
+    "light_fantasy",
+    "slice_of_life"
+  ],
+  
+  "tone_characteristics": {
+    "overall": "nhẹ nhàng, dễ tiếp cận, tập trung vào cảm xúc nhân vật",
+    "humor": "tình huống hài hước tự nhiên, KHÔNG slapstick thô",
+    "romance": "ngọt ngào, nhiều khoảnh khắc dễ thương",
+    "drama": "nhẹ nhàng, KHÔNG quá nặng nề"
+  },
+  
+  "character_archetypes": {
+    "tsundere": {
+      "common": true,
+      "style": "lạnh lùng bên ngoài, dễ thương bên trong",
+      "pronoun_evolution": "cứng nhắc → dần mềm mỏng",
+      "dialogue": "ngắn gọn, tránh → nói nhiều hơn"
+    },
+    "dense_protagonist": {
+      "common": true,
+      "style": "chăm chỉ, tốt bụng, hơi đần về tình cảm",
+      "narration": "tự nhiên, nhiều hiểu lầm ngây thơ"
+    }
+  },
+  
+  "vocabulary_preferences": {
+    "formality": "casual_friendly",
+    "sino_vietnamese_ratio": "15-20% (thấp hơn trung bình)",
+    "preferred_style": "gần gũi, như kể chuyện cho bạn nghe"
+  },
+  
+  "illustration_notes": {
+    "kuchie": "Ảnh màu đầu truyện (trang màu)",
+    "chapter_illustrations": "Ảnh minh họa nội dung (đen trắng)",
+    "cover": "Bìa truyện",
+    "note": "Overlap thường có nhiều illustration, giữ nguyên placeholder"
+  }
+}

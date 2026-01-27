@@ -1,0 +1,85 @@
+{
+  "publisher": "Overlap",
+  "publisher_ja": "株式会社オーバーラップ",
+  "country": "JP",
+  "notes": "Clean systematic naming. Highest average image count (28.5 per book). Uses k### format extensively.",
+
+  "image_patterns": {
+    "cover": {
+      "patterns": [
+        "cover\\.jpe?g",
+        "allcover\\.jpe?g"
+      ],
+      "examples": [
+        "cover.jpg",
+        "allcover.jpg"
+      ],
+      "notes": "Standard cover naming"
+    },
+    "kuchie": {
+      "patterns": [
+        "k\\d{3,}\\.jpe?g",
+        "k\\d{3,}[-_]\\d{3,}\\.jpe?g"
+      ],
+      "examples": [
+        "k001.jpg",
+        "k002.jpg",
+        "k004.jpg",
+        "k002-003.jpg",
+        "k003-004.jpg"
+      ],
+      "notes": "k### format, uses double numbers for spreads (k002-003.jpg)"
+    },
+    "illustrations": {
+      "patterns": [
+        "p\\d+\\.jpe?g",
+        "i[-_]\\d+\\.jpe?g"
+      ],
+      "examples": [
+        "p001.jpg",
+        "p005.jpg",
+        "p046.jpg",
+        "p059.jpg"
+      ],
+      "notes": "p### for actual illustration inserts (m### stylized titles are excluded)"
+    }
+  },
+
+  "toc_structure": {
+    "format": "EPUB3",
+    "has_nav_xhtml": true,
+    "has_toc_ncx": false,
+    "has_visual_toc": false,
+    "nav_structure": "li > a",
+    "notes": "Clean EPUB3 structure"
+  },
+
+  "content_structure": {
+    "filename_pattern": "chapter\\d+\\.xhtml",
+    "chapter_merging": false,
+    "illustration_pages": true,
+    "notes": "Well-organized chapter structure"
+  },
+
+  "metadata": {
+    "spine_progression": "rtl",
+    "typical_chapter_count": "10-12",
+    "typical_file_count": "15-20",
+    "average_images": 28.5
+  },
+
+  "test_cases": [
+    {
+      "title": "俺のスマホに心の声が漏れちゃう残念美少女たちが可愛すぎる 1",
+      "verified": false
+    },
+    {
+      "title": "負けヒロインと俺が付き合っていると周りから勘違いされ、幼馴染みと修羅場になった 2",
+      "verified": false
+    },
+    {
+      "title": "お隣さんのギャルが僕を惚れさせたくて全力すぎる 1",
+      "verified": false
+    }
+  ]
+}

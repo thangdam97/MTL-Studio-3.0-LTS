@@ -1,0 +1,263 @@
+{
+  "version": "1.0",
+  "description": "CJK Character Validation Rules for Vietnamese Translation Quality Control",
+  "last_updated": "2026-01-25",
+  
+  "character_ranges": {
+    "chinese_hanzi": {
+      "range": "\\u4E00-\\u9FFF",
+      "description": "CJK Unified Ideographs (Chinese characters)",
+      "severity": "error"
+    },
+    "hiragana": {
+      "range": "\\u3040-\\u309F",
+      "description": "Japanese Hiragana",
+      "severity": "error"
+    },
+    "katakana": {
+      "range": "\\u30A0-\\u30FF",
+      "description": "Japanese Katakana", 
+      "severity": "error"
+    },
+    "korean_hangul": {
+      "range": "\\uAC00-\\uD7AF",
+      "description": "Korean Hangul Syllables",
+      "severity": "error"
+    },
+    "korean_jamo": {
+      "range": "\\u1100-\\u11FF",
+      "description": "Korean Hangul Jamo",
+      "severity": "error"
+    },
+    "cjk_symbols": {
+      "range": "\\u3000-\\u303F",
+      "description": "CJK Symbols and Punctuation (e.g., ・)",
+      "severity": "warning"
+    }
+  },
+
+  "allowed_contexts": {
+    "proper_names_in_parentheses": {
+      "pattern": "\\([^)]*[\\u4E00-\\u9FFF\\u3040-\\u309F\\u30A0-\\u30FF]+[^)]*\\)",
+      "description": "Japanese names/terms in parentheses for clarification",
+      "examples": ["(豚丼)", "(スタミナ豚丼)", "(お好み焼き)"],
+      "severity": "allowed"
+    },
+    "ruby_annotations": {
+      "pattern": "《[^》]*》",
+      "description": "Furigana/ruby text markers",
+      "examples": ["真守《まもり》", "鈴文《すずふみ》"],
+      "severity": "allowed"
+    },
+    "quoted_japanese_terms": {
+      "pattern": "\"[^\"]*[\\u4E00-\\u9FFF\\u3040-\\u309F\\u30A0-\\u30FF]+[^\"]*\"",
+      "description": "Japanese terms in quotes for terminology explanation",
+      "examples": ["\"男飯 - đồ ăn nam tính\""],
+      "severity": "allowed"
+    }
+  },
+
+  "common_leak_patterns": {
+    "mixed_text_leaks": [
+      {
+        "pattern": "([a-zA-ZÀ-ỹ]+)([\\u4E00-\\u9FFF\\u3040-\\u309F\\u30A0-\\u30FF]+)",
+        "description": "Vietnamese/English text immediately followed by CJK",
+        "example": "việc進学",
+        "severity": "error",
+        "fix_strategy": "separate_or_translate"
+      },
+      {
+        "pattern": "([\\u4E00-\\u9FFF\\u3040-\\u309F\\u30A0-\\u30FF]+)([a-zA-ZÀ-ỹ]+)",
+        "description": "CJK immediately followed by Vietnamese/English text",
+        "example": "这边这边Suzufumi",
+        "severity": "error",
+        "fix_strategy": "translate_cjk_part"
+      }
+    ],
+    
+    "punctuation_leaks": [
+      {
+        "pattern": "・",
+        "replacement": " - ",
+        "description": "Japanese middle dot (nakaguro) used as separator",
+        "severity": "warning"
+      }
+    ],
+
+    "partial_translations": [
+      {
+        "pattern": "([À-ỹa-zA-Z\\s]+)[\\u4E00-\\u9FFF]{1,3}([À-ỹa-zA-Z\\s]+)",
+        "description": "Single CJK character embedded in Vietnamese text",
+        "example": "sự喧騒喧 náo nhiệt",
+        "severity": "error",
+        "common_causes": [
+          "LLM missed translating a compound word",
+          "Character encoding issue",
+          "Context window truncation"
+        ]
+      }
+    ]
+  },
+
+  "replacement_mappings": {
+    "common_chinese_leaks": {
+      "这边": "đây",
+      "那边": "đó", 
+      "什么": "gì",
+      "怎么": "sao/như thế nào",
+      "为什么": "tại sao",
+      "可以": "có thể",
+      "应该": "nên"
+    },
+    
+    "common_japanese_leaks": {
+      "様子": "tình trạng/vẻ",
+      "凜々": "nghiêm nghị",
+      "進学": "thi đại học/tiến học",
+      "合格": "đỗ/đạt",
+      "大丈夫": "không sao",
+      "まさか": "không lẽ",
+      "なぁ": "(ngữ khí cuối câu)",
+      "少女": "thiếu nữ"
+    },
+
+    "common_korean_leaks": {
+      "좌": "trái/ghế/giữa",
+      "우": "phải"
+    },
+
+    "punctuation_replacements": {
+      "・": " - ",
+      "～": "~",
+      "…": "...",
+      "。": ".",
+      "、": ", ",
+      "「": "\"",
+      "」": "\""
+    }
+  },
+
+  "validation_rules": {
+    "pre_translation_checks": [
+      {
+        "rule": "detect_source_language",
+        "description": "Ensure source text is properly identified as Japanese",
+        "action": "log_warning_if_mixed_languages"
+      }
+    ],
+    
+    "post_translation_checks": [
+      {
+        "rule": "no_cjk_in_vietnamese_text",
+        "pattern": "[^\\(\\)《》\\\"][\\u4E00-\\u9FFF\\u3040-\\u309F\\u30A0-\\u30FF\\uAC00-\\uD7AF\\u1100-\\u11FF]",
+        "description": "Detect CJK characters outside allowed contexts",
+        "severity": "error",
+        "action": "flag_for_manual_review"
+      },
+      {
+        "rule": "check_mixed_language_segments",
+        "description": "Detect sentences with mixed Vietnamese and CJK",
+        "severity": "error",
+        "action": "request_retranslation"
+      },
+      {
+        "rule": "validate_punctuation",
+        "description": "Check for Japanese punctuation marks (・、。)",
+        "severity": "warning",
+        "action": "suggest_replacement"
+      }
+    ]
+  },
+
+  "mitigation_strategies": {
+    "prompt_engineering": {
+      "system_instructions": [
+        "CRITICAL: You are translating Japanese light novels to Vietnamese.",
+        "NEVER leave any Chinese (汉字), Japanese (ひらがな, カタカナ), or Korean (한글) characters in the Vietnamese output.",
+        "Only exception: Japanese terms in parentheses for clarification, e.g., (豚丼)",
+        "If you encounter a term you cannot translate, use Vietnamese phonetic approximation or descriptive translation.",
+        "Double-check your output for any remaining CJK characters before submitting."
+      ],
+      
+      "few_shot_examples": [
+        {
+          "bad": "Không khí trong trường, sự喧騒喧 náo nhiệt lại càng lớn hơn.",
+          "good": "Không khí trong trường, sự ồn ào náo nhiệt lại càng lớn hơn.",
+          "explanation": "喧騒 (xuân tào) means 'noisy/bustling' - must be translated to Vietnamese 'ồn ào'"
+        },
+        {
+          "bad": "Suzufumi,这边这边",
+          "good": "Suzufumi, đây này đây này",
+          "explanation": "这边 is Chinese for 'over here' - must be translated to Vietnamese 'đây này'"
+        },
+        {
+          "bad": "Yuzuki ngồi chính좌",
+          "good": "Yuzuki ngồi chính giữa",
+          "explanation": "좌 is Korean character - must be fully translated to Vietnamese"
+        }
+      ]
+    },
+
+    "multi_pass_validation": {
+      "step1_initial_translation": "Translate Japanese to Vietnamese with CJK awareness",
+      "step2_cjk_detection": "Run regex pattern matching to detect any remaining CJK",
+      "step3_contextual_review": "Check if detected CJK is in allowed context (parentheses, ruby text)",
+      "step4_forced_retranslation": "For flagged segments, explicitly request Vietnamese-only output",
+      "step5_human_review": "Final manual check for critical chapters"
+    },
+
+    "chunking_strategy": {
+      "issue": "Context window limits cause partial translations",
+      "solution": "Translate in complete sentences/paragraphs, not mid-sentence",
+      "overlap": "Include 2-3 sentences of overlap between chunks for context"
+    }
+  },
+
+  "error_categories": {
+    "type_1_single_character_leak": {
+      "description": "One or two CJK characters left untranslated in Vietnamese sentence",
+      "examples": ["sự喧騒喧 náo nhiệt", "Yuzuki ngồi chính좌"],
+      "root_cause": "LLM context limit, compound word splitting, attention mechanism failure",
+      "frequency": "common",
+      "fix_difficulty": "easy"
+    },
+    
+    "type_2_phrase_leak": {
+      "description": "Short Chinese/Japanese phrase mixed with Vietnamese",
+      "examples": ["Suzufumi,这边这边", "様子 trong giờ câu lạc bộ"],
+      "root_cause": "Multi-language training data interference, incomplete translation",
+      "frequency": "moderate", 
+      "fix_difficulty": "easy"
+    },
+
+    "type_3_punctuation_leak": {
+      "description": "Japanese punctuation marks in Vietnamese text",
+      "examples": ["Chạy bộ・giờ học・bữa trưa", "Hì hì「text」"],
+      "root_cause": "Tokenization treating punctuation separately from text",
+      "frequency": "very_common",
+      "fix_difficulty": "trivial"
+    },
+
+    "type_4_partial_word_leak": {
+      "description": "Part of compound word translated, part left as CJK",
+      "examples": ["việc進学 (education advancement)", "mỹ少女 (beautiful girl)"],
+      "root_cause": "Compound word boundary detection failure",
+      "frequency": "rare",
+      "fix_difficulty": "moderate"
+    }
+  },
+
+  "usage_instructions": {
+    "automated_validation": "Run after Phase 2 translation, before Phase 3 Critics",
+    "manual_review_triggers": [
+      "Any type_1 or type_2 errors detected",
+      "More than 5 type_3 errors in single chapter", 
+      "Any CJK character in chapter titles or character names"
+    ],
+    "integration_points": [
+      "pipeline/modules/translator.py - Add post-translation validator",
+      "pipeline/modules/critics.py - Include CJK check in review criteria",
+      "pipeline/builder/agent.py - Add pre-EPUB validation step"
+    ]
+  }
+}

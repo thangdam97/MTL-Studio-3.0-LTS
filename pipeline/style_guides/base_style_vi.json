@@ -1,0 +1,199 @@
+{
+  "language": "vi",
+  "version": "1.0",
+  "description": "Base Vietnamese translation style guide - applies to all genres",
+  
+  "fundamental_principles": {
+    "naturalness": "Ưu tiên ngôn ngữ tự nhiên, gần gũi người đọc Việt",
+    "readability": "Dễ đọc, dễ hiểu, tránh rườm rà",
+    "consistency": "Thống nhất thuật ngữ, xưng hô trong toàn bộ tác phẩm",
+    "cultural_respect": "Tôn trọng văn hóa Nhật nhưng không xa lạ với độc giả Việt"
+  },
+  
+  "vocabulary_strategy": {
+    "core_principle": "CONTEXTUAL SINO-VIETNAMESE ADAPTATION",
+    "description": "Chọn từ Hán Việt vs Thuần Việt dựa trên ngữ cảnh, không theo công thức cứng nhắc",
+    
+    "decision_framework": {
+      "modern_casual_context": {
+        "ratio": "5-10% Sino-Vietnamese",
+        "situations": [
+          "Teen dialogue",
+          "Modern school setting",
+          "Casual narration",
+          "Emotional moments",
+          "Daily activities"
+        ],
+        "prefer": "pure_vietnamese",
+        "examples": {
+          "good": "Cô ấy đẹp quá → xinh đẹp / đẹp",
+          "bad": "Cô ấy mỹ lệ / kiều diễm (archaic Sino)",
+          "good": "Tôi thích em → thích",
+          "bad": "Tôi ái mộ nàng → ái mộ (unnatural formal)"
+        }
+      },
+      
+      "formal_context": {
+        "ratio": "30-40% Sino-Vietnamese",
+        "situations": [
+          "Official announcements",
+          "Academic discussions",
+          "Historical references",
+          "Technical terminology",
+          "Adult formal speech"
+        ],
+        "prefer": "sino_vietnamese_appropriate",
+        "examples": {
+          "good": "Trường học thông báo → thông báo (appropriate Sino)",
+          "good": "Kết quả thi đấu → kết quả (technical)",
+          "avoid": "Overuse in casual teen context"
+        }
+      },
+      
+      "narrative_description": {
+        "ratio": "15-25% Sino-Vietnamese",
+        "situations": [
+          "Scene setting",
+          "Character description",
+          "Action sequences",
+          "Atmospheric writing"
+        ],
+        "balance": "mix_naturally",
+        "examples": {
+          "good": "Tóc vàng óng ả bay trong gió",
+          "bad": "Mái tóc kim vàng lộng lẫy phất phơ (over-Sinicized)",
+          "good": "Cô đi rất thanh lịch",
+          "bad": "Nàng bước đi ưa nhã, dáng dấp kiều diễm (archaic)"
+        }
+      }
+    },
+    
+    "critical_forbidden_patterns": {
+      "archaic_sino_in_modern_context": {
+        "wrong": ["quý bà", "phu nhân", "thiếu gia", "công tử", "tiểu thư"],
+        "correct": ["phụ nữ/bà", "người phụ nữ", "anh ấy", "anh ấy", "cô ấy"],
+        "explanation": "Những từ Hán Việt này nghe như tiểu thuyết cổ trang, KHÔNG phù hợp hiện đại"
+      },
+      
+      "overly_poetic_adjectives": {
+        "wrong": ["mỹ lệ", "kiều diễm", "lộng lẫy", "tuấn tú", "phong nhã"],
+        "correct": ["đẹp", "xinh đẹp", "nổi bật", "đẹp trai", "thanh lịch"],
+        "explanation": "Tính từ Hán Việt quá hoa mỹ làm mất tự nhiên"
+      },
+      
+      "formal_pronouns_casual_context": {
+        "wrong": ["ngài", "quý vị", "đại nhân", "tiểu sinh"],
+        "correct": ["anh/chị", "các bạn", "mọi người", "tôi/mình"],
+        "explanation": "Xưng hô cổ điển không hợp với học đường hiện đại"
+      },
+      
+      "literary_sentence_structures": {
+        "wrong": "Nàng ta sải bước nhẹ nhàng, dáng dấp ưa nhã",
+        "correct": "Cô ấy đi rất nhẹ nhàng và thanh lịch",
+        "explanation": "Cấu trúc câu văn chương làm mất cảm giác tự nhiên"
+      }
+    },
+    
+    "context_aware_vocabulary": {
+      "people_titles": {
+        "modern_casual": {
+          "woman_30s": "cô / chị / người phụ nữ (KHÔNG 'quý bà', 'phu nhân')",
+          "woman_50s": "bà (KHÔNG 'quý bà' unless very formal event)",
+          "man_30s": "anh / ông (KHÔNG 'ngài', 'quý ông')",
+          "girl_teen": "cô gái / em (KHÔNG 'thiếu nữ', 'tiểu thư')",
+          "boy_teen": "cậu / anh (KHÔNG 'thiếu gia', 'công tử')"
+        },
+        "when_sino_ok": "Formal events, historical context, technical titles only"
+      },
+      
+      "beauty_emotion_words": {
+        "modern_natural": {
+          "beautiful": "đẹp, xinh đẹp, xinh, đẹp lung linh",
+          "cute": "dễ thương, đáng yêu, cute",
+          "handsome": "đẹp trai, điển trai, ngầu",
+          "love": "yêu, thích, mến",
+          "happy": "vui, hạnh phúc, vui vẻ, sung sướng",
+          "sad": "buồn, buồn bã, thất vọng"
+        },
+        "avoid_archaic": {
+          "NEVER_USE": ["mỹ lệ", "kiều diễm", "tuấn tú", "ái mộ", "hân hoan", "u sầu"]
+        }
+      },
+      
+      "action_verbs": {
+        "prefer_simple": {
+          "look": "nhìn (NOT 'ngắm nhìn', 'chiêm ngưỡng')",
+          "walk": "đi (NOT 'bước đi', 'sải bước')",
+          "say": "nói (NOT 'phán', 'thốt lên')",
+          "think": "nghĩ (NOT 'suy tư', 'trầm ngâm')",
+          "run": "chạy (NOT 'phi nhanh', 'vội vã phi tới')"
+        }
+      }
+    },
+    
+    "real_world_examples": {
+      "scenario_1_school_dialogue": {
+        "japanese": "彼女は美しい",
+        "WRONG_TRANSLATION": "Cô ấy thật mỹ lệ (archaic Sino)",
+        "CORRECT_TRANSLATION": "Cô ấy đẹp quá / xinh đẹp thật",
+        "reason": "Teen dialogue requires natural modern vocabulary"
+      },
+      
+      "scenario_2_formal_announcement": {
+        "japanese": "結果発表",
+        "WRONG_TRANSLATION": "Công bố kết quả (acceptable)",
+        "CORRECT_TRANSLATION": "Thông báo kết quả / Công bố kết quả",
+        "reason": "Formal context allows appropriate Sino-Vietnamese"
+      },
+      
+      "scenario_3_character_description": {
+        "japanese": "美しい女性",
+        "WRONG_TRANSLATION": "Vị quý bà mỹ lệ (WAY too formal)",
+        "CORRECT_TRANSLATION": "Người phụ nữ xinh đẹp / Cô ấy rất đẹp",
+        "reason": "Modern novel needs contemporary vocabulary"
+      }
+    }
+  },
+  
+  "punctuation": {
+    "quotation_marks": "Dùng dấu ngoặc kép: \"lời nói\"",
+    "ellipsis": "Ba chấm: ... (KHÔNG ….)",
+    "exclamation": "Dấu chấm than đơn: ! (tránh !!!, !?!?)",
+    "em_dash": "Gạch ngang: — (cho câu bị ngắt)",
+    "comma_usage": "Dùng dấu phẩy theo quy tắc tiếng Việt, KHÔNG theo tiếng Anh"
+  },
+  
+  "name_conventions": {
+    "japanese_names": {
+      "order": "family_given",
+      "romanization": "Hepburn_standard",
+      "examples": {
+        "白川賢人": "Shirakawa Kento",
+        "ソフィア": "Sophia",
+        "神薙翔太": "Kannagi Shouta"
+      }
+    },
+    "honorifics": {
+      "keep_romanized": ["-san", "-kun", "-chan", "-sama"],
+      "translate_context": [
+        {"term": "-senpai", "translation": "anh/chị khóa trên", "usage": "dựa vào ngữ cảnh"},
+        {"term": "-sensei", "translation": "thầy/cô", "usage": "luôn dịch"}
+      ],
+      "first_use_explanation": "Chú thích footnote ở chương đầu"
+    }
+  },
+  
+  "formatting": {
+    "paragraphs": "Xuống dòng rõ ràng giữa các đoạn hội thoại",
+    "dialogue_attribution": "Rõ ràng ai nói gì (tránh nhầm lẫn)",
+    "internal_monologue": "Dùng italic hoặc đoạn riêng",
+    "scene_breaks": "Dòng trống hoặc *** để ngăn cách"
+  },
+  
+  "quality_standards": {
+    "no_mtl_artifacts": "Tuyệt đối KHÔNG có dấu hiệu dịch máy cứng nhắc",
+    "natural_flow": "Đọc như văn Việt gốc, KHÔNG phải dịch từ tiếng khác",
+    "age_appropriate": "Ngôn ngữ phù hợp với độ tuổi nhân vật",
+    "genre_consistency": "Giữ đúng tone của thể loại"
+  }
+}

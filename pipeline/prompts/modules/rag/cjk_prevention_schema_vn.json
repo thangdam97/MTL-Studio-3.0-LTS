@@ -1,0 +1,1302 @@
+{
+  "schema_version": "1.0",
+  "schema_name": "CJK Prevention Protocol for Vietnamese Translation",
+  "purpose": "Prevent Chinese/Japanese character leakage in Vietnamese output",
+  "unicode_range": {
+    "forbidden_start": "U+4E00",
+    "forbidden_end": "U+9FFF",
+    "description": "CJK Unified Ideographs - Must be translated to Vietnamese"
+  },
+  "detection_rules": {
+    "zero_tolerance": true,
+    "confidence_threshold": 0.7,
+    "context_window": 5,
+    "check_compounds": true,
+    "check_isolation": true
+  },
+  "forbidden_character_sets": {
+    "chinese_only_chars": [
+      "爲",
+      "這",
+      "個",
+      "們",
+      "嗎",
+      "呢",
+      "啊",
+      "吧",
+      "喔",
+      "哦",
+      "唄",
+      "咧",
+      "啦",
+      "哪",
+      "誰",
+      "係",
+      "喺",
+      "啲",
+      "嘅",
+      "嗰",
+      "噉",
+      "乜",
+      "咁",
+      "點",
+      "樣",
+      "邊",
+      "冇",
+      "未",
+      "曾",
+      "經",
+      "緊",
+      "住",
+      "咗",
+      "過",
+      "喇",
+      "啩",
+      "囉",
+      "啫",
+      "嚟",
+      "佢",
+      "哋",
+      "你",
+      "妳",
+      "您",
+      "俺",
+      "咱",
+      "阮",
+      "伲",
+      "偌",
+      "倆",
+      "仨"
+    ],
+    "chinese_compounds": [
+      "有好",
+      "爲了",
+      "這個",
+      "那個",
+      "什麼",
+      "怎麼",
+      "為什",
+      "還是",
+      "可以",
+      "不能",
+      "應該",
+      "會不",
+      "沒有",
+      "已經",
+      "正在",
+      "將要",
+      "都合",
+      "気付",
+      "仕方",
+      "本当",
+      "一緒",
+      "大丈夫",
+      "勉強"
+    ],
+    "japanese_punctuation": {
+      "corner_quotes_open": "「",
+      "corner_quotes_close": "」",
+      "angle_quotes_open": "《",
+      "angle_quotes_close": "》",
+      "double_angle_open": "『",
+      "double_angle_close": "』",
+      "replacement": "\""
+    }
+  },
+  "common_substitutions": {
+    "chinese_phrases": {
+      "這個": {
+        "vietnamese": [
+          "cái này",
+          "điều này",
+          "chuyện này"
+        ],
+        "context": "demonstrative pronoun"
+      },
+      "那個": {
+        "vietnamese": [
+          "cái đó",
+          "điều đó",
+          "chuyện đó"
+        ],
+        "context": "demonstrative pronoun"
+      },
+      "什麼": {
+        "vietnamese": [
+          "cái gì",
+          "gì",
+          "điều gì"
+        ],
+        "context": "interrogative"
+      },
+      "怎麼": {
+        "vietnamese": [
+          "như thế nào",
+          "sao",
+          "làm sao"
+        ],
+        "context": "interrogative manner"
+      },
+      "為了": {
+        "vietnamese": [
+          "vì",
+          "để",
+          "nhằm"
+        ],
+        "context": "purpose"
+      },
+      "應該": {
+        "vietnamese": [
+          "nên",
+          "phải",
+          "đáng lẽ"
+        ],
+        "context": "obligation/suggestion"
+      },
+      "沒有": {
+        "vietnamese": [
+          "không có",
+          "chẳng có",
+          "không"
+        ],
+        "context": "negation"
+      },
+      "已經": {
+        "vietnamese": [
+          "đã",
+          "đã rồi"
+        ],
+        "context": "perfective aspect"
+      },
+      "正在": {
+        "vietnamese": [
+          "đang",
+          "đang trong lúc"
+        ],
+        "context": "progressive aspect"
+      }
+    },
+    "everyday_vocabulary": {
+      "大丈夫": {
+        "readings": [
+          "daijoubu"
+        ],
+        "vietnamese": [
+          "không sao",
+          "ổn",
+          "được",
+          "ổn chứ"
+        ],
+        "context": "reassurance",
+        "usage": "common",
+        "leak_pattern": "大丈夫そ"
+      },
+      "本当": {
+        "readings": [
+          "hontou"
+        ],
+        "vietnamese": [
+          "thật sự",
+          "thực sự",
+          "thật"
+        ],
+        "context": "emphasis",
+        "usage": "very_common"
+      },
+      "多分": {
+        "readings": [
+          "tabun"
+        ],
+        "vietnamese": [
+          "có lẽ",
+          "chắc là",
+          "hình như"
+        ],
+        "context": "probability",
+        "usage": "common"
+      },
+      "突然": {
+        "readings": [
+          "totsuzen"
+        ],
+        "vietnamese": [
+          "đột nhiên",
+          "bỗng dưng",
+          "bất thình lình"
+        ],
+        "context": "suddenness",
+        "usage": "common"
+      },
+      "一緒": {
+        "readings": [
+          "issho"
+        ],
+        "vietnamese": [
+          "cùng nhau",
+          "chung",
+          "với nhau"
+        ],
+        "context": "togetherness",
+        "usage": "very_common"
+      },
+      "勿論": {
+        "readings": [
+          "mochiron"
+        ],
+        "vietnamese": [
+          "tất nhiên",
+          "đương nhiên",
+          "dĩ nhiên"
+        ],
+        "context": "certainty",
+        "usage": "common"
+      },
+      "実は": {
+        "readings": [
+          "jitsu wa"
+        ],
+        "vietnamese": [
+          "thực ra",
+          "sự thật là",
+          "thật ra"
+        ],
+        "context": "confession",
+        "usage": "very_common"
+      },
+      "やっぱり": {
+        "readings": [
+          "yappari"
+        ],
+        "vietnamese": [
+          "quả nhiên",
+          "đúng như nghĩ",
+          "cuối cùng thì"
+        ],
+        "context": "as_expected",
+        "usage": "very_common"
+      },
+      "相変わらず": {
+        "readings": [
+          "aikawarazu"
+        ],
+        "vietnamese": [
+          "như thường lệ",
+          "vẫn vậy",
+          "không thay đổi"
+        ],
+        "context": "unchanging",
+        "usage": "common"
+      },
+      "仕方ない": {
+        "readings": [
+          "shikata nai"
+        ],
+        "vietnamese": [
+          "không còn cách nào",
+          "đành chịu thôi",
+          "chẳng làm sao được"
+        ],
+        "context": "resignation",
+        "usage": "very_common"
+      },
+      "都合が良い": {
+        "readings": [
+          "tsugou ga ii"
+        ],
+        "vietnamese": [
+          "thuận tiện",
+          "tiện lợi",
+          "hay ho"
+        ],
+        "context": "convenience",
+        "usage": "common"
+      },
+      "気が付く": {
+        "readings": [
+          "ki ga tsuku"
+        ],
+        "vietnamese": [
+          "nhận ra",
+          "để ý",
+          "chú ý"
+        ],
+        "context": "realization",
+        "usage": "very_common"
+      },
+      "どうしよう": {
+        "readings": [
+          "doushiyou"
+        ],
+        "vietnamese": [
+          "làm sao đây",
+          "giờ phải làm gì",
+          "thế nào bây giờ"
+        ],
+        "context": "worried_pondering",
+        "usage": "very_common"
+      }
+    },
+    "emotional_expressions": {
+      "嬉しい": {
+        "readings": [
+          "ureshii"
+        ],
+        "vietnamese": [
+          "vui",
+          "hạnh phúc",
+          "mừng"
+        ],
+        "emotion": "happy",
+        "intensity": "medium"
+      },
+      "悲しい": {
+        "readings": [
+          "kanashii"
+        ],
+        "vietnamese": [
+          "buồn",
+          "đau lòng",
+          "thương tâm"
+        ],
+        "emotion": "sad",
+        "intensity": "medium"
+      },
+      "楽しい": {
+        "readings": [
+          "tanoshii"
+        ],
+        "vietnamese": [
+          "vui vẻ",
+          "thú vị",
+          "vui"
+        ],
+        "emotion": "fun",
+        "intensity": "medium"
+      },
+      "寂しい": {
+        "readings": [
+          "sabishii"
+        ],
+        "vietnamese": [
+          "cô đơn",
+          "buồn bã",
+          "trống vắng"
+        ],
+        "emotion": "lonely",
+        "intensity": "medium"
+      },
+      "恥ずかしい": {
+        "readings": [
+          "hazukashii"
+        ],
+        "vietnamese": [
+          "xấu hổ",
+          "ngượng",
+          "bẽ mặt"
+        ],
+        "emotion": "embarrassed",
+        "intensity": "medium"
+      },
+      "怖い": {
+        "readings": [
+          "kowai"
+        ],
+        "vietnamese": [
+          "sợ",
+          "sợ hãi",
+          "đáng sợ"
+        ],
+        "emotion": "scared",
+        "intensity": "medium"
+      },
+      "驚く": {
+        "readings": [
+          "odoroku"
+        ],
+        "vietnamese": [
+          "ngạc nhiên",
+          "bất ngờ",
+          "kinh ngạc"
+        ],
+        "emotion": "surprised",
+        "intensity": "medium"
+      },
+      "心配": {
+        "readings": [
+          "shinpai"
+        ],
+        "vietnamese": [
+          "lo lắng",
+          "bận tâm",
+          "quan ngại"
+        ],
+        "emotion": "worried",
+        "intensity": "medium"
+      },
+      "可愛い": {
+        "readings": [
+          "kawaii"
+        ],
+        "vietnamese": [
+          "đáng yêu",
+          "dễ thương",
+          "xinh xắn"
+        ],
+        "emotion": "cute",
+        "intensity": "medium"
+      },
+      "格好いい": {
+        "readings": [
+          "kakkoii"
+        ],
+        "vietnamese": [
+          "ngầu",
+          "đẹp trai",
+          "멋있어"
+        ],
+        "emotion": "cool",
+        "intensity": "medium"
+      }
+    },
+    "actions_and_states": {
+      "考える": {
+        "readings": [
+          "kangaeru"
+        ],
+        "vietnamese": [
+          "suy nghĩ",
+          "cân nhắc",
+          "nghĩ ngợi"
+        ],
+        "category": "cognition"
+      },
+      "思う": {
+        "readings": [
+          "omou"
+        ],
+        "vietnamese": [
+          "nghĩ",
+          "cho rằng",
+          "cảm thấy"
+        ],
+        "category": "cognition"
+      },
+      "分かる": {
+        "readings": [
+          "wakaru"
+        ],
+        "vietnamese": [
+          "hiểu",
+          "biết",
+          "rõ"
+        ],
+        "category": "cognition"
+      },
+      "知る": {
+        "readings": [
+          "shiru"
+        ],
+        "vietnamese": [
+          "biết",
+          "nhận thức",
+          "hay"
+        ],
+        "category": "cognition"
+      },
+      "見る": {
+        "readings": [
+          "miru"
+        ],
+        "vietnamese": [
+          "nhìn",
+          "xem",
+          "thấy"
+        ],
+        "category": "perception"
+      },
+      "聞く": {
+        "readings": [
+          "kiku"
+        ],
+        "vietnamese": [
+          "nghe",
+          "lắng nghe",
+          "hỏi"
+        ],
+        "category": "perception"
+      },
+      "話す": {
+        "readings": [
+          "hanasu"
+        ],
+        "vietnamese": [
+          "nói",
+          "trò chuyện",
+          "kể"
+        ],
+        "category": "communication"
+      },
+      "言う": {
+        "readings": [
+          "iu"
+        ],
+        "vietnamese": [
+          "nói",
+          "phát biểu",
+          "bảo"
+        ],
+        "category": "communication"
+      },
+      "書く": {
+        "readings": [
+          "kaku"
+        ],
+        "vietnamese": [
+          "viết",
+          "ghi chép",
+          "viết lách"
+        ],
+        "category": "communication"
+      },
+      "読む": {
+        "readings": [
+          "yomu"
+        ],
+        "vietnamese": [
+          "đọc",
+          "đọc sách"
+        ],
+        "category": "communication"
+      }
+    },
+    "places_and_objects": {
+      "学校": {
+        "readings": [
+          "gakkou"
+        ],
+        "vietnamese": [
+          "trường học",
+          "trường"
+        ],
+        "category": "place"
+      },
+      "図書館": {
+        "readings": [
+          "toshokan"
+        ],
+        "vietnamese": [
+          "thư viện"
+        ],
+        "category": "place"
+      },
+      "運動会": {
+        "readings": [
+          "undoukai"
+        ],
+        "vietnamese": [
+          "hội thao",
+          "ngày hội thể thao"
+        ],
+        "category": "event"
+      },
+      "家族": {
+        "readings": [
+          "kazoku"
+        ],
+        "vietnamese": [
+          "gia đình"
+        ],
+        "category": "people"
+      },
+      "友達": {
+        "readings": [
+          "tomodachi"
+        ],
+        "vietnamese": [
+          "bạn bè",
+          "bạn"
+        ],
+        "category": "people"
+      },
+      "先生": {
+        "readings": [
+          "sensei"
+        ],
+        "vietnamese": [
+          "thầy giáo",
+          "cô giáo",
+          "giáo viên"
+        ],
+        "category": "people",
+        "note": "Can keep as honorific -sensei in some contexts"
+      },
+      "時間": {
+        "readings": [
+          "jikan"
+        ],
+        "vietnamese": [
+          "thời gian"
+        ],
+        "category": "abstract"
+      },
+      "場所": {
+        "readings": [
+          "basho"
+        ],
+        "vietnamese": [
+          "nơi chốn",
+          "chỗ",
+          "địa điểm"
+        ],
+        "category": "abstract"
+      },
+      "気持ち": {
+        "readings": [
+          "kimochi"
+        ],
+        "vietnamese": [
+          "cảm giác",
+          "cảm xúc",
+          "tâm trạng"
+        ],
+        "category": "abstract"
+      },
+      "勉強": {
+        "readings": [
+          "benkyou"
+        ],
+        "vietnamese": [
+          "học tập",
+          "học",
+          "học hành"
+        ],
+        "category": "activity"
+      },
+      "仕事": {
+        "readings": [
+          "shigoto"
+        ],
+        "vietnamese": [
+          "công việc",
+          "việc làm",
+          "làm việc"
+        ],
+        "category": "activity"
+      },
+      "会社": {
+        "readings": [
+          "kaisha"
+        ],
+        "vietnamese": [
+          "công ty"
+        ],
+        "category": "place"
+      },
+      "問題": {
+        "readings": [
+          "mondai"
+        ],
+        "vietnamese": [
+          "vấn đề",
+          "vấn đề"
+        ],
+        "category": "abstract"
+      },
+      "理由": {
+        "readings": [
+          "riyuu"
+        ],
+        "vietnamese": [
+          "lý do",
+          "nguyên nhân"
+        ],
+        "category": "abstract"
+      },
+      "方法": {
+        "readings": [
+          "houhou"
+        ],
+        "vietnamese": [
+          "phương pháp",
+          "cách"
+        ],
+        "category": "abstract"
+      }
+    },
+    "character_descriptions": {
+      "第一章": {
+        "readings": [
+          "dai-issho"
+        ],
+        "vietnamese": [
+          "Chương 1",
+          "Chương Một"
+        ],
+        "context": "chapter_numbering",
+        "usage": "common"
+      },
+      "少女": {
+        "readings": [
+          "shoujo"
+        ],
+        "vietnamese": [
+          "thiếu nữ",
+          "cô gái",
+          "thiếu nữ xinh đẹp"
+        ],
+        "context": "young_beautiful_girl",
+        "usage": "very_common"
+      },
+      "美少女": {
+        "readings": [
+          "bishoujo"
+        ],
+        "vietnamese": [
+          "thiếu nữ xinh đẹp",
+          "cô gái xinh đẹp",
+          "mỹ nữ"
+        ],
+        "context": "beautiful_girl",
+        "usage": "very_common"
+      },
+      "幼女": {
+        "readings": [
+          "youjo"
+        ],
+        "vietnamese": [
+          "bé gái",
+          "cô bé",
+          "bé gái nhỏ"
+        ],
+        "context": "young_girl_child",
+        "usage": "common"
+      },
+      "銀髪": {
+        "readings": [
+          "ginpatsu"
+        ],
+        "vietnamese": [
+          "tóc bạc",
+          "tóc bạch kim"
+        ],
+        "context": "silver_hair",
+        "usage": "common"
+      },
+      "留学生": {
+        "readings": [
+          "ryuugakusei"
+        ],
+        "vietnamese": [
+          "du học sinh",
+          "sinh viên du học"
+        ],
+        "context": "exchange_student",
+        "usage": "common"
+      },
+      "有好感": {
+        "readings": [
+          "yǒu hǎogǎn"
+        ],
+        "vietnamese": [
+          "có cảm tình",
+          "có thiện cảm"
+        ],
+        "context": "favorable_feelings",
+        "usage": "common",
+        "note": "Chinese phrase"
+      }
+    }
+  },
+  "validation_rules": {
+    "pre_output_checks": [
+      {
+        "check": "cjk_character_scan",
+        "action": "scan_unicode_range",
+        "range": [
+          "U+4E00",
+          "U+9FFF"
+        ],
+        "on_detect": "translate_to_vietnamese"
+      },
+      {
+        "check": "completeness_verification",
+        "action": "verify_all_source_translated",
+        "on_failure": "identify_untranslated_segments"
+      },
+      {
+        "check": "script_purity",
+        "action": "verify_latin_alphabet_only",
+        "allowed": [
+          "A-Z",
+          "a-z",
+          "Vietnamese_diacritics",
+          "punctuation",
+          "numbers"
+        ],
+        "forbidden": [
+          "CJK_ideographs"
+        ]
+      },
+      {
+        "check": "quotation_marks",
+        "action": "verify_standard_quotes",
+        "forbidden": [
+          "「",
+          "」",
+          "《",
+          "》",
+          "『",
+          "』"
+        ],
+        "required": [
+          "\""
+        ]
+      }
+    ],
+    "error_responses": {
+      "cjk_detected": {
+        "severity": "critical",
+        "action": "halt_output_and_retranslate",
+        "message": "CJK character detected - translation incomplete"
+      },
+      "mixed_script": {
+        "severity": "high",
+        "action": "separate_and_translate",
+        "message": "Mixed script detected - ensure full Vietnamese output"
+      },
+      "untranslatable_phrase": {
+        "severity": "medium",
+        "action": "use_descriptive_translation",
+        "fallback": "romanization_with_explanation"
+      }
+    }
+  },
+  "translation_strategies": {
+    "contextual_meaning": {
+      "description": "Extract meaning from context rather than literal translation",
+      "priority": 1,
+      "examples": [
+        {
+          "source": "都合が良すぎる",
+          "literal": "convenience is too good",
+          "contextual": "too convenient/coincidental",
+          "vietnamese": "thuận tiện quá"
+        },
+        {
+          "source": "気が付かない",
+          "literal": "spirit doesn't attach",
+          "contextual": "doesn't notice",
+          "vietnamese": "không để ý"
+        }
+      ]
+    },
+    "functional_equivalence": {
+      "description": "Focus on function/intent rather than literal words",
+      "priority": 2,
+      "examples": [
+        {
+          "source": "仕方がない",
+          "function": "expressing resignation/acceptance",
+          "vietnamese": [
+            "không còn cách nào",
+            "đành chịu thôi"
+          ]
+        },
+        {
+          "source": "どうしよう",
+          "function": "worried pondering",
+          "vietnamese": [
+            "làm sao đây",
+            "giờ phải làm gì"
+          ]
+        }
+      ]
+    },
+    "decompose_and_translate": {
+      "description": "Break complex compounds into translatable parts",
+      "priority": 3,
+      "examples": [
+        {
+          "source": "図書館",
+          "parts": [
+            "図書 = books/documents",
+            "館 = building/hall"
+          ],
+          "vietnamese": "thư viện"
+        },
+        {
+          "source": "運動会",
+          "parts": [
+            "運動 = exercise/sports",
+            "会 = meeting/event"
+          ],
+          "vietnamese": "hội thao"
+        }
+      ]
+    }
+  },
+  "quality_metrics": {
+    "success_criteria": [
+      "zero_cjk_characters",
+      "full_vietnamese_readability",
+      "meaning_preserved",
+      "natural_flow",
+      "proper_nouns_romanized"
+    ],
+    "failure_conditions": [
+      "any_cjk_character_present",
+      "reader_needs_japanese_knowledge",
+      "mixed_scripts",
+      "lazy_preservation_of_difficult_phrases"
+    ]
+  },
+  "production_detected_patterns": {
+    "description": "CJK leaks detected in production translations - Vol 0cb9 & becb4d",
+    "date_discovered": "2026-01-26",
+    "common_leak_patterns": {
+      "shape_descriptors": {
+        "く": {
+          "hiragana": "ku",
+          "context": "shape description (C-shape, bent over)",
+          "vietnamese": [
+            "cong như chữ C",
+            "hình chữ C",
+            "uốn cong"
+          ],
+          "leak_example": "gập người thành hình chữ \"く\"",
+          "fixed_example": "gập người cong như chữ C"
+        }
+      },
+      "education_terms": {
+        "進学": {
+          "readings": ["shingaku"],
+          "meaning": "advancing to higher education",
+          "vietnamese": [
+            "lên cấp",
+            "vào đại học",
+            "học lên"
+          ],
+          "context": "educational progression",
+          "leak_example": "việc進学",
+          "fixed_example": "việc lên cấp"
+        },
+        "合格": {
+          "readings": ["goukaku"],
+          "meaning": "pass/qualified/success",
+          "vietnamese": [
+            "đạt",
+            "đỗ",
+            "qua được"
+          ],
+          "context": "exam results, qualification",
+          "leak_example": "phán quyết合格",
+          "fixed_example": "phán quyết đạt"
+        }
+      },
+      "descriptive_terms": {
+        "様子": {
+          "readings": ["yousu"],
+          "meaning": "situation/appearance/state",
+          "vietnamese": [
+            "tình hình",
+            "vẻ",
+            "bộ dáng"
+          ],
+          "context": "observing someone's condition",
+          "leak_example": "từ様子 trong giờ",
+          "fixed_example": "từ tình hình trong giờ"
+        },
+        "凜々": {
+          "readings": ["rinrin"],
+          "meaning": "dignified/gallant/imposing",
+          "vietnamese": [
+            "nghiêm nghị",
+            "oai nghiêm",
+            "uy nghiêm"
+          ],
+          "context": "describing dignified appearance",
+          "leak_example": "vẻ mặt凜々",
+          "fixed_example": "vẻ mặt nghiêm nghị"
+        },
+        "蠱惑": {
+          "readings": ["kowaku"],
+          "meaning": "seductive/alluring/bewitching",
+          "vietnamese": [
+            "quyến rũ",
+            "mê hoặc",
+            "hấp dẫn"
+          ],
+          "context": "describing seductive appeal",
+          "leak_example": "khe ngực蠱惑",
+          "fixed_example": "khe ngực quyến rũ"
+        }
+      },
+      "particles_and_endings": {
+        "なぁ": {
+          "hiragana": "naa",
+          "function": "casual sentence ending particle",
+          "vietnamese": [
+            "nữa",
+            "nhỉ",
+            ""
+          ],
+          "context": "casual contemplation/longing",
+          "leak_example": "gì đóなぁ",
+          "fixed_example": "gì đó nữa"
+        },
+        "そ": {
+          "hiragana": "so",
+          "function": "auxiliary particle (seems/appears)",
+          "vietnamese": [
+            "hình như",
+            "có vẻ",
+            ""
+          ],
+          "context": "expressing appearance/likelihood",
+          "leak_example": "大丈夫そ",
+          "fixed_example": "ổn chứ"
+        }
+      },
+      "common_expressions": {
+        "まさか": {
+          "hiragana": "masaka",
+          "meaning": "surely not/no way/don't tell me",
+          "vietnamese": [
+            "không lẽ",
+            "chắc chắn không",
+            "không đời nào"
+          ],
+          "context": "expressing disbelief/surprise",
+          "leak_example": "lát nữaまさかsẽ",
+          "fixed_example": "lát nữa không lẽ sẽ"
+        },
+        "鈍感": {
+          "readings": ["donkan"],
+          "meaning": "oblivious/insensitive/dense",
+          "vietnamese": [
+            "vô tâm",
+            "vô cảm",
+            "đần độn"
+          ],
+          "context": "character trait - not noticing romantic feelings",
+          "leak_example": "Đồ鈍感!!",
+          "fixed_example": "Đồ vô tâm!!"
+        }
+      },
+      "mixed_language_artifacts": {
+        "mỹ少女": {
+          "pattern": "vietnamese_prefix + japanese_kanji",
+          "components": {
+            "mỹ": "Vietnamese (beautiful)",
+            "少女": "Japanese (shoujo - young girl)"
+          },
+          "vietnamese": [
+            "thiếu nữ",
+            "cô gái",
+            "thiếu nữ xinh đẹp"
+          ],
+          "context": "describing beautiful young women",
+          "leak_example": "một mỹ少女 có dung mạo",
+          "fixed_example": "một thiếu nữ có dung mạo",
+          "frequency": "very_high",
+          "notes": "Most common leak pattern in Vol becb4d (5 instances)"
+        }
+      },
+      "chinese_contamination": {
+        "倒不如": {
+          "language": "Chinese",
+          "pinyin": "dao bu ru",
+          "meaning": "might as well/would rather",
+          "vietnamese": [
+            "thà rằng",
+            "hay là",
+            "tốt hơn là"
+          ],
+          "context": "suggesting alternative approach",
+          "leak_example": "thì,倒不如──chỉ cần",
+          "fixed_example": "thì, thà rằng──chỉ cần",
+          "notes": "Chinese character in Vietnamese text - unusual"
+        },
+        "倒": {
+          "language": "Chinese",
+          "pinyin": "dao",
+          "meaning": "instead/rather/on the contrary",
+          "vietnamese": [
+            "thà",
+            "lại",
+            "ngược lại"
+          ],
+          "context": "expressing preference or contrast",
+          "leak_example": "đằng nào,倒 bằng",
+          "fixed_example": "đằng nào, thà bằng"
+        },
+        "搞": {
+          "language": "Chinese",
+          "pinyin": "gao",
+          "meaning": "do/make/engage in",
+          "vietnamese": [
+            "mà",
+            "làm",
+            ""
+          ],
+          "context": "continuation or action particle",
+          "leak_example": "Cái đó,搞 không khéo",
+          "fixed_example": "Cái đó, mà không khéo",
+          "notes": "Chinese verb in Vietnamese - suggests multi-source translation"
+        }
+      },
+      "ruby_text_artifacts": {
+        "卑怯{hèn hạ}": {
+          "kanji": "卑怯",
+          "readings": ["hikyou"],
+          "vietnamese_annotation": "hèn hạ",
+          "meaning": "cowardly/unfair/underhanded",
+          "fix": "remove kanji, keep Vietnamese only",
+          "leak_example": "Đồ卑怯{hèn hạ}…",
+          "fixed_example": "Đồ hèn hạ…",
+          "notes": "Ruby text format - kanji with Vietnamese pronunciation guide"
+        },
+        "屈辱{nhục nhã}": {
+          "kanji": "屈辱",
+          "readings": ["kutsujoku"],
+          "vietnamese_annotation": "nhục nhã",
+          "meaning": "humiliation/disgrace/shame",
+          "fix": "remove kanji, keep Vietnamese only",
+          "leak_example": "thật là屈辱{nhục nhã}",
+          "fixed_example": "thật là nhục nhã",
+          "notes": "Ruby text format indicating Japanese source material"
+        }
+      }
+    },
+    "volume_statistics": {
+      "vol_0cb9": {
+        "title": "弓道部の美人な先輩が、俺の部屋でお腹出して寝てる",
+        "total_leaks": 11,
+        "chapters_affected": 8,
+        "most_common": "mỹ少女 (but not in this volume)"
+      },
+      "vol_becb4d": {
+        "title": "自分を負けヒロインだと思い込んでいるすでに勝利済みの幼馴染",
+        "total_leaks": 12,
+        "chapters_affected": 4,
+        "most_common": "mỹ少女 (5 instances)"
+      }
+    },
+    "prevention_strategies": {
+      "pre_translation": [
+        "Flag 少女 in source for full Vietnamese conversion",
+        "Detect ruby text format {kanji}{vietnamese} and strip kanji",
+        "Identify Chinese vs Japanese characters in mixed text"
+      ],
+      "during_translation": [
+        "Convert 'mỹ少女' → 'thiếu nữ' or 'cô gái'",
+        "Replace particle combinations (e.g., 大丈夫そ → ổn chứ)",
+        "Translate all shape descriptors (く → cong như chữ C)"
+      ],
+      "post_translation": [
+        "Regex scan: [一-龯ぁ-んァ-ヶ]",
+        "Context check around detected CJK",
+        "Semantic replacement preserving Vietnamese flow"
+      ]
+    }
+  },
+  "honorific_handling": {
+    "keep_as_suffix": [
+      "-san",
+      "-kun",
+      "-chan",
+      "-sama",
+      "-sensei",
+      "-senpai",
+      "-kouhai"
+    ],
+    "translate_when_standalone": {
+      "先生": [
+        "thầy",
+        "cô",
+        "giáo viên"
+      ],
+      "様": [
+        "ngài",
+        "quý vị"
+      ],
+      "殿": [
+        "điện hạ",
+        "đại nhân"
+      ],
+      "氏": [
+        "ông",
+        "bà"
+      ]
+    }
+  },
+  "name_handling": {
+    "character_names": {
+      "format": "romaji",
+      "order": "preserve_source_order",
+      "examples": {
+        "japanese": "family_name_first (e.g., Aoyagi Akihito)",
+        "western": "given_name_first (e.g., Charlotte Bennett)"
+      }
+    },
+    "place_names": {
+      "common_places": "translate",
+      "proper_nouns": "romanize",
+      "examples": {
+        "東京": "Tokyo",
+        "学校": "trường học",
+        "図書館": "thư viện"
+      }
+    }
+  },
+  "emergency_fallbacks": {
+    "genuinely_untranslatable": [
+      {
+        "step": 1,
+        "method": "descriptive_translation",
+        "example": "桜 → hoa anh đào"
+      },
+      {
+        "step": 2,
+        "method": "romanization_with_explanation",
+        "example": "wabi-sabi → vẻ đẹp của sự giản dị và thời gian"
+      },
+      {
+        "step": 3,
+        "forbidden": "leave_raw_cjk_without_explanation"
+      }
+    ]
+  },
+  "integration_instructions": {
+    "load_priority": "high",
+    "inject_into": "system_instruction",
+    "enforcement": "mandatory",
+    "validation_stage": "pre_output",
+    "self_check_required": true
+  },
+  "metadata": {
+    "last_updated": "2026-01-26",
+    "total_patterns": 87,
+    "sources": [
+      "production_validation_0cb9_20260126",
+      "production_validation_becb4d_20260126",
+      "production_validation_0b24_20260126",
+      "manual_curation_initial_33"
+    ],
+    "recent_additions": {
+      "date": "2026-01-26",
+      "patterns_added": 32,
+      "source_volumes": [
+        "0cb9 (11 leaks)",
+        "becb4d (12 leaks)"
+      ],
+      "key_discoveries": [
+        "mỹ少女 mixed language pattern (5 instances)",
+        "Chinese character contamination (倒不如, 搞)",
+        "Ruby text artifacts with Vietnamese annotations",
+        "Shape descriptors in hiragana (く)",
+        "Particle combinations (大丈夫そ, なぁ)"
+      ]
+    }
+  }
+}

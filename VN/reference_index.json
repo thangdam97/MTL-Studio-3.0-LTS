@@ -1,0 +1,474 @@
+{
+  "version": "1.0",
+  "date": "2026-01-22",
+  "purpose": "Metadata index for Three-Tier RAG selective injection (Week 2 implementation)",
+  "total_files": 6,
+  "total_lines": 87156,
+  "tier_1_core": [
+    "VN/modules/MEGA_CORE_TRANSLATION_ENGINE_VN.md",
+    "VN/modules/ANTI_TRANSLATIONESE_MODULE_VN.md",
+    "VN/modules/MEGA_CHARACTER_VOICE_SYSTEM_VN.md",
+    "VN/kanji_difficult.json"
+  ],
+  "files": [
+    {
+      "file_name": "MEGA_REFERENCE_MODULES.md",
+      "file_path": "VN/Reference/MEGA_REFERENCE_MODULES.md",
+      "total_lines": 2137,
+      "size_kb": 68,
+      "tier": 2,
+      "purpose": "Core translation guidelines, boldness module, safety compliance",
+      "sections": [
+        {
+          "section_id": "boldness_module",
+          "section_name": "Boldness Module v1.0",
+          "line_start": 22,
+          "line_end": 819,
+          "size_lines": 798,
+          "size_kb": 25,
+          "injection_triggers": {
+            "rtas_range": [4.8, 10.0],
+            "rtas_range_alt": [0.0, 1.2],
+            "scene_types": ["peak_emotion", "vulnerability", "confession", "crisis"],
+            "always_inject": false
+          },
+          "subsections": [
+            "B-1: Sentence Shattering",
+            "B-2: Vivid Verb Replacement",
+            "B-3: Sensory Amplification",
+            "B-4: Metaphor Injection",
+            "B-5: Rhythm Control",
+            "B-6: Prohibited AI-isms"
+          ],
+          "content_type": "technique_guide"
+        },
+        {
+          "section_id": "anti_translationese_guardrails",
+          "section_name": "Anti-Translationese Guardrails",
+          "line_start": 821,
+          "line_end": 1265,
+          "size_lines": 445,
+          "size_kb": 14,
+          "injection_triggers": {
+            "always_inject": false,
+            "note": "Covered by Tier 1 ANTI_TRANSLATIONESE_MODULE_VN.md"
+          },
+          "content_type": "redundant_with_tier1"
+        },
+        {
+          "section_id": "hybrid_honorific_system",
+          "section_name": "Hybrid Honorific System",
+          "line_start": 1267,
+          "line_end": 1521,
+          "size_lines": 255,
+          "size_kb": 8,
+          "injection_triggers": {
+            "character_archetypes": ["ojou_sama", "delinquent", "samurai", "yakuza"],
+            "formality_level": [4, 5],
+            "always_inject": false
+          },
+          "content_type": "honorific_rules"
+        },
+        {
+          "section_id": "formatting_standards",
+          "section_name": "Formatting Standards",
+          "line_start": 1523,
+          "line_end": 1609,
+          "size_lines": 87,
+          "size_kb": 3,
+          "injection_triggers": {
+            "always_inject": true,
+            "note": "Should be moved to Tier 1 (small size, universal application)"
+          },
+          "content_type": "formatting_rules"
+        },
+        {
+          "section_id": "safety_compliance_matrix",
+          "section_name": "Safety Compliance Matrix",
+          "line_start": 1611,
+          "line_end": 1738,
+          "size_lines": 128,
+          "size_kb": 4,
+          "injection_triggers": {
+            "content_flags": ["sexual", "violence", "age_sensitive"],
+            "rtas_range": [4.5, 10.0],
+            "always_inject": true,
+            "note": "Critical for content policy compliance"
+          },
+          "content_type": "safety_protocol"
+        },
+        {
+          "section_id": "ruby_text_parsing_icl",
+          "section_name": "Ruby Text Parsing ICL",
+          "line_start": 1740,
+          "line_end": 2137,
+          "size_lines": 398,
+          "size_kb": 12,
+          "injection_triggers": {
+            "chapter_has_ruby": true,
+            "kanji_density": 0.3,
+            "always_inject": false
+          },
+          "content_type": "icl_examples"
+        }
+      ]
+    },
+    {
+      "file_name": "Library_LOCALIZATION_PRIMER_VN.md",
+      "file_path": "VN/Reference/Library_LOCALIZATION_PRIMER_VN.md",
+      "total_lines": 652,
+      "size_kb": 21,
+      "tier": 2,
+      "purpose": "Archetype profiles, voice system extensions",
+      "sections": [
+        {
+          "section_id": "archetype_profiles",
+          "section_name": "Archetype Profiles",
+          "line_start": 1,
+          "line_end": 652,
+          "size_lines": 652,
+          "size_kb": 21,
+          "injection_triggers": {
+            "character_archetypes": [
+              "ojou_sama",
+              "gyaru",
+              "delinquent",
+              "kansai_ben",
+              "samurai",
+              "chuunibyou",
+              "country_bumpkin",
+              "kyoto_ben",
+              "onee_san",
+              "boku_kko",
+              "loli_baba",
+              "kuudere",
+              "mascot",
+              "okinawan",
+              "yakuza"
+            ],
+            "always_inject": false,
+            "note": "Load specific archetypes based on character roster"
+          },
+          "content_type": "archetype_reference",
+          "archetypes_count": 15
+        }
+      ]
+    },
+    {
+      "file_name": "Library_REFERENCE_ICL_SAMPLES.md",
+      "file_path": "VN/Reference/Library_REFERENCE_ICL_SAMPLES.md",
+      "total_lines": 3777,
+      "size_kb": 120,
+      "tier": 3,
+      "purpose": "Golden translation examples, critique-based learning",
+      "sections": [
+        {
+          "section_id": "golden_samples",
+          "section_name": "Golden Samples (S-Tier Examples)",
+          "line_start": 1,
+          "line_end": 2100,
+          "size_lines": 2100,
+          "size_kb": 67,
+          "injection_triggers": {
+            "on_demand_only": true,
+            "retrieval_query_types": [
+              "pronoun_handling",
+              "tsundere_voice",
+              "honorific_examples",
+              "rhythm_patterns"
+            ],
+            "max_samples_per_query": 5
+          },
+          "content_type": "icl_golden_examples"
+        },
+        {
+          "section_id": "real_world_critique_icl",
+          "section_name": "Real-World Critique ICL",
+          "line_start": 2101,
+          "line_end": 3200,
+          "size_lines": 1100,
+          "size_kb": 35,
+          "injection_triggers": {
+            "on_demand_only": true,
+            "retrieval_query_types": [
+              "common_mistakes",
+              "translation_pitfalls",
+              "improvement_examples"
+            ],
+            "max_samples_per_query": 3
+          },
+          "content_type": "icl_critique_examples"
+        },
+        {
+          "section_id": "idiom_translation_icl",
+          "section_name": "Idiom Translation ICL",
+          "line_start": 3201,
+          "line_end": 3600,
+          "size_lines": 400,
+          "size_kb": 13,
+          "injection_triggers": {
+            "idiom_detected": true,
+            "on_demand_only": true,
+            "max_samples_per_query": 5
+          },
+          "content_type": "icl_idiom_examples"
+        },
+        {
+          "section_id": "mattaku_protocol",
+          "section_name": "Mattaku Protocol: Reactive Phrase Remapping",
+          "line_start": 3601,
+          "line_end": 3777,
+          "size_lines": 177,
+          "size_kb": 6,
+          "injection_triggers": {
+            "reactive_phrases_detected": true,
+            "genre": ["romcom", "slice_of_life"],
+            "always_inject": false
+          },
+          "content_type": "reactive_phrase_rules"
+        }
+      ]
+    },
+    {
+      "file_name": "MEGA_VOCABULARY_DATABASE.md",
+      "file_path": "VN/Reference/MEGA_VOCABULARY_DATABASE.md",
+      "total_lines": 3670,
+      "size_kb": 117,
+      "tier": 2,
+      "purpose": "Pronoun system, visual proxemics, genre vocabulary, sensory lexicon",
+      "sections": [
+        {
+          "section_id": "vietnamese_pronoun_system",
+          "section_name": "Vietnamese Pronoun System",
+          "line_start": 1,
+          "line_end": 800,
+          "size_lines": 800,
+          "size_kb": 25,
+          "injection_triggers": {
+            "always_inject": false,
+            "note": "Core pronoun rules in Tier 1 MEGA_CORE_TRANSLATION_ENGINE_VN.md, this is extended reference"
+          },
+          "content_type": "pronoun_reference"
+        },
+        {
+          "section_id": "visual_proxemics_quick_reference",
+          "section_name": "Visual Proxemics Quick Reference",
+          "line_start": 801,
+          "line_end": 1200,
+          "size_lines": 400,
+          "size_kb": 13,
+          "injection_triggers": {
+            "rtas_range": [4.5, 10.0],
+            "scene_types": ["physical_intimacy", "emotional_closeness"],
+            "always_inject": false
+          },
+          "content_type": "proxemics_guide"
+        },
+        {
+          "section_id": "genre_specific_vocabulary",
+          "section_name": "Genre-Specific Vocabulary Mapping",
+          "line_start": 1201,
+          "line_end": 2000,
+          "size_lines": 800,
+          "size_kb": 25,
+          "injection_triggers": {
+            "genre": ["romcom", "comedy", "action", "fantasy", "slice_of_life"],
+            "always_inject": false,
+            "note": "Load specific genre vocabulary based on novel metadata"
+          },
+          "content_type": "genre_vocabulary"
+        },
+        {
+          "section_id": "vietnamese_expression_mapping",
+          "section_name": "Vietnamese Expression Mapping",
+          "line_start": 2001,
+          "line_end": 2500,
+          "size_lines": 500,
+          "size_kb": 16,
+          "injection_triggers": {
+            "idiom_detected": true,
+            "expression_mapping_needed": true,
+            "always_inject": false
+          },
+          "content_type": "expression_mapping"
+        },
+        {
+          "section_id": "sensory_lexicon",
+          "section_name": "Sensory Lexicon",
+          "line_start": 2501,
+          "line_end": 3200,
+          "size_lines": 700,
+          "size_kb": 22,
+          "injection_triggers": {
+            "rtas_range": [4.5, 10.0],
+            "boldness_active": true,
+            "scene_types": ["sensory_heavy", "emotional_peak"],
+            "always_inject": false
+          },
+          "content_type": "sensory_vocabulary"
+        },
+        {
+          "section_id": "long_vowel_romanization",
+          "section_name": "Long Vowel Romanization",
+          "line_start": 3201,
+          "line_end": 3400,
+          "size_lines": 200,
+          "size_kb": 6,
+          "injection_triggers": {
+            "japanese_names_present": true,
+            "always_inject": true,
+            "note": "Small size, high impact for name consistency"
+          },
+          "content_type": "romanization_rules"
+        },
+        {
+          "section_id": "trailing_sounds_protocol",
+          "section_name": "Trailing Sounds Protocol",
+          "line_start": 3401,
+          "line_end": 3500,
+          "size_lines": 100,
+          "size_kb": 3,
+          "injection_triggers": {
+            "dialogue_heavy_chapter": true,
+            "trailing_sounds_detected": true,
+            "always_inject": false
+          },
+          "content_type": "dialogue_formatting"
+        },
+        {
+          "section_id": "narrative_pronoun_override",
+          "section_name": "Narrative Pronoun Override",
+          "line_start": 3501,
+          "line_end": 3600,
+          "size_lines": 100,
+          "size_kb": 3,
+          "injection_triggers": {
+            "pov_shifts_detected": true,
+            "always_inject": false
+          },
+          "content_type": "pronoun_override_rules"
+        },
+        {
+          "section_id": "media_reference_preservation",
+          "section_name": "Media Reference Preservation",
+          "line_start": 3601,
+          "line_end": 3670,
+          "size_lines": 70,
+          "size_kb": 2,
+          "injection_triggers": {
+            "media_references_detected": true,
+            "always_inject": false
+          },
+          "content_type": "media_reference_rules"
+        }
+      ]
+    },
+    {
+      "file_name": "Ref_ONOMATOPOEIA_PROTOCOL_v1.0.md",
+      "file_path": "VN/Reference/Ref_ONOMATOPOEIA_PROTOCOL_v1.0.md",
+      "total_lines": 743,
+      "size_kb": 24,
+      "tier": 2,
+      "purpose": "Onomatopoeia transcreation rules with 236-entry glossary",
+      "sections": [
+        {
+          "section_id": "onomatopoeia_protocol",
+          "section_name": "Onomatopoeia Transcreation Protocol",
+          "line_start": 1,
+          "line_end": 743,
+          "size_lines": 743,
+          "size_kb": 24,
+          "injection_triggers": {
+            "sfx_detected": true,
+            "genre": ["action", "slice_of_life", "romcom"],
+            "dialogue_heavy": true,
+            "always_inject": false,
+            "note": "Load when chapter has significant SFX presence"
+          },
+          "content_type": "sfx_glossary",
+          "glossary_entries": 236,
+          "categories": [
+            "Movement & Gesture (65 entries)",
+            "Sound (72 entries)",
+            "State/Emotion (88 entries)",
+            "Environment (11 entries)"
+          ]
+        }
+      ]
+    },
+    {
+      "file_name": "Library_UNIFIED_KANJI_DATABASE.md",
+      "file_path": "VN/Reference/Library_UNIFIED_KANJI_DATABASE.md",
+      "total_lines": 76177,
+      "size_kb": 2400,
+      "tier": 3,
+      "purpose": "Full 12K kanji mappings (Han-Viet equivalents)",
+      "sections": [
+        {
+          "section_id": "common_kanji_high_frequency",
+          "section_name": "Common Kanji (High Frequency)",
+          "line_start": 1,
+          "line_end": 5000,
+          "size_lines": 5000,
+          "size_kb": 157,
+          "injection_triggers": {
+            "on_demand_only": true,
+            "note": "Trust Gemini's built-in kanji knowledge for common characters"
+          },
+          "content_type": "kanji_common"
+        },
+        {
+          "section_id": "uncommon_kanji_full_database",
+          "section_name": "Uncommon Kanji (Full Database)",
+          "line_start": 5001,
+          "line_end": 76177,
+          "size_lines": 71177,
+          "size_kb": 2243,
+          "injection_triggers": {
+            "external_service_only": true,
+            "note": "Use SQLite lookup service for uncommon kanji (Week 3 implementation)"
+          },
+          "content_type": "kanji_uncommon_full"
+        }
+      ],
+      "extraction_note": "Task 1.4 will curate 100-200 difficult kanji for VN/kanji_difficult.json (Tier 1 injection)"
+    }
+  ],
+  "tier_2_injection_strategy": {
+    "description": "Context-aware selective loading based on chapter metadata",
+    "target_size_per_chapter": "20-35KB",
+    "decision_factors": [
+      "RTAS range (emotion intensity)",
+      "Genre (romcom, action, slice_of_life, fantasy)",
+      "Character archetypes present in chapter",
+      "Scene types (confession, crisis, physical_intimacy)",
+      "Content flags (SFX, idioms, ruby text)",
+      "Formality level requirements"
+    ],
+    "implementation_week": 2
+  },
+  "tier_3_retrieval_strategy": {
+    "description": "On-demand snippet retrieval for specific translation challenges",
+    "target_size_per_query": "~15KB",
+    "retrieval_triggers": [
+      "Unknown kanji encountered",
+      "Idiom/expression lookup needed",
+      "Golden sample reference for difficult passage",
+      "Critique example for error pattern"
+    ],
+    "implementation_week": 3
+  },
+  "size_summary": {
+    "tier_1_target": "~60KB (always inject)",
+    "tier_2_per_chapter": "20-35KB (context-aware)",
+    "tier_3_on_demand": "~15KB (retrieval)",
+    "total_max_per_chapter": "~110KB",
+    "full_reference_library": "2900KB (87K lines)"
+  },
+  "notes": [
+    "Formatting Standards (3KB) should be moved from Tier 2 to Tier 1 (always inject, universal)",
+    "Long Vowel Romanization (6KB) should be moved from Tier 2 to Tier 1 (always inject, name consistency)",
+    "Safety Compliance Matrix (4KB) should be moved from Tier 2 to Tier 1 (always inject, policy critical)",
+    "Kanji difficult.json will be created in Task 1.6 after curation in Tasks 1.4-1.5"
+  ]
+}

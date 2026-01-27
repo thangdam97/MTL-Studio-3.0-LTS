@@ -1,0 +1,388 @@
+{
+  "style_guide_version": "1.0",
+  "target_language": "Vietnamese (Fantasy Register)",
+  "genre": "European Fantasy Aristocratic Romance",
+  "created_at": "2026-01-26",
+  
+  "naming_conventions": {
+    "description": "Use proper English names instead of romanized Japanese names to maintain European fantasy aesthetic",
+    "rationale": "Romanized names (e.g., 'Aaru Kuroobaa') break immersion in European aristocratic fantasy settings. Proper English names (e.g., 'Earl Clover') maintain genre conventions.",
+    "examples": {
+      "protagonist": {
+        "incorrect": "Aaru Kuroobaa",
+        "correct": "Earl Clover"
+      },
+      "family_names": {
+        "incorrect": "Kuroobaa, Hyasinsu, Masukatto",
+        "correct": "Clover, Hyacinth, Muscat"
+      },
+      "character_names": {
+        "incorrect": "Aran, Ruushii, Rarufu, Arufonsu, Bareria",
+        "correct": "Alan, Lucy, Ralph, Alphonse, Valeria"
+      }
+    },
+    "implementation": "Always reference character_roster in manifest.json for canonical English names"
+  },
+
+  "honorifics_system": {
+    "description": "Replace Japanese honorifics with Fantasy Vietnamese equivalents appropriate to aristocratic hierarchy",
+    "rationale": "Japanese honorifics (-san, -sama, -kun, -chan) break immersion in European fantasy. Vietnamese has rich formal/informal registers suitable for aristocratic settings.",
+    
+    "conversions": {
+      "-sama": {
+        "vietnamese": "tiểu thư / quý tộc / ngài",
+        "usage": "For nobility, especially ladies of high rank",
+        "context": "Formal address showing respect to aristocrats",
+        "examples": [
+          "Lena-sama → tiểu thư Lena (noble lady)",
+          "Điện hạ-sama → Điện hạ (royalty - already Vietnamese)"
+        ]
+      },
+      "-san": {
+        "vietnamese": "[remove - use name directly]",
+        "usage": "Peer-to-peer polite address",
+        "context": "Between nobles of similar rank or acquaintances",
+        "examples": [
+          "Lena-san → Lena",
+          "Valeria-san → Valeria",
+          "Marie-san → Marie"
+        ]
+      },
+      "-kun": {
+        "vietnamese": "[remove - use name directly or add 'thiếu gia' for young masters]",
+        "usage": "Familiar address for young men",
+        "context": "From superiors to male juniors or between male friends",
+        "examples": [
+          "Ralph-kun → Ralph",
+          "Earl-kun → thiếu gia Earl (young master, if from servants)"
+        ]
+      },
+      "-chan": {
+        "vietnamese": "[remove - use name directly]",
+        "usage": "Endearing address for young women/children",
+        "context": "Intimate or familiar relationships",
+        "examples": [
+          "Marie-chan → Marie"
+        ]
+      },
+      "-dono": {
+        "vietnamese": "quý ngài / ngài",
+        "usage": "Respectful address for warriors/knights",
+        "context": "Military or formal knight-to-knight address",
+        "examples": [
+          "Earl-dono → ngài Earl (knight/warrior context)"
+        ]
+      }
+    },
+
+    "special_titles": {
+      "Điện hạ": "Your Highness/Majesty (for royalty) - KEEP AS IS",
+      "tiểu thư": "Young lady/Miss (for noble unmarried women)",
+      "quý tộc": "Noble/Nobleman (general nobility)",
+      "ngài": "Lord/Sir (for male nobility or high-ranking individuals)",
+      "thiếu gia": "Young master (for noble young men, from servants)",
+      "đại nhân": "Your Excellency (for high-ranking officials)"
+    }
+  },
+
+  "sino_vietnamese_policy": {
+    "threshold": "40%",
+    "description": "Maximum 40% Sino-Vietnamese vocabulary to maintain European aristocratic fantasy aesthetic",
+    "rationale": "Excessive Sino-Vietnamese creates Wuxia/martial arts aesthetic. European fantasy requires Western-origin terminology.",
+    
+    "prioritize_pure_vietnamese": [
+      "Botanical family names (Clover, Hyacinth, Muscat, Marigold, Iris, Protea)",
+      "European noble titles (Count, Marquis, Duke, Baron, Viscount)",
+      "Western cultural concepts (academy, aristocracy, engagement, social season)",
+      "European geography (borders, territories, kingdoms, empires)"
+    ],
+    
+    "acceptable_sino_vietnamese": [
+      "Abstract concepts (loyalty, honor, dignity)",
+      "Administrative terms (territory, governance, decree)",
+      "Generic titles when no pure Vietnamese equivalent exists"
+    ],
+    
+    "avoid_sino_vietnamese": [
+      "Character names (use English botanical/Western names)",
+      "Noble titles (use European equivalents)",
+      "Military ranks (use Western military terms)",
+      "Martial arts terminology (this is European fantasy, not Wuxia)"
+    ],
+
+    "examples": {
+      "good": {
+        "names": "Earl Clover, Lena Hyacinth, Alphonse King Protea",
+        "titles": "Bá tước (Count), Hầu tước (Marquis), Công tước (Duke)",
+        "locations": "Vương quốc Thánh Protea, Lãnh địa Clover"
+      },
+      "bad": {
+        "names": "Aaru Kuroobaa, Reena Hyasinsu (romanized Japanese)",
+        "titles": "Overuse of 武侯/武士 (Wuxia aesthetics)",
+        "locations": "Excessive 宗門/門派 terminology"
+      }
+    }
+  },
+
+  "pronoun_progression": {
+    "description": "Track relationship development through Vietnamese pronoun shifts from formal to intimate",
+    "rationale": "Vietnamese has rich pronoun systems that naturally express relationship intimacy. Track progression to guide translators.",
+    
+    "stages": {
+      "formal_strangers": {
+        "pronouns": "tôi/cô (I/you - formal distant)",
+        "usage": "Initial meetings, strangers, formal situations",
+        "honorifics": "Use full titles (tiểu thư Lena, ngài Earl)"
+      },
+      "polite_acquaintances": {
+        "pronouns": "tôi/cô (I/you - polite)",
+        "usage": "Acquaintances, colleagues, polite relationships",
+        "honorifics": "Can drop titles in casual contexts"
+      },
+      "casual_friends": {
+        "pronouns": "tôi/cậu or mình/cậu (I/you - casual)",
+        "usage": "Friends, peers of similar age/rank",
+        "honorifics": "Use names directly, no titles"
+      },
+      "intimate_romantic": {
+        "pronouns": "em/anh (I/you - intimate romantic)",
+        "usage": "Romantic partners, betrothed couples, married",
+        "honorifics": "Names only, no titles in private"
+      }
+    },
+
+    "tracking_method": "Use pronouns_progress array in character metadata to document relationship milestones",
+    
+    "example_progression": {
+      "character": "Lena Hyacinth",
+      "progression": [
+        {
+          "chapter": "chapter_02",
+          "scene": "Arrival at Clover territory",
+          "before": "cô Lena / tôi (formal stranger)",
+          "after": "Lena / em-anh (casual intimate)",
+          "trigger": "Earl asks her to drop honorifics after ~1 week",
+          "line_reference": "~1250"
+        }
+      ]
+    }
+  },
+
+  "vocabulary_preferences": {
+    "european_fantasy_aesthetic": {
+      "nobility_titles": {
+        "emperor": "Hoàng đế",
+        "king": "Quốc vương",
+        "crown_prince": "Thái tử",
+        "prince": "Hoàng tử",
+        "princess": "Công chúa",
+        "duke": "Công tước",
+        "marquis": "Hầu tước",
+        "count": "Bá tước",
+        "viscount": "Tử tước",
+        "baron": "Nam tước",
+        "margrave": "Biên cảnh Bá tước",
+        "knight": "Kỵ sĩ"
+      },
+      
+      "social_terms": {
+        "engagement": "hôn ước",
+        "betrothed": "hôn thê",
+        "fiance": "vị hôn phu",
+        "fiancee": "hôn thê",
+        "annulment": "hủy hôn",
+        "exile": "lưu đày / trục xuất",
+        "social_season": "mùa xã giao",
+        "debutante": "thiếu nữ ra mắt xã hội",
+        "aristocracy": "tầng lớp quý tộc",
+        "peerage": "thế hệ quý tộc"
+      },
+      
+      "locations": {
+        "kingdom": "Vương quốc",
+        "holy_kingdom": "Thánh Vương quốc",
+        "territory": "lãnh địa",
+        "domain": "lãnh thổ",
+        "border": "biên giới",
+        "frontier": "biên cảnh",
+        "capital": "thủ đô",
+        "castle": "lâu đài",
+        "manor": "trang viên",
+        "estate": "điền trang"
+      },
+      
+      "institutions": {
+        "noble_academy": "Học viện Quý tộc",
+        "royal_court": "triều đình",
+        "parliament": "nghị viện",
+        "royal_faction": "phe hoàng gia",
+        "noble_faction": "phe quý tộc"
+      }
+    }
+  },
+
+  "character_description_style": {
+    "emphasis": "European beauty standards and fantasy aesthetics",
+    "avoid": "Anime/manga descriptors common in Japanese light novels",
+    
+    "examples": {
+      "good": [
+        "mái tóc vàng buộc nửa đầu (half-up golden hair)",
+        "đôi mắt tím như thạch anh tím (violet eyes like amethyst)",
+        "tóc bạc dài đến lưng (waist-length silver hair)",
+        "mỹ nam với nét đẹp bishonen (handsome with bishonen features)"
+      ],
+      "acceptable_but_clarify": [
+        "bishonen → clarify as 'mỹ nam Âu châu' (European handsome man)",
+        "ojou-sama → translate as 'tiểu thư quý tộc' (noble lady)"
+      ],
+      "avoid": [
+        "tsundere, yandere (untranslatable anime character archetypes)",
+        "kawaii → use 'dễ thương' (cute)",
+        "ikemen → use 'mỹ nam' (handsome man)"
+      ]
+    }
+  },
+
+  "narrative_voice": {
+    "register": "Informal first-person with literary embellishments for fantasy atmosphere",
+    "protagonist_voice": "Modern reincarnated otaku in fantasy world - blend casual modern thinking with respect for fantasy setting",
+    
+    "style_notes": [
+      "Maintain protagonist's inner monologue informality (colloquial Vietnamese)",
+      "Use elevated register for noble dialogue and formal scenes",
+      "Fantasy world-building terms should feel natural in Vietnamese",
+      "Avoid excessive formality that creates distance from reader"
+    ]
+  },
+
+  "translation_workflow": {
+    "step_1_character_names": {
+      "action": "Convert all romanized names to English names",
+      "reference": "character_roster in manifest.json",
+      "tool": "Search and replace with character roster lookup"
+    },
+    
+    "step_2_honorifics": {
+      "action": "Replace Japanese honorifics with Vietnamese fantasy equivalents",
+      "reference": "honorifics_system in this style guide",
+      "tool": "Pattern matching and context-aware replacement"
+    },
+    
+    "step_3_sino_vocabulary": {
+      "action": "Review Sino-Vietnamese ratio and adjust if exceeds 40%",
+      "reference": "sino_vietnamese_policy in this style guide",
+      "tool": "Vocabulary analysis and substitution"
+    },
+    
+    "step_4_pronoun_tracking": {
+      "action": "Verify pronoun usage matches relationship progression",
+      "reference": "pronouns_progress in character metadata",
+      "tool": "Context analysis with character relationship state"
+    },
+    
+    "step_5_consistency_check": {
+      "action": "Verify terminology consistency across chapters",
+      "reference": "vocabulary_preferences in this style guide",
+      "tool": "Glossary verification"
+    }
+  },
+
+  "quality_assurance": {
+    "immersion_checklist": [
+      "✓ No romanized Japanese names remain",
+      "✓ No Japanese honorifics remain (-san, -sama, -kun, -chan)",
+      "✓ Sino-Vietnamese vocabulary ≤ 40%",
+      "✓ European fantasy aesthetic maintained",
+      "✓ Pronoun usage matches relationship stage",
+      "✓ Noble titles use European equivalents",
+      "✓ Character descriptions avoid anime descriptors"
+    ],
+    
+    "red_flags": [
+      "⚠ Romanized name spotted (e.g., Aaru, Kuroobaa)",
+      "⚠ Japanese honorific spotted (e.g., -san, -sama)",
+      "⚠ Wuxia terminology (e.g., 宗門, 武林)",
+      "⚠ Excessive Sino-Vietnamese (>40% in passage)",
+      "⚠ Pronoun inconsistency (formal after established intimacy)",
+      "⚠ Anime descriptor not adapted (tsundere, kawaii raw)"
+    ]
+  },
+
+  "special_cases": {
+    "villainess_terminology": {
+      "note": "This is a 'villainess' genre story - antagonist female character who may be redeemed",
+      "japanese": "悪役令嬢 (akuyaku reijou)",
+      "vietnamese": "nữ phản diện / tiểu thư phản diện",
+      "context": "Protagonist is a fan of villainess characters, not a villain himself"
+    },
+    
+    "isekai_reincarnation": {
+      "note": "Protagonist retains memories from modern Japan but lives in European fantasy world",
+      "terminology": {
+        "reincarnation": "chuyển sinh / tái sinh",
+        "past_life": "kiếp trước",
+        "memories": "ký ức kiếp trước",
+        "modern_knowledge": "kiến thức hiện đại"
+      },
+      "voice": "Allow occasional modern references in internal monologue to show reincarnated nature"
+    },
+    
+    "otome_game_elements": {
+      "note": "Story references otome game tropes (dating sims for female players)",
+      "terminology": {
+        "otome_game": "game otome (keep as is - cultural reference)",
+        "heroine": "nữ chính",
+        "villainess": "nữ phản diện",
+        "capture_target": "mục tiêu công lược",
+        "route": "tuyến đường (route)",
+        "event": "sự kiện"
+      }
+    }
+  },
+
+  "metadata_integration": {
+    "character_roster": {
+      "location": "manifest.json > character_roster[]",
+      "fields_to_use": [
+        "en_name (canonical name for translation)",
+        "ja_name (original for reference only)",
+        "vn_description (Vietnamese character summary)",
+        "pronouns_vn (Vietnamese pronoun guidance)",
+        "pronouns_progress (relationship development tracking)"
+      ]
+    },
+    
+    "translation_notes": {
+      "location": "manifest.json > translation_notes",
+      "use_for": [
+        "Sino threshold reminders",
+        "Genre-specific terminology guidance",
+        "Cultural adaptation notes"
+      ]
+    }
+  },
+
+  "implementation_notes": {
+    "for_human_translators": [
+      "Reference this style guide before starting each chapter",
+      "Check character_roster for all character name spellings",
+      "Track pronoun shifts using pronouns_progress metadata",
+      "Maintain 40% Sino-Vietnamese maximum for European fantasy feel"
+    ],
+    
+    "for_ai_translators": [
+      "Load character_roster into context before translation",
+      "Apply honorifics conversion rules systematically",
+      "Verify Sino-Vietnamese ratio in post-processing",
+      "Flag inconsistencies for human review"
+    ],
+    
+    "for_pipeline_integration": [
+      "Validate names against character_roster in QC phase",
+      "Auto-detect remaining Japanese honorifics as errors",
+      "Calculate Sino-Vietnamese ratio per chapter",
+      "Track pronoun usage consistency across chapters"
+    ]
+  }
+}

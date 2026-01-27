@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Irregular Names Module - System Prompt Extension
+
+  This module provides guidance for handling irregular Japanese naming patterns
+  commonly found in light novels. Include this in Phase 1.5 translation prompts
+  when the name extractor detects kira-kira names or unusual readings.
+
+  Usage: Inject relevant sections based on detected patterns in the EPUB.
+-->
+
+<irregular-names-module version="1.0">
+
+  <!-- Core instruction for the translator -->
+  <core-instruction>
+    <![CDATA[
+## IRREGULAR NAME HANDLING
+
+This text contains character names with non-standard readings or patterns.
+Pay special attention to preserve the author's naming intentions.
+    ]]>
+  </core-instruction>
+
+  <!-- Kira-Kira Names Section -->
+  <kirakira-names-guidance>
+    <description>
+      Kira-kira names (キラキラネーム) are modern Japanese names where the kanji
+      has an unexpected, often Western-influenced reading. The kanji is chosen
+      for meaning while the reading is chosen for sound/style.
+    </description>
+
+    <instruction>
+      <![CDATA[
+### Kira-Kira Name Pattern Detected
+
+One or more characters have "kira-kira" names where the kanji reading
+differs dramatically from standard readings:
+
+{KIRAKIRA_NAMES_LIST}
+
+**Translation Guidelines:**
+1. Use the KATAKANA reading as the romanized name (not the kanji reading)
+   - Example: 愛梨{ラブリ} → "Raburi" or "Lovely" (NOT "Airi")
+
+2. Consider whether to:
+   - Keep the exotic reading: "Raburi" (preserves Japanese flavor)
+   - Translate the meaning: "Lovely" (if the name's meaning is plot-relevant)
+   - Use a hybrid: "Lovely (Raburi)" on first introduction
+
+3. If the text explicitly comments on the unusual name (e.g., calling it a
+   "kira-kira name"), this is intentional characterization - preserve the
+   strangeness in your translation.
+
+4. Maintain consistency throughout - once you choose a romanization, use it
+   for all subsequent occurrences.
+      ]]>
+    </instruction>
+
+    <examples>
+      <example type="kirakira">
+        <japanese>愛梨{ラブリ}ちゃんに言いつけるぞ！</japanese>
+        <context>Character has an intentionally unusual "kira-kira" name that other characters comment on</context>
+        <translation-a>I'll tell Raburi-chan on you!</translation-a>
+        <translation-b>I'll tell Lovely on you!</translation-b>
+        <note>Either works; choose based on tone. "Raburi" preserves foreignness.</note>
+      </example>
+
+      <example type="kirakira-commented">
+        <japanese>ラブリなんていうキラキラネームで女番長やってたり</japanese>
+        <context>Narrator explicitly calls out the name as unusual</context>
+        <translation>Having a flashy name like "Lovely" and being a girl gang leader...</translation>
+        <note>Translate "キラキラネーム" as "flashy name" or "trendy name" to preserve the commentary</note>
+      </example>
+    </examples>
+  </kirakira-names-guidance>
+
+  <!-- Unusual Readings Section -->
+  <unusual-readings-guidance>
+    <description>
+      Some names use standard kanji but with archaic, regional, or deliberately
+      unusual readings. This often reflects character traits or background.
+    </description>
+
+    <instruction>
+      <![CDATA[
+### Unusual Name Reading Detected
+
+One or more character names have non-standard readings:
+
+{UNUSUAL_READINGS_LIST}
+
+**Translation Guidelines:**
+1. The reading (furigana) is the ACTUAL pronunciation - use it for romanization
+   - Example: 草鹿{くさじし} → "Kusajishi" (NOT "Kusaka" which is the common reading)
+
+2. If the unusual reading reflects character traits:
+   - Archaic readings → character may be old-fashioned or formal
+   - Regional readings → character may be from a specific area
+   - This is intentional characterization by the author
+
+3. Do NOT "correct" the reading to a more common one - the author chose
+   this reading deliberately.
+
+4. If other characters comment on the unusual reading, translate that
+   commentary to preserve the narrative beat.
+      ]]>
+    </instruction>
+
+    <examples>
+      <example type="archaic-reading">
+        <japanese>私お付きのメイドの草鹿{くさじし}伊緒へ</japanese>
+        <context>Maid character with old-fashioned personality</context>
+        <translation>...to my personal maid, Kusajishi Io</translation>
+        <note>草鹿 is normally read "Kusaka" but here it's "Kusajishi" - an archaic reading fitting her character</note>
+      </example>
+    </examples>
+  </unusual-readings-guidance>
+
+  <!-- Fragmented Names Section -->
+  <fragmented-names-guidance>
+    <description>
+      Japanese light novels often introduce character names piecemeal:
+      - First appearance: full name with furigana
+      - Subsequent uses: given name only, or surname only
+      - Different POVs may use different name portions
+    </description>
+
+    <instruction>
+      <![CDATA[
+### Fragmented Name Pattern
+
+Character names may appear in fragments across different POVs:
+
+{FRAGMENTED_NAMES_LIST}
+
+**Translation Guidelines:**
+1. Track which name portion is used in each POV:
+   - MC POV: May use surname (草鹿さん = "Kusajishi-san")
+   - Close friend POV: May use given name (伊緒 = "Io")
+
+2. Preserve the intimacy/distance implied by name choice:
+   - Full name → formal/first meeting
+   - Surname + honorific → professional/respectful
+   - Given name → close relationship
+   - Given name + chan/kun → affectionate
+
+3. When assembling the full name from fragments, use the readings provided
+   in the ruby annotations, not assumed readings.
+      ]]>
+    </instruction>
+  </fragmented-names-guidance>
+
+  <!-- First-Person Introduction Pattern -->
+  <first-person-intro-guidance>
+    <description>
+      Light novels often introduce the protagonist via first-person narration:
+      "俺、[NAME]は..." or "私、[NAME]16歳は..."
+    </description>
+
+    <instruction>
+      <![CDATA[
+### First-Person Introduction Pattern
+
+The protagonist introduces themselves directly in narration:
+
+{PROTAGONIST_INTRO}
+
+**Translation Guidelines:**
+1. Preserve the casual, direct tone of self-introduction:
+   - 俺、九条才斗16歳は → "I, Kujo Saito, sixteen years old..."
+   - NOT: "My name is Kujo Saito and I am sixteen..."
+
+2. The age mention is stylistic - keep it in the same sentence flow.
+
+3. This pattern signals a first-person narrative voice - maintain throughout.
+      ]]>
+    </instruction>
+  </first-person-intro-guidance>
+
+  <!-- Name + Honorific Combinations -->
+  <honorifics-guidance>
+    <description>
+      Character name usage patterns reveal relationships.
+    </description>
+
+    <instruction>
+      <![CDATA[
+### Character Relationship Indicators via Names
+
+Pay attention to how characters address each other:
+
+| Pattern | Meaning | Example |
+|---------|---------|---------|
+| [Surname]さん | Polite/professional | 草鹿さん → Kusajishi-san |
+| [Surname]先輩 | Senior at school/work | 佐藤先輩 → Sato-senpai |
+| [Given name]ちゃん | Affectionate (usually to girls) | 凛奈ちゃん → Rinna-chan |
+| [Given name]くん | Friendly (usually to boys) | 才斗君 → Saito-kun |
+| [Name]様 | Deep respect/worship | 玲様 → Rei-sama |
+| [Given name] only | Very close/intimate | 伊緒 → Io |
+
+**Translation Choice:**
+- Keep honorifics: "-san", "-chan", "-kun", "-sama", "-senpai"
+- OR translate relationship: "Miss Kusajishi", "dear Rinna", "Lord Rei"
+- Be consistent within the work
+      ]]>
+    </instruction>
+  </honorifics-guidance>
+
+</irregular-names-module>

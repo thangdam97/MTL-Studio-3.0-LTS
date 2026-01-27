@@ -1,0 +1,942 @@
+"""
+Metadata Processor Agent (Phase 1.5)
+===================================
+
+Handles translation of book metadata ONLY:
+- Title (title_en)
+- Author (author_en)
+- Illustrator (illustrator_en)
+- Publisher (publisher_en)
+- Chapter titles (chapters[].title_en)
+- Character names (character_names mapping)
+
+IMPORTANT: This agent PRESERVES the v3 enhanced schema created by Librarian.
+It only updates the translation fields without touching:
+- character_profiles
+- localization_notes
+- keigo_switch configurations
+- schema_version
+
+Supports multi-language configuration (EN, VN, etc.)
+"""
+
+import json
+import logging
+import argparse
+import sys
+import datetime
+from pathlib import Path
+from typing import Dict, List, Optional, Any
+from pipeline.common.gemini_client import GeminiClient
+from pipeline.config import (
+    get_config_section, PROMPTS_DIR, get_target_language, get_language_config
+)
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="[%(levelname)s] %(asctime)s - %(name)s - %(message)s",
+    handlers=[logging.StreamHandler(sys.stdout)]
+)
+logger = logging.getLogger("MetadataProcessor")
+
+
+# Japanese to Arabic number mapping
+JAPANESE_NUMBERS = {
+    '一': '1', '二': '2', '三': '3', '四': '4', '五': '5',
+    '六': '6', '七': '7', '八': '8', '九': '9', '十': '10'
+}
+
+# Vietnamese number word mapping
+VIETNAMESE_NUMBERS = {
+    'Một': '1', 'Hai': '2', 'Ba': '3', 'Bốn': '4', 'Năm': '5',
+    'Sáu': '6', 'Bảy': '7', 'Tám': '8', 'Chín': '9', 'Mười': '10'
+}
+
+
+def standardize_chapter_title(title: str, target_language: str = 'vn') -> str:
+    """
+    Standardize chapter titles to consistent Vietnamese format.
+    
+    Converts chapter number prefixes while preserving subtitles:
+    - プロローグ → Chương Mở Đầu
+    - 第X話/第X章 → Chương X (preserves subtitle if present)
+    - Chuyện X, Hồi thứ X → Chương X (preserves subtitle if present)
+    - 間章 → Chương Giữa
+    - エピローグ → Chương Cuối
+    - あとがき → Lời Bạt
+    
+    Examples:
+        "第一章　一人ラブコメレース編" → "Chương 1　一人ラブコメレース編"
+        "第二話" → "Chương 2"
+        "Chuyện Hai: Tình Yêu Đầu" → "Chương 2: Tình Yêu Đầu"
+    
+    Args:
+        title: Original chapter title
+        target_language: Target language code (currently only 'vn' supported)
+        
+    Returns:
+        Standardized chapter title with subtitle preserved
+    """
+    if target_language != 'vn':
+        return title  # Only standardize for Vietnamese
+    
+    title = title.strip()
+    original_title = title
+    
+    # Helper function to extract subtitle (everything after separator)
+    def extract_subtitle(text, separators=['　', ':', '：', ' - ', '－']):
+        for sep in separators:
+            if sep in text:
+                parts = text.split(sep, 1)
+                if len(parts) == 2 and parts[1].strip():
+                    return sep + parts[1]  # Include separator
+        return ''
+    
+    # Prologue patterns (no subtitle expected)
+    if title in ['プロローグ', 'Khúc Dạo Đầu', 'Lời Mở Đầu', 'Mở Đầu']:
+        return 'Chương Mở Đầu'
+    
+    # Epilogue patterns (no subtitle expected)
+    if title in ['エピローグ', 'Kết Thúc', 'Chương Cuối']:
+        return 'Chương Cuối'
+    
+    # Afterword patterns (no subtitle expected)
+    if title in ['あとがき', 'Lời bạt', 'Hậu kí']:
+        return 'Lời Bạt'
+    
+    # Interlude/Side Story patterns (no subtitle expected)
+    if title in ['間章', 'Chuyện Bên Lề', 'Màn Giữa', 'Giữa Chương']:
+        return 'Chương Giữa'
+    
+    # Extract chapter numbers from various formats (PRESERVE SUBTITLE)
+    
+    # Japanese: 第二話 or 第二章 → Chương 2 (+ subtitle if present)
+    if title.startswith('第') and ('話' in title or '章' in title):
+        # Extract the number between 第 and 話/章
+        import re
+        match = re.match(r'^第([一二三四五六七八九十]+)([話章])(.*)', title)
+        if match:
+            jp_num = match.group(1)
+            marker = match.group(2)
+            subtitle = match.group(3)
+            
+            # Convert Japanese number to Arabic
+            if jp_num in JAPANESE_NUMBERS:
+                arabic = JAPANESE_NUMBERS[jp_num]
+                return f'Chương {arabic}{subtitle}'
+    
+    # Vietnamese variants: Chuyện Hai, Hồi thứ năm → Chương 2, Chương 5 (+ subtitle)
+    for vn_word, arabic in VIETNAMESE_NUMBERS.items():
+        # Match: "Chuyện Hai", "Hồi thứ hai"
+        patterns = [
+            f'Chuyện {vn_word}',
+            f'Chuyện {vn_word.lower()}',
+            f'thứ {vn_word.lower()}',
+            f'Hồi {vn_word}',
+            f'Hồi {vn_word.lower()}'
+        ]
+        
+        for pattern in patterns:
+            if pattern in title:
+                # Extract subtitle after the pattern
+                subtitle = extract_subtitle(title)
+                return f'Chương {arabic}{subtitle}'
+        
+        # Direct match: just the number word (no subtitle expected)
+        if title == vn_word or title == vn_word.lower():
+            return f'Chương {arabic}'
+    
+    # Already standardized: Chương X (preserve as-is with any subtitle)
+    if title.startswith('Chương '):
+        return title
+    
+    # If no pattern matches, return original
+    return title
+
+
+class MetadataProcessor:
+    def __init__(self, work_dir: Path, model: str = None, target_language: str = None):
+        """
+        Initialize MetadataProcessor.
+
+        Args:
+            work_dir: Path to the volume working directory.
+            model: Optional Gemini model override.
+            target_language: Target language code (e.g., 'en', 'vn').
+                            If None, uses current target language from config.
+        """
+        self.work_dir = work_dir
+        self.manifest_path = work_dir / "manifest.json"
+
+        # Language configuration
+        self.target_language = target_language if target_language else get_target_language()
+        self.lang_config = get_language_config(self.target_language)
+        self.language_name = self.lang_config.get('language_name', self.target_language.upper())
+        self.language_code = self.lang_config.get('language_code', self.target_language)
+
+        logger.info(f"MetadataProcessor initialized for language: {self.target_language.upper()} ({self.language_name})")
+
+        if not self.manifest_path.exists():
+            raise FileNotFoundError(f"Manifest not found at {self.manifest_path}")
+
+        with open(self.manifest_path, 'r', encoding='utf-8') as f:
+            self.manifest = json.load(f)
+
+        # Load model from config.yaml if not specified
+        gemini_config = get_config_section("gemini")
+        model = model or gemini_config.get("model", "gemini-2.5-flash")
+        logger.info(f"Using model: {model}")
+
+        # Disable caching for metadata processor (only 1-2 API calls per volume, not worth overhead)
+        self.client = GeminiClient(model=model, enable_caching=False)
+        
+        # Language-specific prompt
+        prompt_filename = f"metadata_processor_prompt_{self.target_language}.xml"
+        language_prompt = PROMPTS_DIR / prompt_filename
+        self.prompt_path = language_prompt if language_prompt.exists() else PROMPTS_DIR / "metadata_processor_prompt.xml"
+        logger.info(f"Using prompt: {self.prompt_path.name}")
+
+        # Language-specific metadata key suffix
+        self.metadata_key = f"metadata_{self.target_language}"  # e.g., metadata_en, metadata_vn
+    
+    def _update_manifest_preserve_schema(
+        self,
+        title_en: str,
+        author_en: str,
+        chapters: Dict[str, str],
+        character_names: Dict[str, str],
+        glossary: Dict[str, str] = None,
+        extra_fields: Dict[str, Any] = None
+    ) -> None:
+        """
+        Update manifest's metadata_en while PRESERVING v3 enhanced schema.
+        
+        This method merges translated metadata into existing metadata_en without
+        overwriting character_profiles, localization_notes, keigo_switch configs, etc.
+        
+        Args:
+            title_en: Translated title
+            author_en: Translated author name
+            chapters: Dict mapping chapter_id to title_en
+            character_names: Dict mapping JP name to EN name
+            glossary: Optional glossary terms
+            extra_fields: Optional extra fields to add
+        """
+        existing_metadata_en = self.manifest.get("metadata_en", {})
+        
+        # Check if v3 enhanced schema exists
+        has_v3_schema = (
+            "schema_version" in existing_metadata_en or
+            "character_profiles" in existing_metadata_en or
+            "localization_notes" in existing_metadata_en
+        )
+        
+        if has_v3_schema:
+            logger.info("✨ V3 Enhanced Schema detected - preserving structure")
+            
+            # Update only translation fields, preserve schema
+            existing_metadata_en["title_en"] = title_en
+            existing_metadata_en["author_en"] = author_en
+            existing_metadata_en["character_names"] = character_names
+            existing_metadata_en["target_language"] = self.target_language
+            existing_metadata_en["language_code"] = self.language_code
+            
+            if glossary:
+                existing_metadata_en["glossary"] = glossary
+            
+            # Update chapter title_en within existing chapters structure
+            if "chapters" in existing_metadata_en:
+                existing_chapters = existing_metadata_en["chapters"]
+                
+                # Handle both list and dict formats
+                if isinstance(existing_chapters, list):
+                    # List format: [{"id": "chapter_01", "title_en": [...], ...}]
+                    for ch in existing_chapters:
+                        ch_id = ch.get("id", "")
+                        if ch_id in chapters:
+                            ch["title_en"] = chapters[ch_id]
+                elif isinstance(existing_chapters, dict):
+                    # Dict format: {"chapter_01": {"title_jp": ..., "title_en": [...]}}
+                    for ch_id, ch_data in existing_chapters.items():
+                        if ch_id in chapters:
+                            if isinstance(ch_data, dict):
+                                ch_data["title_en"] = chapters[ch_id]
+                            else:
+                                existing_chapters[ch_id] = chapters[ch_id]
+            else:
+                # No existing chapters, add simple format
+                existing_metadata_en["chapters"] = [
+                    {"id": ch_id, "title_en": title}
+                    for ch_id, title in chapters.items()
+                ]
+            
+            # Add extra fields
+            if extra_fields:
+                for key, value in extra_fields.items():
+                    existing_metadata_en[key] = value
+            
+            # Add timestamp
+            existing_metadata_en["translation_timestamp"] = datetime.datetime.now().isoformat()
+            
+            self.manifest["metadata_en"] = existing_metadata_en
+            
+            # Log preserved schema elements
+            preserved = []
+            if "character_profiles" in existing_metadata_en:
+                preserved.append(f"character_profiles({len(existing_metadata_en['character_profiles'])})")
+            if "localization_notes" in existing_metadata_en:
+                preserved.append("localization_notes")
+            if "schema_version" in existing_metadata_en:
+                preserved.append(f"schema_version={existing_metadata_en['schema_version']}")
+            
+            logger.info(f"   Preserved: {', '.join(preserved)}")
+        else:
+            logger.info("📝 No v3 schema found - using simple metadata format")
+            
+            # Simple format (legacy/new volumes without Librarian schema)
+            self.manifest["metadata_en"] = {
+                "title_en": title_en,
+                "author_en": author_en,
+                "chapters": [
+                    {"id": ch_id, "title_en": title}
+                    for ch_id, title in chapters.items()
+                ],
+                "character_names": character_names,
+                "glossary": glossary or {},
+                "target_language": self.target_language,
+                "language_code": self.language_code,
+                "timestamp": datetime.datetime.now().isoformat(),
+                **(extra_fields or {})
+            }
+        
+        # Also update chapter title_en in manifest chapters list
+        for ch_manifest in self.manifest.get("chapters", []):
+            ch_id = ch_manifest.get("id", "")
+            if ch_id in chapters:
+                ch_manifest["title_en"] = chapters[ch_id]
+        
+        # Update pipeline state
+        if "pipeline_state" not in self.manifest:
+            self.manifest["pipeline_state"] = {}
+        self.manifest["pipeline_state"]["metadata_processor"] = {
+            "status": "completed",
+            "target_language": self.target_language,
+            "timestamp": datetime.datetime.now().isoformat(),
+            "schema_preserved": has_v3_schema
+        }
+        
+    def detect_sequel_parent(self) -> Optional[Dict]:
+        """
+        Detect if a predecessor volume exists in WORK_DIR.
+        Returns comprehensive inheritance data including:
+        - metadata_en (title, author)
+        - character roster (from name_registry.json)
+        - glossary terms
+        - chapters (for deduplication)
+        - source_volume (for tracking)
+        """
+        current_title = self.manifest.get("metadata", {}).get("title", "")
+        if not current_title:
+            return None
+        
+        # Search for predecessor volumes
+        for vol_dir in self.work_dir.parent.iterdir():
+            if not vol_dir.is_dir() or vol_dir.name == self.work_dir.name:
+                continue
+                
+            manifest_path = vol_dir / "manifest.json"
+            metadata_en_path = vol_dir / "metadata_en.json"
+            
+            if manifest_path.exists() and metadata_en_path.exists():
+                try:
+                    with open(manifest_path, 'r') as f:
+                        m_data = json.load(f)
+                    other_title = m_data.get("metadata", {}).get("title", "")
+                    
+                    # Heuristic: Shared first 10 chars indicates same series
+                    if current_title[:10] == other_title[:10]:
+                        # Load metadata_en
+                        with open(metadata_en_path, 'r') as f:
+                            metadata_en = json.load(f)
+                        
+                        # Load character roster from name_registry.json
+                        name_registry_path = vol_dir / ".context" / "name_registry.json"
+                        character_roster = {}
+                        if name_registry_path.exists():
+                            try:
+                                with open(name_registry_path, 'r') as f:
+                                    # name_registry.json is a flat dict: {jp_name: en_name}
+                                    character_roster = json.load(f)
+                            except Exception as e:
+                                logger.warning(f"Could not load name registry: {e}")
+                        
+                        # Load glossary from metadata_en.json (translated glossary, not JP)
+                        glossary = metadata_en.get("glossary", {})
+                        if not glossary:
+                            # Fallback to manifest glossary (JP) if metadata_en has none
+                            glossary = m_data.get("glossary", {})
+                        
+                        # Load chapter info for deduplication
+                        chapters = []
+                        if 'chapters' in metadata_en:
+                            chapters_data = metadata_en['chapters']
+                            
+                            # Handle both formats: list or dict
+                            if isinstance(chapters_data, list):
+                                # List format: [{'id': '01', 'title_en': 'Title'}, ...]
+                                for ch in chapters_data:
+                                    # Find original JP title from manifest
+                                    manifest_chapters = m_data.get('chapters', [])
+                                    jp_title = next(
+                                        (c['title'] for c in manifest_chapters if c['id'] == ch['id']),
+                                        ''
+                                    )
+                                    if jp_title:
+                                        chapters.append({
+                                            'id': ch['id'],
+                                            'title_jp': jp_title,
+                                            'title_en': ch.get('title_en', ch.get('title', ''))
+                                        })
+                            elif isinstance(chapters_data, dict):
+                                # Dict format: {'01': 'Chapter Title', ...}
+                                manifest_chapters = m_data.get('chapters', [])
+                                for ch_id, title_en in chapters_data.items():
+                                    jp_title = next(
+                                        (c['title'] for c in manifest_chapters if c['id'] == ch_id),
+                                        ''
+                                    )
+                                    if jp_title:
+                                        chapters.append({
+                                            'id': ch_id,
+                                            'title_jp': jp_title,
+                                            'title_en': title_en
+                                        })
+                        
+                        # Combine everything
+                        inheritance_data = {
+                            **metadata_en,
+                            "character_roster": character_roster,
+                            "glossary": glossary,
+                            "chapters": chapters,
+                            "source_volume": vol_dir.name
+                        }
+                        
+                        return inheritance_data
+                except Exception:
+                    continue
+        return None
+    
+    def _batch_translate_ruby(
+        self,
+        ruby_names: List[Dict],
+        parent_data: Optional[Dict] = None
+    ) -> Dict[str, str]:
+        """
+        Batch translate ruby-extracted character names.
+
+        Returns:
+            Dict mapping Japanese names to translated names
+        """
+        # Filter out kira-kira names (stylistic ruby, not real character names)
+        real_names = [n for n in ruby_names if n.get("name_type") != "kirakira"]
+        
+        if len(real_names) < len(ruby_names):
+            logger.info(f"Filtered out {len(ruby_names) - len(real_names)} kira-kira names (stylistic ruby)")
+        
+        # Filter out inherited entries
+        inherited_names = parent_data.get("character_roster", {}) if parent_data else {}
+
+        # Only translate NEW entries
+        new_names = [n for n in real_names if n["kanji"] not in inherited_names]
+
+        logger.info(f"Romanizing {len(new_names)} names")
+
+        if not new_names:
+            logger.info("No new names to translate (all inherited)")
+            return inherited_names.copy()
+
+        # Build batch translation prompt - language-specific
+        if self.target_language == 'vn':
+            # Vietnamese-specific name handling
+            prompt_parts = [
+                f"Translate the following character names from Japanese to {self.language_name}.",
+                "Follow these rules:\n",
+                "CHARACTER NAMES:",
+                "1. Apply Hepburn romanization (keep Japanese pronunciation)",
+                "2. Long vowel rules:",
+                "   - For 'ou' sounds (こう, そう, etc.): KEEP both vowels (Kouki not Koki, Sousuke not Sosuke)",
+                "   - For 'uu' sounds (ゆう, しゅう): Drop second 'u' (Yuki not Yuuki, Ryota not Ryouta)",
+                "   - For 'ei' sounds: Use 'ei' (Kei not Kē)",
+                "3. Surname-first order: Shinonome Sena not Sena Shinonome",
+                "4. Match ruby reading exactly (東雲《しののめ》→ Shinonome, 康貴《こうき》→ Kouki)",
+                "5. Keep romanized names (do not translate to Vietnamese equivalents)\n",
+                "Output as JSON: {\"names\": {\"jp\": \"romanized\"}}\n"
+            ]
+        else:
+            # English (default) name handling
+            prompt_parts = [
+                f"Translate the following character names from Japanese to {self.language_name}.",
+                "Follow these rules:\n",
+                "CHARACTER NAMES:",
+                "1. Apply Hepburn romanization (natural English phonetics)",
+                "2. Long vowel rules:",
+                "   - For 'ou' sounds (こう, そう, etc.): KEEP both vowels (Kouki not Koki, Sousuke not Sosuke)",
+                "   - For 'uu' sounds (ゆう, しゅう): Drop second 'u' (Yuki not Yuuki, Ryota not Ryouta)",
+                "   - For 'ei' sounds: Use 'ei' (Kei not Kē)",
+                "3. Surname-first order: Shinonome Sena not Sena Shinonome",
+                "4. Match ruby reading exactly (東雲《しののめ》→ Shinonome, 康貴《こうき》→ Kouki)",
+                "5. Consider character context for cultural adaptation\n",
+                "Output as JSON: {\"names\": {\"jp\": \"en\"}}\n"
+            ]
+        
+        # Add inherited context if present
+        if inherited_names:
+            prompt_parts.append("\nEXISTING CHARACTERS (maintain consistency):")
+            for jp, en in list(inherited_names.items())[:10]:  # Show first 10
+                prompt_parts.append(f"  {jp} → {en}")
+            if len(inherited_names) > 10:
+                prompt_parts.append(f"  ... and {len(inherited_names)-10} more")
+        
+        # Add new character names to translate
+        prompt_parts.append("\nNEW CHARACTERS TO TRANSLATE:")
+        for entry in new_names:
+            kanji = entry["kanji"]
+            ruby = entry["ruby"]
+            context = entry["context"][:100]  # Truncate context
+            prompt_parts.append(f"  {kanji}《{ruby}》")
+            prompt_parts.append(f"    Context: \"{context}...\"")
+        
+        prompt = "\n".join(prompt_parts)
+        
+        # Call Gemini
+        try:
+            response = self.client.generate(
+                prompt=prompt,
+                temperature=0.2  # Low temp for consistency
+            )
+            
+            # Parse response
+            content = response.content.strip()
+            if content.startswith("```json"):
+                content = content[7:-3].strip()
+            elif content.startswith("```"):
+                content = content[3:-3].strip()
+            
+            translations = json.loads(content)
+            
+            # Merge with inherited
+            name_registry = {**inherited_names, **translations.get("names", {})}
+            
+            logger.info(f"✓ Translated {len(translations.get('names', {}))} character names")
+            
+            return name_registry
+            
+        except Exception as e:
+            logger.error(f"Batch translation failed: {e}")
+            # Fallback: return inherited only
+            return inherited_names.copy()
+
+    def _process_sequel_metadata_optimized(
+        self, 
+        parent_data: Dict, 
+        original_metadata: Dict,
+        chapter_titles: List[Dict], 
+        ruby_names: List
+    ) -> None:
+        """
+        Optimized sequel processing: Copy predecessor metadata directly,
+        only translate NEW content (chapter titles, characters).
+        
+        Args:
+            parent_data: Predecessor volume data (from detect_sequel_parent)
+            original_metadata: Current volume's original metadata
+            chapter_titles: Current volume's chapter titles
+            ruby_names: Current volume's ruby-extracted names
+        """
+        logger.info("="*70)
+        logger.info("🎯 SEQUEL OPTIMIZATION: Direct metadata inheritance")
+        logger.info("="*70)
+        
+        predecessor_volume = parent_data.get('source_volume', 'Unknown')
+        logger.info(f"📦 Inheriting from: {predecessor_volume}")
+        
+        # === STEP 1: Direct copy of inherited metadata ===
+        # Fix volume number in title (e.g., "...Me 2" → "...Me 3")
+        base_title = parent_data.get('title_en', '')
+        current_jp_title = original_metadata.get('title', '')
+        
+        # Try to update volume number if present
+        import re
+        # Match patterns like "Vol 2", "Volume 2", "2", "II", etc. at end of title
+        vol_pattern = r'(\s+\d+|\s+[IVX]+|\s+Vol\.?\s+\d+|\s+Volume\s+\d+)$'
+        
+        # Extract volume number from current Japanese title if present
+        jp_vol_match = re.search(r'[０-９0-9]+|[一二三四五六七八九十]+', current_jp_title)
+        if jp_vol_match:
+            # Found volume number in JP title
+            jp_vol_str = jp_vol_match.group()
+            # Convert to Arabic numeral if needed
+            vol_map = {'１':'1', '２':'2', '３':'3', '４':'4', '５':'5', '６':'6', '７':'7', '８':'8', '９':'9', '０':'0',
+                      '一':'1', '二':'2', '三':'3', '四':'4', '五':'5', '六':'6', '七':'7', '八':'8', '九':'9', '十':'10'}
+            current_vol_num = vol_map.get(jp_vol_str, jp_vol_str)
+            
+            # Check if prequel has a volume number in its title
+            prequel_has_vol_num = bool(re.search(vol_pattern, base_title))
+            
+            # Update English title with current volume number
+            if prequel_has_vol_num:
+                # Replace existing number (e.g., "Title 1" → "Title 2")
+                updated_title = re.sub(vol_pattern, f' {current_vol_num}', base_title)
+            else:
+                # Prequel has no volume number - assume it's v1, append current volume number
+                # e.g., "Title" (v1) → "Title 2" (for v2)
+                updated_title = f"{base_title} {current_vol_num}"
+            
+            logger.info(f"  📝 Updated title: '{base_title}' → '{updated_title}'")
+        else:
+            updated_title = base_title
+        
+        metadata_translated = {
+            'title_en': updated_title,
+            'author_en': parent_data.get('author_en', ''),
+            'character_names': parent_data.get('character_roster', {}).copy(),
+            'glossary': parent_data.get('glossary', {}).copy(),
+            'inherited_from': predecessor_volume,
+            'optimization': 'sequel_direct_copy'
+        }
+        
+        logger.info(f"  ✓ Title: {metadata_translated['title_en']}")
+        logger.info(f"  ✓ Author: {metadata_translated['author_en']}")
+        logger.info(f"  ✓ Character names: {len(metadata_translated['character_names'])} inherited")
+        logger.info(f"  ✓ Glossary: {len(metadata_translated['glossary'])} terms inherited")
+        
+        # === STEP 2: Translate NEW chapter titles only ===
+        predecessor_chapters = parent_data.get('chapters', [])
+        predecessor_titles_jp = {ch['title_jp'] for ch in predecessor_chapters}
+        
+        new_chapter_titles = [
+            ch for ch in chapter_titles 
+            if ch['title_jp'] not in predecessor_titles_jp
+        ]
+        
+        # Copy matching chapter titles directly
+        chapter_translations = {}
+        for ch in chapter_titles:
+            # Check if this chapter title exists in predecessor
+            matching_pred = next(
+                (p for p in predecessor_chapters if p['title_jp'] == ch['title_jp']),
+                None
+            )
+            if matching_pred:
+                chapter_translations[ch['id']] = matching_pred['title_en']
+                logger.info(f"  ♻️  Chapter '{ch['id']}': Copied from predecessor")
+        
+        # Translate only NEW chapter titles
+        if new_chapter_titles:
+            logger.info(f"\n📝 Translating {len(new_chapter_titles)} NEW chapter titles...")
+            
+            with open(self.prompt_path, 'r', encoding='utf-8') as f:
+                system_prompt = f.read()
+            
+            # Simplified prompt: only chapter titles
+            prompt = (
+                f"Translate these chapter titles to {self.language_name}:\n\n"
+                f"{json.dumps(new_chapter_titles, indent=2, ensure_ascii=False)}\n\n"
+                f"Return JSON format: {{'chapters': [{{'id': 'XX', 'title_en': '...'}}]}}"
+            )
+            
+            response = self.client.generate(
+                prompt=prompt,
+                system_instruction=system_prompt,
+                temperature=0.3
+            )
+            
+            try:
+                content = response.content.strip()
+                if content.startswith("```json"):
+                    content = content[7:-3].strip()
+                elif content.startswith("```"):
+                    content = content[3:-3].strip()
+                
+                result = json.loads(content)
+                
+                for ch in result.get('chapters', []):
+                    chapter_translations[ch['id']] = ch['title_en']
+                    logger.info(f"  ✨ Chapter '{ch['id']}': {ch['title_en']}")
+                
+                logger.info(f"  ✓ Translated {len(new_chapter_titles)} new chapters")
+                
+            except Exception as e:
+                logger.error(f"  ✗ Chapter translation failed: {e}")
+                # Fallback: copy from original metadata or use raw titles
+                for ch in new_chapter_titles:
+                    chapter_translations[ch['id']] = ch['title_jp']
+        else:
+            logger.info("  ✓ All chapter titles found in predecessor (0 new chapters)")
+        
+        metadata_translated['chapters'] = chapter_translations
+        
+        # === STEP 3: Handle NEW character names ===
+        inherited_char_keys = set(metadata_translated['character_names'].keys())
+        new_ruby_names = [
+            name for name in ruby_names 
+            if name.get('kanji', '') not in inherited_char_keys
+        ]
+        
+        if new_ruby_names:
+            logger.info(f"\n👥 Translating {len(new_ruby_names)} NEW character names...")
+            
+            # Use existing batch translate logic
+            new_name_registry = self._batch_translate_ruby(
+                new_ruby_names, 
+                parent_data  # Pass parent data for context
+            )
+            
+            # Merge new names with inherited
+            metadata_translated['character_names'].update(new_name_registry)
+            logger.info(f"  ✓ Added {len(new_name_registry)} new character names")
+        else:
+            logger.info("  ✓ All character names found in predecessor (0 new names)")
+        
+        # === STEP 4: Save results ===
+        metadata_translated['target_language'] = self.target_language
+        metadata_translated['language_code'] = self.language_code
+        
+        output_filename = f"metadata_{self.target_language}.json"
+        output_path = self.work_dir / output_filename
+        
+        with open(output_path, 'w', encoding='utf-8') as f:
+            json.dump(metadata_translated, f, indent=2, ensure_ascii=False)
+        
+        logger.info(f"\n💾 Saved to {output_path}")
+        
+        # Save name registry to .context
+        context_dir = self.work_dir / ".context"
+        context_dir.mkdir(exist_ok=True)
+        
+        name_registry = metadata_translated['character_names']
+        if name_registry:
+            registry_path = context_dir / "name_registry.json"
+            with open(registry_path, 'w', encoding='utf-8') as f:
+                json.dump(name_registry, f, indent=2, ensure_ascii=False)
+            logger.info(f"💾 Saved {len(name_registry)} names to {registry_path}")
+        
+        # Update manifest - PRESERVE v3 enhanced schema
+        self._update_manifest_preserve_schema(
+            title_en=metadata_translated["title_en"],
+            author_en=metadata_translated["author_en"],
+            chapters=metadata_translated["chapters"],
+            character_names=name_registry,
+            glossary=metadata_translated.get("glossary", {}),
+            extra_fields={"inherited_from": predecessor_volume}
+        )
+        
+        with open(self.manifest_path, 'w', encoding='utf-8') as f:
+            json.dump(self.manifest, f, indent=2, ensure_ascii=False)
+        
+        logger.info("="*70)
+        logger.info("✅ SEQUEL OPTIMIZATION COMPLETE - API calls minimized!")
+        logger.info(f"   • Inherited: {len(parent_data.get('character_roster', {}))} names, "
+                    f"{len(parent_data.get('glossary', {}))} terms")
+        logger.info(f"   • New translations: {len(new_chapter_titles)} chapters, "
+                    f"{len(new_ruby_names)} names")
+        logger.info("="*70)
+
+    def process_metadata(self, ignore_sequel: bool = False):
+        """Translate metadata and save to metadata_en.json."""
+        logger.info(f"Processing metadata for {self.work_dir.name}")
+        
+        # Prepare context for LLM
+        original_metadata = self.manifest.get("metadata", {})
+        
+        # Pre-process chapter titles: standardize format BEFORE translation
+        raw_chapters = self.manifest.get("chapters", [])
+        chapter_titles = []
+        
+        for c in raw_chapters:
+            original_title = c["title"]
+            standardized_title = standardize_chapter_title(original_title, self.target_language)
+            
+            # Log standardization if changed
+            if standardized_title != original_title:
+                logger.info(f"📝 Standardized: '{original_title}' → '{standardized_title}'")
+            
+            chapter_titles.append({
+                "id": c["id"],
+                "title_jp": standardized_title  # Use standardized version for translation
+            })
+        
+        # Get ruby-extracted character names
+        ruby_names = self.manifest.get("ruby_names", [])
+        logger.info(f"Ruby entries: {len(ruby_names)} character names")
+        
+        # Check for sequel inheritance
+        parent_data = None
+        if not ignore_sequel:
+            parent_data = self.detect_sequel_parent()
+        
+        # === NEW OPTIMIZATION: Direct inheritance for sequels ===
+        if parent_data:
+            logger.info("🚀 SEQUEL OPTIMIZATION ACTIVE - Skipping API for inherited data")
+            return self._process_sequel_metadata_optimized(
+                parent_data, 
+                original_metadata, 
+                chapter_titles, 
+                ruby_names
+            )
+            
+        inheritance_context = ""
+        if parent_data:
+            match_title = parent_data.get('title_en', 'Unknown')
+            match_author = parent_data.get('author_en', 'Unknown')
+            character_roster = parent_data.get('character_roster', {})
+            glossary = parent_data.get('glossary', {})
+            
+            logger.info(f"✨ Sequel Detected! Inheriting context from: {match_title}")
+            logger.info(f"   Characters: {len(character_roster)}, Glossary terms: {len(glossary)}")
+            
+            # Build comprehensive inheritance context
+            context_parts = [
+                "\n" + "="*60,
+                "IMPORTANT - SEQUEL INHERITANCE (MAINTAIN CONSISTENCY)",
+                "="*60,
+                f"\nSeries Title: {match_title}",
+                f"Author Name: {match_author}\n"
+            ]
+            
+            # Add character roster
+            if character_roster:
+                context_parts.append("\nCHARACTER ROSTER (use these exact spellings):")
+                for jp_name, en_name in character_roster.items():
+                    context_parts.append(f"  {jp_name} → {en_name}")
+                context_parts.append("")
+            
+            # Add glossary terms
+            if glossary:
+                context_parts.append("GLOSSARY (established terminology):")
+                for jp_term, en_term in glossary.items():
+                    context_parts.append(f"  {jp_term} → {en_term}")
+                context_parts.append("")
+            
+            context_parts.append("="*60)
+            context_parts.append("Ensure all character names and terms above remain consistent.")
+            context_parts.append("Only translate NEW characters/terms not listed above.\n")
+            
+            inheritance_context = "\n".join(context_parts)
+        
+        # Batch translate ruby-extracted character names
+        if ruby_names:
+            logger.info("Batch translating ruby entries...")
+            name_registry = self._batch_translate_ruby(
+                ruby_names, parent_data
+            )
+        else:
+            name_registry = {}
+        
+        # No term glossary in simplified version
+        term_glossary = {}
+        
+        with open(self.prompt_path, 'r', encoding='utf-8') as f:
+            system_prompt = f.read()
+            
+        prompt = (
+            f"Original Metadata:\n{json.dumps(original_metadata, indent=2, ensure_ascii=False)}\n\n"
+            f"Chapter Titles:\n{json.dumps(chapter_titles, indent=2, ensure_ascii=False)}"
+            f"{inheritance_context}"
+        )
+        
+        response = self.client.generate(
+            prompt=prompt,
+            system_instruction=system_prompt,
+            temperature=0.3 # Lower temperature for metadata reliability
+        )
+        
+        try:
+            # Clean response if it contains markdown code blocks
+            content = response.content.strip()
+            if content.startswith("```json"):
+                content = content[7:-3].strip()
+            elif content.startswith("```"):
+                content = content[3:-3].strip()
+
+            metadata_translated = json.loads(content)
+
+            # Add character names and glossary to metadata
+            if name_registry:
+                metadata_translated['character_names'] = name_registry
+            if term_glossary:
+                metadata_translated['glossary'] = term_glossary
+
+            # Add language metadata
+            metadata_translated['target_language'] = self.target_language
+            metadata_translated['language_code'] = self.language_code
+
+            # Save to language-specific metadata file (e.g., metadata_en.json, metadata_vn.json)
+            output_filename = f"metadata_{self.target_language}.json"
+            output_path = self.work_dir / output_filename
+            with open(output_path, 'w', encoding='utf-8') as f:
+                json.dump(metadata_translated, f, indent=2, ensure_ascii=False)
+
+            logger.info(f"Metadata translated to {self.language_name} and saved to {output_path}")
+
+            # Save name registry and glossary to .context
+            context_dir = self.work_dir / ".context"
+            context_dir.mkdir(exist_ok=True)
+
+            if name_registry:
+                registry_path = context_dir / "name_registry.json"
+                with open(registry_path, 'w', encoding='utf-8') as f:
+                    json.dump(name_registry, f, indent=2, ensure_ascii=False)
+                logger.info(f"Saved {len(name_registry)} names to {registry_path}")
+
+            if term_glossary:
+                # Update manifest glossary
+                if "glossary" not in self.manifest:
+                    self.manifest["glossary"] = {}
+                self.manifest["glossary"].update(term_glossary)
+                logger.info(f"Added {len(term_glossary)} terms to glossary")
+
+            # Extract chapter translations to dict format
+            chapter_translations = {}
+            for ch in metadata_translated.get("chapters", []):
+                ch_id = ch.get("id", "")
+                ch_title = ch.get("title_en", ch.get(f"title_{self.target_language}", ""))
+                if ch_id and ch_title:
+                    chapter_translations[ch_id] = ch_title
+
+            # Update manifest - PRESERVE v3 enhanced schema
+            self._update_manifest_preserve_schema(
+                title_en=metadata_translated.get("title_en", ""),
+                author_en=metadata_translated.get("author_en", ""),
+                chapters=chapter_translations,
+                character_names=name_registry,
+                glossary=term_glossary
+            )
+
+            with open(self.manifest_path, 'w', encoding='utf-8') as f:
+                json.dump(self.manifest, f, indent=2, ensure_ascii=False)
+
+        except Exception as e:
+            logger.error(f"Failed to parse metadata response: {e}")
+            logger.error(f"Response content: {response.content}")
+            raise
+
+def main():
+    parser = argparse.ArgumentParser(description="Run Metadata Processor Agent")
+    parser.add_argument("--volume", type=str, required=True, help="Volume ID (directory name in WORK)")
+    parser.add_argument("--ignore-sequel", action="store_true", help="Ignore sequel detection")
+    
+    args = parser.parse_args()
+    
+    from pipeline.config import WORK_DIR
+    volume_dir = WORK_DIR / args.volume
+    
+    if not volume_dir.exists():
+        logger.error(f"Volume directory not found: {volume_dir}")
+        sys.exit(1)
+        
+    processor = MetadataProcessor(volume_dir)
+    processor.process_metadata(ignore_sequel=args.ignore_sequel)
+
+if __name__ == "__main__":
+    main()

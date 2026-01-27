@@ -1,0 +1,76 @@
+{
+  "publisher": "Hobby Japan",
+  "publisher_ja": "ホビージャパン",
+  "country": "JP",
+  "notes": "Includes publisher logo in images. Similar k### format to Overlap.",
+
+  "image_patterns": {
+    "cover": {
+      "patterns": [
+        "cover\\.jpe?g"
+      ],
+      "examples": [
+        "cover.jpg"
+      ],
+      "notes": "Standard cover naming"
+    },
+    "kuchie": {
+      "patterns": [
+        "k\\d{3,}\\.jpe?g",
+        "k\\d{3,}[-_]\\d{3,}\\.jpe?g"
+      ],
+      "examples": [
+        "k001.jpg",
+        "k002-003.jpg",
+        "k004.jpg"
+      ],
+      "notes": "k### format, supports spreads with double numbers"
+    },
+    "illustrations": {
+      "patterns": [
+        "i[-_]\\d+\\.jpe?g"
+      ],
+      "examples": [],
+      "notes": "Standard i-### format (not observed in sample but likely present)"
+    },
+    "special": {
+      "patterns": [
+        "HJ_logo\\.jpe?g"
+      ],
+      "examples": [
+        "HJ_logo.jpg"
+      ],
+      "notes": "Publisher logo included in EPUB"
+    }
+  },
+
+  "toc_structure": {
+    "format": "EPUB3",
+    "has_nav_xhtml": true,
+    "has_toc_ncx": false,
+    "has_visual_toc": false,
+    "nav_structure": "li > a",
+    "notes": "Standard EPUB3"
+  },
+
+  "content_structure": {
+    "filename_pattern": "chapter\\d+\\.xhtml",
+    "chapter_merging": false,
+    "illustration_pages": true,
+    "notes": "Clean chapter structure"
+  },
+
+  "metadata": {
+    "spine_progression": "rtl",
+    "typical_chapter_count": "10-12",
+    "typical_file_count": "15-20",
+    "average_images": 19.0
+  },
+
+  "test_cases": [
+    {
+      "title": "幼馴染で婚約者なふたりが恋人をめざす話 1",
+      "verified": false
+    }
+  ]
+}

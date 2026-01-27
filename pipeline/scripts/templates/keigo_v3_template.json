@@ -1,0 +1,143 @@
+{
+  "Charlotte Bennett": {
+    "narration": "formal_polite",
+    "internal_thoughts": "formal_polite",
+    "speaking_to": {
+      "Akihito": "polite_formal",
+      "Emma": "gentle_sisterly",
+      "Saionji": "polite_formal",
+      "Miyu-sensei": "respectful_formal",
+      "Shinonome": "polite_formal",
+      "strangers": "formal_polite"
+    },
+    "emotional_shifts": {
+      "jealous": "slightly_clipped_formal",
+      "embarrassed": "formal_but_flustered",
+      "happy": "warm_formal",
+      "worried": "concerned_formal"
+    },
+    "notes": "British character - ALWAYS maintains formal register. No contractions except 'it's'. Authentic period-appropriate British voice."
+  },
+  "Aoyagi Akihito": {
+    "narration": "casual_introspective",
+    "internal_thoughts": "very_casual",
+    "speaking_to": {
+      "Charlotte": "casual_respectful",
+      "Emma": "warm_big_brother",
+      "Saionji": "casual_bro",
+      "Miyu-sensei": "casual_respectful",
+      "Shinonome": "casual",
+      "strangers": "polite_casual"
+    },
+    "emotional_shifts": {
+      "embarrassed": "stammering_casual",
+      "protective": "firm_casual",
+      "worried": "concerned_casual",
+      "happy": "relaxed_casual"
+    },
+    "notes": "Protagonist - casual internal voice, adapts register to conversation partner. Uses contractions naturally."
+  },
+  "Emma Bennett": {
+    "narration": "playful_childlike",
+    "internal_thoughts": "playful_childlike",
+    "speaking_to": {
+      "Akihito": "affectionate_childlike",
+      "Charlotte": "affectionate_childlike",
+      "Saionji": "playful_childlike",
+      "Miyu-sensei": "playful_childlike",
+      "strangers": "shy_childlike"
+    },
+    "emotional_shifts": {
+      "scared": "timid_childlike",
+      "happy": "excited_childlike",
+      "sad": "quiet_childlike",
+      "stubborn": "pouty_childlike"
+    },
+    "notes": "Child character (5-6 years old) - maintains childlike speech patterns regardless of context. Simple vocabulary, enthusiastic tone."
+  },
+  "Saionji Akira": {
+    "narration": "casual_bro",
+    "internal_thoughts": "casual_bro",
+    "speaking_to": {
+      "Akihito": "casual_bro",
+      "Charlotte": "casual_respectful",
+      "Emma": "gentle_playful",
+      "Miyu-sensei": "casual_respectful",
+      "Shinonome": "teasing_casual"
+    },
+    "emotional_shifts": {
+      "serious": "sharp_direct",
+      "teasing": "playful_bro",
+      "concerned": "serious_bro",
+      "excited": "energetic_bro"
+    },
+    "notes": "Best friend character - casual bro-speak with Akihito, switches to direct serious mode when needed."
+  },
+  "Miyu-sensei": {
+    "narration": "teasing_casual",
+    "internal_thoughts": "sharp_direct",
+    "speaking_to": {
+      "Akihito": "teasing_casual",
+      "Charlotte": "supportive_casual",
+      "Emma": "gentle_motherly",
+      "students": "casual_authoritative"
+    },
+    "emotional_shifts": {
+      "serious": "sharp_direct",
+      "protective": "firm_caring",
+      "teasing": "playful_casual",
+      "worried": "concerned_direct"
+    },
+    "notes": "Teacher/mentor figure - teasing casual default with sharp serious mode when protective or concerned."
+  },
+  "Shinonome": {
+    "narration": "energetic_casual",
+    "internal_thoughts": "energetic_casual",
+    "speaking_to": {
+      "Akihito": "energetic_friendly",
+      "Charlotte": "respectful_curious",
+      "Saionji": "energetic_friendly"
+    },
+    "emotional_shifts": {
+      "excited": "very_energetic",
+      "curious": "eager_friendly"
+    },
+    "notes": "Energetic classmate - maintains friendly, upbeat tone."
+  },
+  "Claire": {
+    "narration": "calm_mature",
+    "internal_thoughts": "calm_mature",
+    "speaking_to": {
+      "Charlotte": "warm_maternal",
+      "Emma": "gentle_maternal",
+      "Akihito": "polite_warm"
+    },
+    "emotional_shifts": {
+      "worried": "concerned_calm",
+      "happy": "warm_calm"
+    },
+    "notes": "Charlotte's mother - calm, mature British voice. Warm but composed."
+  },
+  "Shimizu": {
+    "narration": "casual",
+    "internal_thoughts": "casual",
+    "speaking_to": {
+      "Akihito": "casual_friendly",
+      "Charlotte": "polite_friendly"
+    },
+    "emotional_shifts": {},
+    "notes": "Minor character - standard casual register."
+  },
+  "Hanazawa-sensei": {
+    "narration": "professional_calm",
+    "internal_thoughts": "professional_calm",
+    "speaking_to": {
+      "students": "professional_kind",
+      "colleagues": "professional_casual"
+    },
+    "emotional_shifts": {
+      "concerned": "professional_worried"
+    },
+    "notes": "Teacher - professional but kind register."
+  }
+}

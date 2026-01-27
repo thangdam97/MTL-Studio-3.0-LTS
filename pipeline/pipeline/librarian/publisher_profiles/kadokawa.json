@@ -1,0 +1,95 @@
+{
+  "publisher": "KADOKAWA",
+  "publisher_ja": "株式会社ＫＡＤＯＫＡＷＡ",
+  "country": "JP",
+  "notes": "Largest Japanese publisher. Uses prefixed naming with i-### format and gaiji (special character) images.",
+
+  "image_patterns": {
+    "cover": {
+      "patterns": [
+        "cover\\.jpe?g",
+        "allcover[-_]\\d+\\.jpe?g"
+      ],
+      "examples": [
+        "cover.jpg",
+        "allcover-001.jpg"
+      ],
+      "notes": "Standard cover.jpg, sometimes includes allcover with spreads"
+    },
+    "kuchie": {
+      "patterns": [
+        "kuchie[-_]\\d+\\.jpe?g",
+        "k\\d+\\.jpe?g"
+      ],
+      "examples": [
+        "kuchie-01.jpg",
+        "k001.jpg"
+      ],
+      "notes": "Color plate illustrations"
+    },
+    "illustrations": {
+      "patterns": [
+        "i[-_]\\d+\\.jpe?g",
+        "p0[1-9]\\d+\\.jpe?g",
+        "p[1-9]\\d+\\.jpe?g"
+      ],
+      "examples": [
+        "i-003.jpg",
+        "i-012.jpg",
+        "i-013.jpg"
+      ],
+      "notes": "Standard i-### format for chapter illustrations"
+    },
+    "special": {
+      "patterns": [
+        "gaiji[-_].*\\.png",
+        "fan[-_]letter\\.jpe?g"
+      ],
+      "examples": [
+        "gaiji-dakuon-i-s.png",
+        "gaiji-dakuten-a.png",
+        "gaiji-emoji.png",
+        "fan-letter.jpg"
+      ],
+      "notes": "Gaiji = special characters not in standard fonts, fan-letter = bonus content"
+    }
+  },
+
+  "toc_structure": {
+    "format": "EPUB3",
+    "has_nav_xhtml": true,
+    "has_toc_ncx": true,
+    "has_visual_toc": false,
+    "nav_structure": "li > a",
+    "notes": "Clean EPUB3 with EPUB2 compatibility"
+  },
+
+  "content_structure": {
+    "filename_pattern": "\\d+\\.xhtml",
+    "chapter_merging": false,
+    "illustration_pages": true,
+    "notes": "Simple numeric filenames, one file per chapter"
+  },
+
+  "metadata": {
+    "spine_progression": "rtl",
+    "typical_chapter_count": "10-15",
+    "typical_file_count": "15-25",
+    "average_images": 23.6
+  },
+
+  "test_cases": [
+    {
+      "title": "クラスで２番目に可愛い女の子と友だちになった【電子版】４",
+      "verified": false
+    },
+    {
+      "title": "幼馴染の妹の家庭教師をはじめたら3 再会した幼馴染の家庭教師もすることに",
+      "verified": false
+    },
+    {
+      "title": "男嫌いな美人姉妹を名前も告げずに助けたら一体どうなる？",
+      "verified": false
+    }
+  ]
+}

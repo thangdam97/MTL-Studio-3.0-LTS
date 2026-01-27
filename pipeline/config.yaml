@@ -1,0 +1,160 @@
+project:
+  target_language: en
+  languages:
+    en:
+      master_prompt: prompts/master_prompt_en_compressed.xml
+      prompts:
+        romcom: prompts/master_prompt_en_compressed.xml
+        fantasy: prompts/master_prompt_fantasy_en.xml
+      modules_dir: modules/
+      output_suffix: _EN
+      language_code: en
+      language_name: English
+      ui_strings:
+        toc_title: Table of Contents
+        cover_title: Cover
+        start_content: Start of Content
+    vn:
+      master_prompt: VN/master_prompt_vn_pipeline.xml
+      prompts:
+        romcom: VN/master_prompt_vn_pipeline.xml
+        fantasy: VN/master_prompt_vn_pipeline.xml
+      modules_dir: VN/modules/
+      modules:
+      - MEGA_CORE_TRANSLATION_ENGINE_VN.md
+      - MEGA_CHARACTER_VOICE_SYSTEM_VN.md
+      - ANTI_TRANSLATIONESE_MODULE_VN.md
+      reference_dir: VN/Reference/
+      reference_modules:
+      - Library_LOCALIZATION_PRIMER_VN.md
+      - Library_REFERENCE_ICL_SAMPLES.md
+      - Ref_ONOMATOPOEIA_PROTOCOL_v1.0.md
+      output_suffix: _VN
+      language_code: vi
+      language_name: Vietnamese
+      ui_strings:
+        toc_title: Mục Lục
+        cover_title: Bìa
+        start_content: Bắt Đầu
+gemini:
+  model: gemini-2.5-pro
+  fallback_model: gemini-2.5-flash
+  generation:
+    temperature: 0.6
+    top_p: 0.95
+    top_k: 40
+    max_output_tokens: 65535
+    thinking_level: medium
+    qc_temperature: 0.3
+  safety:
+    harassment: BLOCK_NONE
+    hate_speech: BLOCK_NONE
+    sexually_explicit: BLOCK_NONE
+    dangerous_content: BLOCK_NONE
+  rate_limit:
+    requests_per_minute: 2
+    retry_attempts: 10
+    retry_delay_seconds: 5
+  caching:
+    enabled: true
+    ttl_minutes: 60
+translation:
+  quality:
+    contraction_rate_min: 0.8
+    max_ai_isms_per_chapter: 5
+  context:
+    lookback_chapters: 2
+    enforce_name_consistency: true
+critics:
+  qc_rubric: prompts/qc_rubric.md
+  auto_fix:
+    enabled: true
+    contractions: true
+    punctuation: true
+  thresholds:
+    pass_min_score: 0.85
+    revise_min_score: 0.7
+  ai_ism_patterns:
+  - indeed
+  - quite
+  - rather
+  - I shall
+  - most certainly
+  - if you will
+  - as it were
+  - one might say
+builder:
+  epub_version: '3.0'
+  css_template: templates/styles/main.css
+  fonts:
+    enabled: true
+    directory: templates/fonts/
+  images:
+    cover_max_width: 1600
+    illustration_max_width: 1200
+    quality: 85
+directories:
+  input: INPUT/
+  work: WORK/
+  output: OUTPUT/
+  prompts: prompts/
+  modules: modules/
+  templates: templates/
+pre_toc_detection:
+  enabled: false
+  min_text_length: 50
+  min_sentences_after_credits: 2
+  dialog_markers:
+  - 「
+  - 」
+  - '"'
+  - '"'
+  pronouns:
+  - 俺
+  - 私
+  - 僕
+  - わたし
+  - I
+  credit_markers:
+  - イラスト
+  - 著者
+  - 発行
+  - 印刷
+  - 装丁
+  - デザイン
+  - Illustration
+  - Author
+  - Published
+  - Printed
+  exclude_patterns:
+  - fmatter
+  - kuchie
+  - cover
+  - titlepage
+  - caution
+  chapter_title: Opening
+logging:
+  level: DEBUG
+  format: '[%(levelname)s] %(asctime)s - %(name)s - %(message)s'
+  file: pipeline.log
+debug:
+  save_raw_responses: true
+  verbose_api: true
+  dry_run: false
+post_processing:
+  format_normalizer:
+    enabled: true
+    aggressive: false
+  cjk_cleaner:
+    enabled: true
+    strict_mode: false
+    min_confidence: 0.7
+    context_window: 5
+    log_detections: true
+cli:
+  tui_default: true
+  verbose_mode: true
+  show_progress: true
+  confirm_caching: true
+  confirm_inheritance: true
+  auto_proceed: false

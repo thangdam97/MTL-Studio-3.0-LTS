@@ -1,0 +1,499 @@
+{
+  "schema_version": "1.0",
+  "schema_name": "CJK Prevention Protocol for English Translation",
+  "purpose": "Prevent Chinese/Japanese character leakage in English output",
+  "unicode_range": {
+    "forbidden_start": "U+4E00",
+    "forbidden_end": "U+9FFF",
+    "description": "CJK Unified Ideographs - Must be romanized or translated to English"
+  },
+  "cjk_detection_patterns": {
+    "description": "Comprehensive regex patterns for CJK character detection in grep_search and validation",
+    "full_pattern": "[\\u4e00-\\u9fff\\u3040-\\u309f\\u30a0-\\u30ff\\u3400-\\u4dbf\\u{20000}-\\u{2a6df}\\u{2a700}-\\u{2b73f}\\u{2b740}-\\u{2b81f}\\u{2b820}-\\u{2ceaf}\\u{2ceb0}-\\u{2ebef}\\u{30000}-\\u{3134f}]",
+    "ranges": {
+      "cjk_unified_ideographs": "\\u4e00-\\u9fff",
+      "hiragana": "\\u3040-\\u309f",
+      "katakana": "\\u30a0-\\u30ff",
+      "cjk_extension_a": "\\u3400-\\u4dbf",
+      "cjk_extension_b": "\\u{20000}-\\u{2a6df}",
+      "cjk_extension_c": "\\u{2a700}-\\u{2b73f}",
+      "cjk_extension_d": "\\u{2b740}-\\u{2b81f}",
+      "cjk_extension_e": "\\u{2b820}-\\u{2ceaf}",
+      "cjk_extension_f": "\\u{2ceb0}-\\u{2ebef}",
+      "cjk_extension_g": "\\u{30000}-\\u{3134f}"
+    },
+    "usage_examples": {
+      "grep_search": "Use full_pattern with isRegexp: true to scan EN output files",
+      "validation": "Run pattern check before EPUB build to catch any leaks",
+      "audit": "Include pattern in QC documentation for leak verification"
+    },
+    "coverage": "Detects all CJK ideographs, Hiragana, Katakana, and CJK Extensions A-G"
+  },
+  "detection_rules": {
+    "zero_tolerance": true,
+    "confidence_threshold": 0.7,
+    "context_window": 5,
+    "check_compounds": true,
+    "check_isolation": true
+  },
+  "forbidden_character_sets": {
+    "chinese_only_chars": [
+      "爲", "這", "個", "們", "嗎", "呢", "啊", "吧", "喔", "哦",
+      "唄", "咧", "啦", "哪", "誰", "係", "喺", "啲", "嘅", "嗰",
+      "噉", "乜", "咁", "點", "樣", "邊", "冇", "未", "曾", "經",
+      "緊", "住", "咗", "過", "喇", "啩", "囉", "啫", "嚟", "佢",
+      "哋", "你", "妳", "您", "俺", "咱", "阮", "伲", "偌", "倆", "仨"
+    ],
+    "chinese_compounds": [
+      "有好", "爲了", "這個", "那個", "什麼", "怎麼", "為什",
+      "還是", "可以", "不能", "應該", "會不", "沒有", "已經",
+      "正在", "將要", "都合", "気付", "仕方", "本当", "一緒",
+      "大丈夫", "勉強"
+    ],
+    "japanese_punctuation": {
+      "corner_quotes_open": "「",
+      "corner_quotes_close": "」",
+      "angle_quotes_open": "《",
+      "angle_quotes_close": "》",
+      "double_angle_open": "『",
+      "double_angle_close": "』",
+      "replacement": "\""
+    }
+  },
+  "common_substitutions": {
+    "everyday_vocabulary": {
+      "大丈夫": {
+        "readings": ["daijoubu", "daijōbu"],
+        "english": ["alright", "okay", "fine", "it's okay", "no problem"],
+        "context": "reassurance_expression",
+        "usage": "very_common"
+      },
+      "本当": {
+        "readings": ["hontou", "hontō"],
+        "english": ["really", "truly", "seriously", "for real"],
+        "context": "emphasis_truth",
+        "usage": "very_common"
+      },
+      "都合が良い": {
+        "readings": ["tsugou ga ii", "tsugō ga ii"],
+        "english": ["convenient", "too convenient", "fits perfectly"],
+        "context": "convenience",
+        "usage": "common"
+      },
+      "仕方ない": {
+        "readings": ["shikata nai", "shikatanai"],
+        "english": ["can't be helped", "no choice", "inevitable"],
+        "context": "resignation_acceptance",
+        "usage": "very_common"
+      },
+      "気持ち": {
+        "readings": ["kimochi"],
+        "english": ["feeling", "emotion", "sentiment"],
+        "context": "emotional_state",
+        "usage": "very_common"
+      },
+      "気付く": {
+        "readings": ["kizuku", "kiduku"],
+        "english": ["notice", "realize", "become aware"],
+        "context": "awareness",
+        "usage": "very_common"
+      },
+      "一緒": {
+        "readings": ["issho"],
+        "english": ["together", "with", "along"],
+        "context": "togetherness",
+        "usage": "very_common"
+      },
+      "勉強": {
+        "readings": ["benkyou", "benkyō"],
+        "english": ["study", "studying", "learning"],
+        "context": "academic",
+        "usage": "common"
+      },
+      "頑張る": {
+        "readings": ["ganbaru"],
+        "english": ["do your best", "work hard", "persevere", "hang in there"],
+        "context": "encouragement_effort",
+        "usage": "very_common"
+      },
+      "美味しい": {
+        "readings": ["oishii"],
+        "english": ["delicious", "tasty", "yummy"],
+        "context": "food_appreciation",
+        "usage": "common"
+      },
+      "懐かしい": {
+        "readings": ["natsukashii"],
+        "english": ["nostalgic", "brings back memories", "miss"],
+        "context": "nostalgia",
+        "usage": "common"
+      },
+      "面倒": {
+        "readings": ["mendou", "mendō"],
+        "english": ["troublesome", "bothersome", "pain", "hassle"],
+        "context": "difficulty_annoyance",
+        "usage": "common"
+      },
+      "羨ましい": {
+        "readings": ["urayamashii"],
+        "english": ["envious", "jealous", "wish I could"],
+        "context": "envy",
+        "usage": "common"
+      }
+    },
+    "emotional_expressions": {
+      "嬉しい": {
+        "readings": ["ureshii"],
+        "english": ["happy", "glad", "delighted", "pleased"],
+        "context": "positive_emotion",
+        "usage": "very_common"
+      },
+      "悲しい": {
+        "readings": ["kanashii"],
+        "english": ["sad", "sorrowful", "melancholy"],
+        "context": "negative_emotion",
+        "usage": "common"
+      },
+      "楽しい": {
+        "readings": ["tanoshii"],
+        "english": ["fun", "enjoyable", "pleasant"],
+        "context": "positive_emotion",
+        "usage": "very_common"
+      },
+      "恥ずかしい": {
+        "readings": ["hazukashii"],
+        "english": ["embarrassed", "ashamed", "shy"],
+        "context": "negative_emotion",
+        "usage": "common"
+      },
+      "寂しい": {
+        "readings": ["sabishii", "samishii"],
+        "english": ["lonely", "lonesome", "miss"],
+        "context": "negative_emotion",
+        "usage": "common"
+      },
+      "怖い": {
+        "readings": ["kowai"],
+        "english": ["scary", "frightening", "afraid"],
+        "context": "fear",
+        "usage": "common"
+      },
+      "可笑しい": {
+        "readings": ["okashii"],
+        "english": ["funny", "amusing", "strange", "weird"],
+        "context": "humor_oddity",
+        "usage": "common"
+      },
+      "辛い": {
+        "readings": ["tsurai"],
+        "english": ["painful", "hard", "tough", "difficult"],
+        "context": "hardship",
+        "usage": "common"
+      },
+      "苦しい": {
+        "readings": ["kurushii"],
+        "english": ["painful", "agonizing", "suffering"],
+        "context": "suffering",
+        "usage": "common"
+      },
+      "不安": {
+        "readings": ["fuan"],
+        "english": ["anxious", "uneasy", "worried"],
+        "context": "anxiety",
+        "usage": "common"
+      }
+    },
+    "actions_and_states": {
+      "考える": {
+        "readings": ["kangaeru"],
+        "english": ["think", "consider", "ponder"],
+        "context": "mental_action",
+        "usage": "very_common"
+      },
+      "思う": {
+        "readings": ["omou"],
+        "english": ["think", "feel", "believe"],
+        "context": "opinion_feeling",
+        "usage": "very_common"
+      },
+      "分かる": {
+        "readings": ["wakaru"],
+        "english": ["understand", "know", "get it"],
+        "context": "comprehension",
+        "usage": "very_common"
+      },
+      "見る": {
+        "readings": ["miru"],
+        "english": ["see", "look", "watch"],
+        "context": "visual_perception",
+        "usage": "very_common"
+      },
+      "聞く": {
+        "readings": ["kiku"],
+        "english": ["hear", "listen", "ask"],
+        "context": "auditory_action",
+        "usage": "very_common"
+      },
+      "言う": {
+        "readings": ["iu", "yuu"],
+        "english": ["say", "tell", "speak"],
+        "context": "verbal_action",
+        "usage": "very_common"
+      },
+      "食べる": {
+        "readings": ["taberu"],
+        "english": ["eat", "have (food)"],
+        "context": "consumption",
+        "usage": "common"
+      },
+      "飲む": {
+        "readings": ["nomu"],
+        "english": ["drink", "have (beverage)"],
+        "context": "consumption",
+        "usage": "common"
+      },
+      "行く": {
+        "readings": ["iku"],
+        "english": ["go", "head to"],
+        "context": "movement",
+        "usage": "very_common"
+      },
+      "来る": {
+        "readings": ["kuru"],
+        "english": ["come", "arrive"],
+        "context": "movement",
+        "usage": "very_common"
+      }
+    },
+    "character_descriptions": {
+      "第一章": {
+        "readings": ["dai-issho", "daiisshou"],
+        "english": ["Chapter 1", "Chapter One"],
+        "context": "chapter_numbering",
+        "usage": "common"
+      },
+      "少女": {
+        "readings": ["shoujo", "shōjo"],
+        "english": ["girl", "young girl", "maiden"],
+        "context": "young_female",
+        "usage": "very_common"
+      },
+      "美少女": {
+        "readings": ["bishoujo", "bishōjo"],
+        "english": ["beautiful girl", "pretty girl", "beauty"],
+        "context": "attractive_young_female",
+        "usage": "very_common"
+      },
+      "幼女": {
+        "readings": ["youjo", "yōjo"],
+        "english": ["little girl", "young girl", "child"],
+        "context": "young_child_female",
+        "usage": "common"
+      },
+      "銀髪": {
+        "readings": ["ginpatsu"],
+        "english": ["silver hair", "silver-haired"],
+        "context": "hair_color",
+        "usage": "common"
+      },
+      "留学生": {
+        "readings": ["ryuugakusei", "ryūgakusei"],
+        "english": ["exchange student", "foreign student", "study abroad student"],
+        "context": "student_status",
+        "usage": "common"
+      },
+      "義妹": {
+        "readings": ["imouto", "gimai"],
+        "english": ["stepsister", "younger stepsister"],
+        "context": "family_relation",
+        "usage": "common"
+      }
+    },
+    "chinese_phrases": {
+      "這個": {
+        "pinyin": ["zhège", "zhe ge"],
+        "english": ["this", "this one"],
+        "context": "demonstrative",
+        "note": "Chinese phrase, not Japanese"
+      },
+      "那個": {
+        "pinyin": ["nàgè", "na ge"],
+        "english": ["that", "that one"],
+        "context": "demonstrative",
+        "note": "Chinese phrase, not Japanese"
+      },
+      "什麼": {
+        "pinyin": ["shénme", "shen me"],
+        "english": ["what", "something"],
+        "context": "interrogative",
+        "note": "Chinese phrase, not Japanese"
+      },
+      "有好感": {
+        "pinyin": ["yǒu hǎogǎn", "you haoganr"],
+        "english": ["have favorable feelings", "have a good impression", "like"],
+        "context": "favorable_feelings",
+        "usage": "common",
+        "note": "Chinese phrase, not Japanese"
+      }
+    }
+  },
+  "translation_strategies": {
+    "contextual_meaning": {
+      "description": "Extract the contextual meaning rather than literal translation",
+      "example": "本当 in exclamation context → 'Really!?' not 'Truth!?'"
+    },
+    "functional_equivalence": {
+      "description": "Use English expressions that serve the same communicative function",
+      "example": "大丈夫 as reassurance → 'It's okay' not 'Big husband'"
+    },
+    "romanization_when_proper": {
+      "description": "For proper nouns, techniques, or culturally specific terms, romanize with explanation",
+      "example": "Keep character names in romaji: Sakura, Takeshi"
+    },
+    "decompose_and_translate": {
+      "description": "Break compound characters into meaning components and translate appropriately",
+      "example": "美少女 → beautiful + young girl → 'beautiful girl'"
+    }
+  },
+  "validation_rules": {
+    "pre_output_checks": [
+      "cjk_character_scan",
+      "completeness_verification",
+      "script_purity",
+      "quotation_marks"
+    ],
+    "error_responses": {
+      "detection": "If CJK detected in draft: STOP, identify characters, consult substitution table",
+      "unknown_pattern": "If no substitution found: decompose characters → translate components → create natural English phrase",
+      "emergency_fallback": "If translation impossible: use romanization with context note"
+    }
+  },
+  "production_detected_patterns": {
+    "description": "CJK leaks detected in production translations - patterns applicable to English",
+    "date_discovered": "2026-01-26",
+    "note": "These patterns were found in Vietnamese translation but apply to English translation as well",
+    "common_leak_patterns": {
+      "education_terms": {
+        "進学": {
+          "readings": ["shingaku"],
+          "meaning": "advancing to higher education",
+          "english": ["advancing to higher school", "going on to university", "moving up"],
+          "context": "educational progression"
+        },
+        "合格": {
+          "readings": ["goukaku"],
+          "meaning": "pass/qualified/success",
+          "english": ["pass", "qualified", "passed the test"],
+          "context": "exam results, qualification"
+        }
+      },
+      "descriptive_terms": {
+        "様子": {
+          "readings": ["yousu"],
+          "meaning": "situation/appearance/state",
+          "english": ["situation", "appearance", "state", "how things look"],
+          "context": "observing someone's condition"
+        },
+        "凜々": {
+          "readings": ["rinrin"],
+          "meaning": "dignified/gallant/imposing",
+          "english": ["dignified", "gallant", "imposing", "commanding"],
+          "context": "describing dignified appearance"
+        },
+        "蠱惑": {
+          "readings": ["kowaku"],
+          "meaning": "seductive/alluring/bewitching",
+          "english": ["seductive", "alluring", "bewitching", "tempting"],
+          "context": "describing seductive appeal"
+        }
+      },
+      "common_expressions": {
+        "まさか": {
+          "readings": ["masaka"],
+          "meaning": "surely not/no way/don't tell me",
+          "english": ["surely not", "no way", "don't tell me", "it can't be"],
+          "context": "expressing disbelief/surprise"
+        },
+        "鈍感": {
+          "readings": ["donkan"],
+          "meaning": "oblivious/insensitive/dense",
+          "english": ["oblivious", "dense", "clueless", "insensitive"],
+          "context": "character trait - not noticing romantic feelings"
+        }
+      },
+      "mixed_language_artifacts": {
+        "少女": {
+          "readings": ["shoujo"],
+          "meaning": "young girl/maiden",
+          "english": ["girl", "young woman", "maiden"],
+          "context": "describing young female characters",
+          "notes": "Often appears in mixed contexts like 'mỹ少女' or 'beautiful少女'"
+        }
+      },
+      "particle_combinations": {
+        "大丈夫そ": {
+          "breakdown": "大丈夫 (daijoubu - okay) + そ (so - seems)",
+          "english": ["seems okay", "looks fine", "appears alright"],
+          "context": "expressing that someone/something appears to be okay"
+        },
+        "なぁ": {
+          "hiragana": "naa",
+          "function": "casual sentence ending particle",
+          "english": ["huh", "you know", "(no direct translation - soft ending)"],
+          "context": "casual contemplation/longing"
+        }
+      },
+      "ruby_text_patterns": {
+        "description": "Japanese kanji with pronunciation annotations - remove kanji, keep translation",
+        "examples": {
+          "卑怯{hèn hạ}": {
+            "kanji": "卑怯",
+            "readings": ["hikyou"],
+            "english": "cowardly/unfair",
+            "fix": "remove kanji and annotations, use English only"
+          },
+          "屈辱{nhục nhã}": {
+            "kanji": "屈辱",
+            "readings": ["kutsujoku"],
+            "english": "humiliation/disgrace",
+            "fix": "remove kanji and annotations, use English only"
+          }
+        }
+      }
+    }
+  },
+  "golden_rules": [
+    "ZERO CJK characters in English output",
+    "Use natural English expressions over literal translations",
+    "Maintain character name romanization consistency",
+    "Convert all Japanese punctuation to English equivalents",
+    "Check output before finalizing translation"
+  ],
+  "failure_condition": "ANY CJK character (U+4E00 to U+9FFF) in final English output = TRANSLATION FAILED",
+  "metadata": {
+    "last_updated": "2026-01-26",
+    "total_patterns": 62,
+    "sources": [
+      "production_validation_0cb9_20260126",
+      "production_validation_becb4d_20260126",
+      "production_validation_0b24_20260126",
+      "english_localization_standards",
+      "light_novel_translation_conventions"
+    ],
+    "recent_additions": {
+      "date": "2026-01-26",
+      "patterns_added": 14,
+      "source_volumes": [
+        "0cb9 Vietnamese (11 leaks - patterns apply to English)",
+        "becb4d Vietnamese (12 leaks - patterns apply to English)"
+      ],
+      "key_discoveries": [
+        "Mixed language patterns (mỹ少女 → must be fully English)",
+        "Particle combinations requiring contextual translation",
+        "Ruby text artifacts that must be stripped",
+        "Shape descriptors in hiragana (く → C-shape, bent over)",
+        "Chinese character contamination in source material"
+      ]
+    }
+  }
+}

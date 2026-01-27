@@ -1,0 +1,502 @@
+{
+  "$schema": "./publisher_schema.json",
+  "version": "2.0",
+  "last_updated": "2026-01-21T13:04:37.145156",
+  "publishers": {
+    "KADOKAWA": {
+      "canonical_name": "KADOKAWA",
+      "aliases": [
+        "KADOKAWA",
+        "角川",
+        "株式会社KADOKAWA",
+        "KADOKAWA CORPORATION",
+        "株式会社ＫＡＤＯＫＡＷＡ"
+      ],
+      "country": "JP",
+      "confidence": "confirmed",
+      "image_patterns": {
+        "exclude": [
+          {
+            "pattern": "^gaiji[-_].*\\.(jpe?g|png)$",
+            "flags": "i",
+            "note": "Special character glyphs"
+          }
+        ],
+        "cover": [
+          {
+            "pattern": "^(i[-_])?cover\\.(jpe?g|png)$",
+            "flags": "i",
+            "priority": 1
+          },
+          {
+            "pattern": "^allcover[-_]\\d+\\.jpe?g$",
+            "flags": "i",
+            "priority": 2
+          }
+        ],
+        "kuchie": [
+          {
+            "pattern": "^kuchie[-_]\\d+\\.jpe?g$",
+            "flags": "i",
+            "priority": 1
+          },
+          {
+            "pattern": "^k\\d{3}\\.jpe?g$",
+            "flags": "i",
+            "priority": 2
+          },
+          {
+            "pattern": "^p00[0-9][a-z]?\\.jpe?g$",
+            "flags": "i",
+            "priority": 3,
+            "note": "p001-p009 and p000a-p000z (letter variants) reserved for kuchie"
+          },
+          {
+            "pattern": "^p00[1-9]\\.jpe?g$",
+            "flags": "i",
+            "priority": 4,
+            "note": "p001-p009 reserved for kuchie"
+          }
+        ],
+        "illustration": [
+          {
+            "pattern": "^i[-_]\\d+\\.jpe?g$",
+            "flags": "i",
+            "priority": 1
+          },
+          {
+            "pattern": "^p0[1-9]\\d\\.jpe?g$",
+            "flags": "i",
+            "priority": 2,
+            "note": "p010+ are illustrations"
+          },
+          {
+            "pattern": "^p[1-9]\\d+\\.jpe?g$",
+            "flags": "i",
+            "priority": 3
+          }
+        ]
+      },
+      "content_patterns": {
+        "toc_handling": "standard",
+        "chapter_merging": false,
+        "filename_pattern": "\\d+\\.xhtml"
+      }
+    },
+    "Media Factory": {
+      "canonical_name": "Media Factory",
+      "aliases": [
+        "Media Factory",
+        "メディアファクトリー",
+        "株式会社メディアファクトリー"
+      ],
+      "country": "JP",
+      "confidence": "confirmed",
+      "image_patterns": {
+        "cover": [
+          {
+            "pattern": "^o_hyoushi\\.jpe?g$",
+            "flags": "i",
+            "priority": 1,
+            "note": "hyoushi = cover"
+          },
+          {
+            "pattern": "^cover\\.jpe?g$",
+            "flags": "i",
+            "priority": 2
+          }
+        ],
+        "kuchie": [
+          {
+            "pattern": "^o_kuchie_\\d+\\.jpe?g$",
+            "flags": "i",
+            "priority": 1
+          }
+        ],
+        "illustration": [
+          {
+            "pattern": "^o_p\\d{3,}\\.jpe?g$",
+            "flags": "i",
+            "priority": 1
+          }
+        ]
+      },
+      "content_patterns": {
+        "toc_handling": "standard",
+        "chapter_merging": true,
+        "filename_pattern": "a_\\d+_\\d+\\.xhtml",
+        "nav_structure": "li > span > a"
+      }
+    },
+    "Overlap": {
+      "canonical_name": "Overlap",
+      "aliases": [
+        "Overlap",
+        "オーバーラップ",
+        "株式会社オーバーラップ"
+      ],
+      "country": "JP",
+      "confidence": "confirmed",
+      "image_patterns": {
+        "cover": [
+          {
+            "pattern": "^cover\\.jpe?g$",
+            "flags": "i",
+            "priority": 1
+          },
+          {
+            "pattern": "^allcover\\.jpe?g$",
+            "flags": "i",
+            "priority": 2
+          }
+        ],
+        "kuchie": [
+          {
+            "pattern": "^k\\d{3}\\.jpe?g$",
+            "flags": "i",
+            "priority": 1
+          },
+          {
+            "pattern": "^k\\d{3}[-_]\\d{3}\\.jpe?g$",
+            "flags": "i",
+            "priority": 2,
+            "note": "Spreads like k002-003.jpg"
+          }
+        ],
+        "illustration": [
+          {
+            "pattern": "^p\\d+\\.jpe?g$",
+            "flags": "i",
+            "priority": 1,
+            "note": "Actual illustration inserts (p001, p005, p046, etc.)"
+          },
+          {
+            "pattern": "^i[-_]\\d+\\.jpe?g$",
+            "flags": "i",
+            "priority": 2
+          }
+        ]
+      },
+      "content_patterns": {
+        "toc_handling": "standard",
+        "chapter_merging": false,
+        "filename_pattern": "chapter\\d+\\.xhtml"
+      }
+    },
+    "SB Creative": {
+      "canonical_name": "SB Creative",
+      "aliases": [
+        "SB Creative",
+        "SBクリエイティブ",
+        "株式会社SBクリエイティブ",
+        "SBCreative Corp."
+      ],
+      "country": "JP",
+      "confidence": "confirmed",
+      "image_patterns": {
+        "cover": [
+          {
+            "pattern": "^cover\\.jpe?g$",
+            "flags": "i",
+            "priority": 1
+          }
+        ],
+        "kuchie": [
+          {
+            "pattern": "^P000[a-z]\\.jpe?g$",
+            "flags": "i",
+            "priority": 1,
+            "note": "P000a, P000b, P000c etc - letter-suffixed kuchie"
+          },
+          {
+            "pattern": "^P00[1-9]\\.jpe?g$",
+            "flags": "i",
+            "priority": 2,
+            "note": "P001-P009 numeric kuchie"
+          }
+        ],
+        "illustration": [
+          {
+            "pattern": "^P0[1-9]\\d\\.jpe?g$",
+            "flags": "i",
+            "priority": 1
+          },
+          {
+            "pattern": "^P[1-9]\\d+\\.jpe?g$",
+            "flags": "i",
+            "priority": 2
+          }
+        ]
+      },
+      "content_patterns": {
+        "toc_handling": "standard",
+        "chapter_merging": false
+      }
+    },
+    "Hifumi Shobo": {
+      "canonical_name": "Hifumi Shobo",
+      "aliases": [
+        "Hifumi Shobo",
+        "一二三書房",
+        "株式会社一二三書房"
+      ],
+      "country": "JP",
+      "confidence": "confirmed",
+      "image_patterns": {
+        "exclude": [
+          {
+            "pattern": "^gaiji[-_].*\\.(jpe?g|png)$",
+            "flags": "i",
+            "note": "Special character glyphs"
+          }
+        ],
+        "cover": [
+          {
+            "pattern": "^cover\\.jpe?g$",
+            "flags": "i",
+            "priority": 1
+          }
+        ],
+        "kuchie": [
+          {
+            "pattern": "^p00[1-5]\\.jpe?g$",
+            "flags": "i",
+            "priority": 1,
+            "note": "p001-p005 are typically kuchie"
+          },
+          {
+            "pattern": "^p002_003\\.jpe?g$",
+            "flags": "i",
+            "priority": 2,
+            "note": "Spread format"
+          }
+        ],
+        "illustration": [
+          {
+            "pattern": "^p0[0-9][6-9]\\.jpe?g$",
+            "flags": "i",
+            "priority": 1
+          },
+          {
+            "pattern": "^p0[1-9]\\d\\.jpe?g$",
+            "flags": "i",
+            "priority": 2
+          },
+          {
+            "pattern": "^p[1-9]\\d{2}\\.jpe?g$",
+            "flags": "i",
+            "priority": 3
+          }
+        ]
+      },
+      "content_patterns": {
+        "toc_handling": "spine_fallback",
+        "toc_min_entries": 3,
+        "chapter_merging": false,
+        "filename_pattern": "p-\\d+\\.xhtml",
+        "chapter_detection": {
+          "method": "content_scan",
+          "title_patterns": [
+            "^第[一二三四五六七八九十百千]+章",
+            "^第\\d+章",
+            "^プロローグ",
+            "^エピローグ",
+            "^幕間",
+            "^あとがき"
+          ],
+          "fallback_title": "Chapter {n}"
+        }
+      }
+    },
+    "Hobby Japan": {
+      "canonical_name": "Hobby Japan",
+      "aliases": [
+        "Hobby Japan",
+        "ホビージャパン",
+        "株式会社ホビージャパン"
+      ],
+      "country": "JP",
+      "confidence": "confirmed",
+      "image_patterns": {
+        "cover": [
+          {
+            "pattern": "^cover\\.jpe?g$",
+            "flags": "i",
+            "priority": 1
+          }
+        ],
+        "kuchie": [
+          {
+            "pattern": "^kuchie[-_]\\d+\\.jpe?g$",
+            "flags": "i",
+            "priority": 1
+          }
+        ],
+        "illustration": [
+          {
+            "pattern": "^i[-_]\\d+\\.jpe?g$",
+            "flags": "i",
+            "priority": 1
+          }
+        ]
+      },
+      "content_patterns": {
+        "toc_handling": "standard",
+        "chapter_merging": false
+      }
+    },
+    "Shueisha": {
+      "canonical_name": "Shueisha",
+      "aliases": [
+        "Shueisha",
+        "集英社",
+        "株式会社集英社",
+        "株式会社 集英社",
+        "SHUEISHA Inc."
+      ],
+      "country": "JP",
+      "confidence": "confirmed",
+      "image_patterns": {
+        "cover": [
+          {
+            "pattern": "^cover\\.jpe?g$",
+            "flags": "i",
+            "priority": 1
+          },
+          {
+            "pattern": "^embed0016_HD\\.jpe?g$",
+            "flags": "i",
+            "priority": 2,
+            "note": "Typical cover image in embed format"
+          }
+        ],
+        "kuchie": [
+          {
+            "pattern": "^kuchie-\\d{3}\\.jpe?g$",
+            "flags": "i",
+            "priority": 1,
+            "note": "Renamed from spine-extracted embed images"
+          },
+          {
+            "pattern": "^embed000[0-4]_HD\\.jpe?g$",
+            "flags": "i",
+            "priority": 2,
+            "note": "Original kuchie files in Images/ folder"
+          }
+        ],
+        "illustration": [
+          {
+            "pattern": "^embed\\d{4}_HD\\.jpe?g$",
+            "flags": "i",
+            "priority": 1,
+            "note": "High-quality illustrations with _HD suffix"
+          },
+          {
+            "pattern": "^embed\\d{4}\\.jpe?g$",
+            "flags": "i",
+            "priority": 2,
+            "note": "Standard resolution illustrations"
+          }
+        ]
+      },
+      "content_patterns": {
+        "toc_handling": "standard",
+        "chapter_merging": false,
+        "filename_pattern": "p-\\d+\\.xhtml",
+        "kuchie_extraction": "spine",
+        "spine_kuchie_patterns": [
+          "p-cover\\.xhtml",
+          "p-fmatter-\\d{3}\\.xhtml"
+        ]
+      }
+    }
+  },
+  "fallback_patterns": {
+    "description": "Generic patterns used when publisher is unknown",
+    "image_patterns": {
+      "exclude": [
+        {
+          "pattern": "^gaiji[-_].*\\.(jpe?g|png)$",
+          "flags": "i"
+        }
+      ],
+      "cover": [
+        {
+          "pattern": "^(o_|i[-_])?cover\\.(jpe?g|png)$",
+          "flags": "i"
+        },
+        {
+          "pattern": "^(o_)?hyoushi\\.(jpe?g|png)$",
+          "flags": "i"
+        },
+        {
+          "pattern": "^frontcover\\.(jpe?g|png)$",
+          "flags": "i"
+        },
+        {
+          "pattern": "^h1\\.(jpe?g|png)$",
+          "flags": "i"
+        }
+      ],
+      "kuchie": [
+        {
+          "pattern": "^(o_)?kuchie[-_]\\d+\\.jpe?g$",
+          "flags": "i"
+        },
+        {
+          "pattern": "^k\\d{3}\\.jpe?g$",
+          "flags": "i"
+        },
+        {
+          "pattern": "^p00[0-9][a-z]?\\.jpe?g$",
+          "flags": "i",
+          "note": "Matches p001-p009 and p000a-p000z (letter variants)"
+        },
+        {
+          "pattern": "^p00[1-9](-\\d+)?\\.jpe?g$",
+          "flags": "i"
+        }
+      ],
+      "illustration": [
+        {
+          "pattern": "^(o_)?i[-_]\\d+\\.jpe?g$",
+          "flags": "i"
+        },
+        {
+          "pattern": "^(o_)?p0[1-9]\\d+\\.jpe?g$",
+          "flags": "i"
+        },
+        {
+          "pattern": "^(o_)?p[1-9]\\d+\\.jpe?g$",
+          "flags": "i"
+        },
+        {
+          "pattern": "^m\\d{3}\\.jpe?g$",
+          "flags": "i"
+        },
+        {
+          "pattern": "^img[-_]p\\d+\\.jpe?g$",
+          "flags": "i"
+        }
+      ]
+    },
+    "content_patterns": {
+      "toc_handling": "auto",
+      "toc_min_entries": 3,
+      "chapter_merging": false,
+      "chapter_detection": {
+        "method": "content_scan",
+        "title_patterns": [
+          "^第[一二三四五六七八九十百千]+章",
+          "^第\\d+章",
+          "^Chapter\\s*\\d+",
+          "^プロローグ",
+          "^エピローグ",
+          "^幕間",
+          "^あとがき"
+        ],
+        "fallback_title": "Chapter {n}"
+      }
+    }
+  }
+}
