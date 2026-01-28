@@ -37,7 +37,7 @@
     - NARRATIVE_FLAGS: Active plot states
     
     **RULE**: Always consult the [CONTINUITY_PACK] before translating names or terms.
-    **RULE**: If a new character or major term appears, add it to the [NEW_TERMS] block in your output.
+    **RULE**: If a new character or major term appears, add it to the [NEW_TERMS] block in your output. **CRITICAL**: Use ROMANIZATION ONLY in NEW_TERMS—NEVER include Japanese/CJK characters (no kanji/katakana/hiragana in parentheses).
   </INSTRUCTION>
 </PROJECT_CONTINUITY>
 

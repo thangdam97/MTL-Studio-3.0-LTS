@@ -199,18 +199,21 @@ class GeminiClient:
             # Context Caching Logic
             cached_content_name = cached_content  # Use external cache if provided
             
-            # Only create internal cache if no external cache provided
-            if not cached_content_name and self.enable_caching and system_instruction:
+            # Only create/use internal cache if no external cache provided
+            if not cached_content_name and self.enable_caching:
                 # Check if cache is valid for target model
                 if not self._is_cache_valid(target_model):
-                    # Clear old cache if model changed
-                    if self._cached_content_name and self._cached_model != target_model:
-                        logger.info(f"Model changed ({self._cached_model} -> {target_model}), clearing old cache...")
-                        self.clear_cache()
-                    
-                    # Create new cache for target model
-                    cached_content_name = self._create_cached_content(system_instruction, target_model)
+                    # Need to create new cache (only if system_instruction provided)
+                    if system_instruction:
+                        # Clear old cache if model changed
+                        if self._cached_content_name and self._cached_model != target_model:
+                            logger.info(f"Model changed ({self._cached_model} -> {target_model}), clearing old cache...")
+                            self.clear_cache()
+                        
+                        # Create new cache for target model
+                        cached_content_name = self._create_cached_content(system_instruction, target_model)
                 else:
+                    # Cache is valid - reuse it
                     cached_content_name = self._cached_content_name
                     cache_age = (time.time() - self._cache_created_at) / 60
                     logger.debug(f"Using existing context cache (age: {cache_age:.1f}m / {self._cache_ttl_minutes}m, model: {self._cached_model})")
@@ -221,6 +224,7 @@ class GeminiClient:
             # Build config based on caching mode
             if cached_content_name:
                 # Use cached content (system_instruction is in the cache)
+                cache_source = "external" if cached_content else "internal"
                 config = types.GenerateContentConfig(
                     temperature=temperature,
                     max_output_tokens=max_output_tokens,
@@ -228,7 +232,7 @@ class GeminiClient:
                     safety_settings=safety_settings,
                     automatic_function_calling=None  # Disable AFC to prevent loops
                 )
-                logger.debug(f"Using cached system instruction: {cached_content_name}")
+                logger.debug(f"Using {cache_source} cached system instruction: {cached_content_name}")
             else:
                 # Standard mode (no caching or fallback)
                 config = types.GenerateContentConfig(
@@ -239,6 +243,7 @@ class GeminiClient:
                     automatic_function_calling=None  # Disable AFC to prevent loops
                 )
 
+            # Log API call with accurate cache status (check AFTER internal cache logic)
             logger.info(f"Calling Gemini API (model: {target_model}, cached: {bool(cached_content_name)})...")
             start_time = time.time()
             response = self.client.models.generate_content(
@@ -268,9 +273,26 @@ class GeminiClient:
             # Handle potential empty response/safety block
             if not response.text:
                 finish_reason = "UNKNOWN"
-                if response.candidates and response.candidates[0].finish_reason:
-                    finish_reason = str(response.candidates[0].finish_reason)
-                logger.warning(f"Empty response from Gemini. Reason: {finish_reason}")
+                safety_ratings = []
+                
+                if response.candidates:
+                    if response.candidates[0].finish_reason:
+                        finish_reason = str(response.candidates[0].finish_reason)
+                    
+                    # Extract safety ratings if available
+                    if hasattr(response.candidates[0], 'safety_ratings'):
+                        safety_ratings = [
+                            f"{rating.category.name}={rating.probability.name}"
+                            for rating in response.candidates[0].safety_ratings
+                            if rating.probability.name != "NEGLIGIBLE"
+                        ]
+                
+                # Log detailed empty response info
+                if safety_ratings:
+                    logger.warning(f"Empty response from Gemini. Reason: {finish_reason}, Safety: {', '.join(safety_ratings)}")
+                else:
+                    logger.warning(f"Empty response from Gemini. Reason: {finish_reason}, Candidates: {len(response.candidates) if response.candidates else 0}")
+                
                 return GeminiResponse(
                     content="",
                     input_tokens=input_tokens,

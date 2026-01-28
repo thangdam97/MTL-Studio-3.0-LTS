@@ -155,6 +155,19 @@ def standardize_chapter_title(title: str, target_language: str = 'vn') -> str:
 
 
 class MetadataProcessor:
+    """
+    MetadataProcessor - Phase 1 metadata extraction and translation.
+    
+    V3 SCHEMA MIGRATION (2026-01-28):
+    - REMOVED: .context/name_registry.json creation (legacy system)
+    - NOW USES: manifest.json metadata_en.character_profiles (v3 enhanced schema)
+    - PRESERVED: Reading name_registry.json for backward compatibility with legacy volumes
+    
+    Character data now stored in manifest.json with full profiles including:
+    - keigo_switch, speech_pattern, character_arc, occurrences tracking
+    - Richer metadata vs flat JP→EN name mapping
+    """
+    
     def __init__(self, work_dir: Path, model: str = None, target_language: str = None):
         """
         Initialize MetadataProcessor.
@@ -715,11 +728,8 @@ class MetadataProcessor:
         context_dir.mkdir(exist_ok=True)
         
         name_registry = metadata_translated['character_names']
-        if name_registry:
-            registry_path = context_dir / "name_registry.json"
-            with open(registry_path, 'w', encoding='utf-8') as f:
-                json.dump(name_registry, f, indent=2, ensure_ascii=False)
-            logger.info(f"💾 Saved {len(name_registry)} names to {registry_path}")
+        # NOTE: name_registry.json DEPRECATED - v3 schema uses manifest.json character_profiles
+        # Legacy .context/name_registry.json no longer created
         
         # Update manifest - PRESERVE v3 enhanced schema
         self._update_manifest_preserve_schema(
@@ -879,15 +889,12 @@ class MetadataProcessor:
 
             logger.info(f"Metadata translated to {self.language_name} and saved to {output_path}")
 
-            # Save name registry and glossary to .context
+            # Save glossary to manifest (v3 schema)
             context_dir = self.work_dir / ".context"
             context_dir.mkdir(exist_ok=True)
 
-            if name_registry:
-                registry_path = context_dir / "name_registry.json"
-                with open(registry_path, 'w', encoding='utf-8') as f:
-                    json.dump(name_registry, f, indent=2, ensure_ascii=False)
-                logger.info(f"Saved {len(name_registry)} names to {registry_path}")
+            # NOTE: name_registry.json DEPRECATED - v3 schema uses manifest.json character_profiles
+            # Character names now stored in manifest.json metadata_en.character_names
 
             if term_glossary:
                 # Update manifest glossary

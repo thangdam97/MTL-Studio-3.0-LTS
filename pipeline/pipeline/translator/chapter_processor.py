@@ -123,10 +123,17 @@ class ChapterProcessor:
                 logger.info(f"Stripped JP title for translation: {jp_title_match.group(1)}")
 
             # 2. Build Prompt
-            logger.debug(f"[VERBOSE] Building system instruction...")
-            # Get Master Prompt + RAG Modules (System Instruction)
-            system_instruction = self.prompt_loader.build_system_instruction()
-            logger.debug(f"[VERBOSE] System instruction length: {len(system_instruction)} characters")
+            # Skip rebuilding system instruction if cache is available
+            # Check: external cached_content OR internal client cache
+            if cached_content or (self.client.enable_caching and self.client._is_cache_valid(model_name)):
+                cache_type = "external" if cached_content else "internal"
+                cache_name = cached_content or self.client._cached_content_name
+                logger.debug(f"[VERBOSE] Using {cache_type} cached system instruction ({cache_name})")
+                system_instruction = None  # Not needed when cache is active
+            else:
+                logger.debug(f"[VERBOSE] Building system instruction...")
+                system_instruction = self.prompt_loader.build_system_instruction()
+                logger.debug(f"[VERBOSE] System instruction length: {len(system_instruction)} characters")
             
             # Get Context (Continuity)
             logger.debug(f"[VERBOSE] Getting context prompt...")

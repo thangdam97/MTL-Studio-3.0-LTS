@@ -16,8 +16,9 @@ smartypants>=2.0.0             # Typographic quotes/dashes/ellipses (Phase 4 fai
 # PDF Generation
 reportlab>=4.0.0               # PDF creation
 
-# Gemini API (Phase 2 - Translator & Phase 3 - Critics)
+# Gemini API (Phase 2 - Translator & Phase 3 - Critics & Phase 5 - Narrator TTS)
 google-genai>=0.5.0            # Google Gemini API SDK
+google-generativeai>=0.8.0     # Google Generative AI SDK (for TTS)
 
 # Retry logic and utilities
 tenacity>=8.2.0                # Retry with exponential backoff

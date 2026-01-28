@@ -2,6 +2,17 @@
 
 Publisher-specific EPUB structure patterns for debugging and maintenance.
 
+## Legal Notice
+
+Publisher filename patterns documented here are:
+- **Factual observations** from legally obtained EPUB files
+- Used for **format compatibility and interoperability purposes only**
+- Not proprietary information or trade secrets
+- Publisher names used for identification only; **no affiliation implied**
+- Reverse-engineered for personal use under fair use doctrine
+
+This documentation is provided for personal use and educational purposes. Users must comply with all applicable copyright laws.
+
 ## Purpose
 
 Each publisher has unique EPUB formatting conventions:

@@ -21,6 +21,10 @@ pipeline/WORK/
 pipeline/INPUT/
 pipeline/OUTPUT/
 
+# Development workspaces (internal testing/experimentation)
+bleu_workspace/
+data/
+
 # Context files (legacy continuity system)
 **/.context/
 
@@ -78,7 +82,7 @@ htmlcov/
 # ============================================
 # IDE AND EDITOR
 # ============================================
-.vscode/
+## .vscode/
 **/.vscode/
 .idea/
 **/.idea/
@@ -152,3 +156,9 @@ pipeline/VN/Reference/
 # MACOS APP BUNDLE (GENERATED)
 # ============================================
 MTL Studio.app/
+
+# ============================================
+# TTS DEVELOPMENT - TEMPORARY
+# ============================================
+TTS_development/
+test_voices/

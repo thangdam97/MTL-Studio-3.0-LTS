@@ -1069,6 +1069,20 @@ inquirer>=3.0             # Interactive prompts
 
 ---
 
+## Legal Notice
+
+**Personal Use Only**: MTL Studio is designed for personal consumption and educational purposes. Users are responsible for complying with all applicable copyright laws and licensing agreements.
+
+**Anti-Piracy Statement**: The developer does not encourage or condone piracy in any form. This tool is intended for use with legally obtained content only. Users must:
+- Own legitimate copies of source materials
+- Respect intellectual property rights of authors and publishers
+- Comply with local copyright laws and regulations
+- Not distribute translated works without proper authorization
+
+Use of this software constitutes acceptance of these terms.
+
+---
+
 ## License
 
 See LICENSE.txt for licensing information.
