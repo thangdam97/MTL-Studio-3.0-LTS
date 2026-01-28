@@ -26,7 +26,7 @@ open -a "$MTL_ROOT/bin/VSCodium.app" "$MTL_ROOT/workspace/MTL_Studio.code-worksp
 echo
 echo "MTL Studio is running."
 echo "You can use this terminal for CLI commands:"
-echo "  - cd pipeline_source"
+echo "  - cd pipeline"
 echo "  - python mtl.py list"
 echo "  - python mtl.py status [volume_id]"
 echo
